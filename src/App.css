@@ -1,22 +1,30 @@
 .app-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: sans-serif;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.app-name {
+    margin: 0 0 8px 0;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #005fa3;
 }
 
 .top-controls {
-    padding: 20px;
-    margin-bottom: 30px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
 .bottom-results {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    min-height: 300px;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
 }

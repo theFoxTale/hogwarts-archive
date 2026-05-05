@@ -1,6 +1,8 @@
 import { Component } from 'react';
-import { SearchSection, ResultsSection } from './components';
-import { searchCharacters, type Character } from './api';
+import { SearchSection, ResultsSection, Pagination } from './components';
+
+import { searchCharacters } from './api';
+import type { Character, PaginationInfo } from './api';
 
 import './App.css';
 
@@ -9,6 +11,7 @@ const LOCAL_STORAGE_URL = 'classComponentSearchText';
 interface AppState {
   searchText: string;
   results: Character[];
+  pages: PaginationInfo | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -19,6 +22,7 @@ export class App extends Component<object, AppState> {
     this.state = {
       searchText: '',
       results: [],
+      pages: null,
       isLoading: false,
       error: null,
     };
@@ -41,7 +45,11 @@ export class App extends Component<object, AppState> {
 
     try {
       const data = await searchCharacters(searchText);
-      this.setState({ results: data, isLoading: false });
+      this.setState({
+        results: data.items,
+        pages: data.pages,
+        isLoading: false,
+      });
     } catch (err) {
       this.setState({
         error: 'Failed to load characters. Please try again later.',
@@ -62,6 +70,15 @@ export class App extends Component<object, AppState> {
   };
 
   render() {
+    const { pages } = this.state;
+
+    let currentPage = 0;
+    let totalPages = 0;
+    if (pages && pages.pagination && pages.pagination.last) {
+      currentPage = pages.pagination.current;
+      totalPages = pages.pagination.last;
+    }
+
     return (
       <div className="app-container">
         <div className="top-controls">
@@ -78,6 +95,9 @@ export class App extends Component<object, AppState> {
             error={this.state.error}
           />
         </div>
+        {totalPages > 1 && (
+          <Pagination currentPage={currentPage} totalPages={totalPages} />
+        )}
       </div>
     );
   }

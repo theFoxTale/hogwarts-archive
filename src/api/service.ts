@@ -1,17 +1,27 @@
-import type { ApiResponse, Character, CharacterData } from './types.ts';
+import type {
+  ApiResponse,
+  Character,
+  CharacterData,
+  PaginationInfo,
+} from './types.ts';
 
 const BASE_URL = 'https://api.potterdb.com/v1/characters';
 
+export interface SearchResponse {
+  items: Character[];
+  pages: PaginationInfo | null;
+}
+
 export async function searchCharacters(
   characterName: string
-): Promise<Character[]> {
+): Promise<SearchResponse> {
   const trimmedName = characterName.trim();
   const url =
     trimmedName === ''
       ? BASE_URL
       : `${BASE_URL}?filter[name_cont]=${encodeURIComponent(trimmedName)}`;
 
-  const response = await fetch(url);
+  const response = await fetch(url + '&page[size]=3');
 
   if (!response.ok) {
     throw new Error(`PotterDB API HTTP error! status: ${response.status}`);
@@ -20,11 +30,15 @@ export async function searchCharacters(
   const json: ApiResponse = await response.json();
 
   if (!json.data || !Array.isArray(json.data)) {
-    return [];
+    return {
+      items: [],
+      pages: null,
+    };
   }
 
-  return json.data.map((item: CharacterData) => {
+  const items: Character[] = json.data.map((item: CharacterData) => {
     const attrs = item.attributes;
+
     return {
       name: attrs.name || 'Unnamed',
       house: attrs.house ?? null,
@@ -33,4 +47,14 @@ export async function searchCharacters(
       image: attrs.image ?? null,
     };
   });
+
+  let pages: PaginationInfo | null = null;
+  if (json.meta?.pagination) {
+    pages = {
+      pagination: json.meta.pagination,
+      links: json.links,
+    };
+  }
+
+  return { items, pages };
 }

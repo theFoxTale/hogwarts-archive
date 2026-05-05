@@ -12,17 +12,31 @@ export interface CharacterData {
   attributes: Character;
 }
 
+export interface PaginationData {
+  current: number;
+  prev?: number;
+  next?: number;
+  last?: number;
+  records: number;
+}
+
+export interface LinksData {
+  self: string;
+  first?: string;
+  next?: string;
+  prev?: string;
+  last?: string;
+}
+
+export interface PaginationInfo {
+  pagination?: PaginationData;
+  links?: LinksData;
+}
+
 export interface ApiResponse {
   data: CharacterData[];
   meta?: {
-    totalCount?: number;
-    pageCount?: number;
+    pagination?: PaginationData;
   };
-  links?: {
-    self: string;
-    first?: string;
-    next?: string;
-    prev?: string;
-    last?: string;
-  };
+  links?: LinksData;
 }

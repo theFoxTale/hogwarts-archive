@@ -1,2 +1,2 @@
 export { searchCharacters } from './service';
-export type { Character } from './types';
+export type { Character, PaginationInfo } from './types';

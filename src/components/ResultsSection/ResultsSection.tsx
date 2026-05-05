@@ -3,6 +3,8 @@ import type { Character } from '../../api';
 
 import './ResultsSection.css';
 
+const ANONYMOUS_IMAGE_URL = '/placeholder.jpg';
+
 interface ResultsSectionProps {
   results: Character[];
   isLoading: boolean;
@@ -32,7 +34,8 @@ export class ResultsSection extends Component<ResultsSectionProps> {
         {results.map((char, idx) => (
           <div key={idx} className="character-card">
             <img
-              src={char.image || '/placeholder.jpg'}
+              src={char.image || ANONYMOUS_IMAGE_URL}
+              onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE_URL)}
               alt={char.name}
               className="character-image"
             />

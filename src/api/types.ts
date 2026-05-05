@@ -14,4 +14,15 @@ export interface CharacterData {
 
 export interface ApiResponse {
   data: CharacterData[];
+  meta?: {
+    totalCount?: number;
+    pageCount?: number;
+  };
+  links?: {
+    self: string;
+    first?: string;
+    next?: string;
+    prev?: string;
+    last?: string;
+  };
 }

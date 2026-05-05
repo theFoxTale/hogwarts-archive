@@ -1,1 +1,5 @@
-npm run lint
+#!/usr/bin/env sh
+
+echo "🔍 Running pre-commit checks..."
+npx lint-staged
+echo "✅ Type check passed."

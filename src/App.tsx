@@ -17,6 +17,7 @@ const LOCAL_STORAGE_SEARCH_PAGE = 'classComponentSearchPage';
 
 interface AppState {
   searchText: string;
+  currentPage: number;
   results: Character[];
   pages: PaginationInfo | null;
   isLoading: boolean;
@@ -29,6 +30,7 @@ export class App extends Component<object, AppState> {
     super(props);
     this.state = {
       searchText: '',
+      currentPage: 1,
       results: [],
       pages: null,
       isLoading: false,
@@ -56,7 +58,9 @@ export class App extends Component<object, AppState> {
 
     try {
       const data = await searchCharacters(searchText, pageNumber);
+      const currentPage = data.pages?.pagination?.current ?? pageNumber;
       this.setState({
+        currentPage: currentPage,
         results: data.items,
         pages: data.pages,
         isLoading: false,
@@ -74,7 +78,7 @@ export class App extends Component<object, AppState> {
   handleSearch = (searchText: string) => {
     if (searchText === this.state.searchText) return;
 
-    this.setState({ searchText: searchText });
+    this.setState({ searchText: searchText, currentPage: 1 });
     localStorage.setItem(LOCAL_STORAGE_SEARCH_TEXT, searchText);
     localStorage.setItem(LOCAL_STORAGE_SEARCH_PAGE, '1');
 
@@ -108,7 +112,10 @@ export class App extends Component<object, AppState> {
   };
 
   resetError = () => {
-    this.setState({ shouldThrowError: false });
+    this.setState({ shouldThrowError: false }, () => {
+      const { searchText, currentPage } = this.state;
+      void this.fetchCharacters(searchText, currentPage);
+    });
   };
 
   render() {

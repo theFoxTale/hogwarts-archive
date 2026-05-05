@@ -5,19 +5,34 @@ import './Pagination.css';
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
+  isPrevAvailable: boolean;
+  isNextAvailable: boolean;
+  onPrev: () => void;
+  onNext: () => void;
 }
 
 export class Pagination extends Component<PaginationProps> {
   render() {
-    const { currentPage, totalPages } = this.props;
+    const {
+      currentPage,
+      totalPages,
+      isPrevAvailable,
+      isNextAvailable,
+      onPrev,
+      onNext,
+    } = this.props;
 
     return (
       <div className="pagination">
-        <button>← Previous</button>
+        <button onClick={onPrev} disabled={!isPrevAvailable}>
+          ← Previous
+        </button>
         <span className="page-info">
           Page {currentPage} of {totalPages}
         </span>
-        <button>Next →</button>
+        <button onClick={onNext} disabled={!isNextAvailable}>
+          Next →
+        </button>
       </div>
     );
   }

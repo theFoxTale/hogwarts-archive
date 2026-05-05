@@ -40,11 +40,11 @@ export class App extends Component<object, AppState> {
     }
   }
 
-  fetchCharacters = async (searchText: string) => {
+  fetchCharacters = async (searchText: string, pageNumber: number = 1) => {
     this.setState({ isLoading: true, error: null });
 
     try {
-      const data = await searchCharacters(searchText);
+      const data = await searchCharacters(searchText, pageNumber);
       this.setState({
         results: data.items,
         pages: data.pages,
@@ -69,14 +69,37 @@ export class App extends Component<object, AppState> {
     void this.fetchCharacters(searchText);
   };
 
+  navigateToPrevPage = () => {
+    const { pages, searchText } = this.state;
+    if (pages?.pagination?.prev) {
+      void this.fetchCharacters(searchText, pages.pagination.prev);
+    }
+  };
+
+  navigateToNextPage = () => {
+    const { pages, searchText } = this.state;
+    if (pages?.pagination?.next) {
+      void this.fetchCharacters(searchText, pages.pagination.next);
+    }
+  };
+
   render() {
     const { pages } = this.state;
 
     let currentPage = 0;
     let totalPages = 0;
-    if (pages && pages.pagination && pages.pagination.last) {
+
+    let isPrevAvailable = false;
+    let isNextAvailable = false;
+
+    if (pages && pages.pagination && pages.pagination.current) {
       currentPage = pages.pagination.current;
-      totalPages = pages.pagination.last;
+      totalPages = pages.pagination.last
+        ? pages.pagination.last
+        : pages.pagination.current;
+
+      if (pages.pagination.prev) isPrevAvailable = true;
+      if (pages.pagination.next) isNextAvailable = true;
     }
 
     return (
@@ -96,7 +119,14 @@ export class App extends Component<object, AppState> {
           />
         </div>
         {totalPages > 1 && (
-          <Pagination currentPage={currentPage} totalPages={totalPages} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            isPrevAvailable={isPrevAvailable}
+            isNextAvailable={isNextAvailable}
+            onPrev={this.navigateToPrevPage}
+            onNext={this.navigateToNextPage}
+          />
         )}
       </div>
     );

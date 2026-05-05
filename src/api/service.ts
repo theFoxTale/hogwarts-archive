@@ -6,6 +6,7 @@ import type {
 } from './types.ts';
 
 const BASE_URL = 'https://api.potterdb.com/v1/characters';
+const ITEMS_PER_PAGE = 3;
 
 export interface SearchResponse {
   items: Character[];
@@ -13,15 +14,22 @@ export interface SearchResponse {
 }
 
 export async function searchCharacters(
-  characterName: string
+  characterName: string,
+  page: number = 1,
+  itemsPerPage: number = ITEMS_PER_PAGE
 ): Promise<SearchResponse> {
-  const trimmedName = characterName.trim();
-  const url =
-    trimmedName === ''
-      ? BASE_URL
-      : `${BASE_URL}?filter[name_cont]=${encodeURIComponent(trimmedName)}`;
+  const params = new URLSearchParams();
 
-  const response = await fetch(url + '&page[size]=3');
+  const trimmedName = characterName.trim();
+  if (trimmedName !== '') {
+    params.append('filter[name_cont]', trimmedName);
+  }
+
+  params.append('page[number]', page.toString());
+  params.append('page[size]', itemsPerPage.toString());
+
+  const url = `${BASE_URL}?${params.toString()}`;
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`PotterDB API HTTP error! status: ${response.status}`);

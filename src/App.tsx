@@ -6,7 +6,8 @@ import type { Character, PaginationInfo } from './api';
 
 import './App.css';
 
-const LOCAL_STORAGE_URL = 'classComponentSearchText';
+const LOCAL_STORAGE_SEARCH_TEXT = 'classComponentSearchText';
+const LOCAL_STORAGE_SEARCH_PAGE = 'classComponentSearchPage';
 
 interface AppState {
   searchText: string;
@@ -29,14 +30,16 @@ export class App extends Component<object, AppState> {
   }
 
   componentDidMount() {
-    const savedSearchText = localStorage.getItem(LOCAL_STORAGE_URL);
+    const savedSearchText = localStorage.getItem(LOCAL_STORAGE_SEARCH_TEXT);
+    const savedSearchPage = localStorage.getItem(LOCAL_STORAGE_SEARCH_PAGE);
+    const pageNumber = savedSearchPage ? parseInt(savedSearchPage) : 1;
 
     if (savedSearchText) {
       this.setState({ searchText: savedSearchText }, () => {
-        void this.fetchCharacters(savedSearchText);
+        void this.fetchCharacters(savedSearchText, pageNumber);
       });
     } else {
-      void this.fetchCharacters('');
+      void this.fetchCharacters('', pageNumber);
     }
   }
 
@@ -64,7 +67,8 @@ export class App extends Component<object, AppState> {
     if (searchText === this.state.searchText) return;
 
     this.setState({ searchText: searchText });
-    localStorage.setItem(LOCAL_STORAGE_URL, searchText);
+    localStorage.setItem(LOCAL_STORAGE_SEARCH_TEXT, searchText);
+    localStorage.setItem(LOCAL_STORAGE_SEARCH_PAGE, '1');
 
     void this.fetchCharacters(searchText);
   };
@@ -73,6 +77,10 @@ export class App extends Component<object, AppState> {
     const { pages, searchText } = this.state;
     if (pages?.pagination?.prev) {
       void this.fetchCharacters(searchText, pages.pagination.prev);
+      localStorage.setItem(
+        LOCAL_STORAGE_SEARCH_PAGE,
+        pages.pagination.prev.toString()
+      );
     }
   };
 
@@ -80,6 +88,10 @@ export class App extends Component<object, AppState> {
     const { pages, searchText } = this.state;
     if (pages?.pagination?.next) {
       void this.fetchCharacters(searchText, pages.pagination.next);
+      localStorage.setItem(
+        LOCAL_STORAGE_SEARCH_PAGE,
+        pages.pagination.next.toString()
+      );
     }
   };
 

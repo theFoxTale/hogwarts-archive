@@ -1,10 +1,16 @@
 import { Component } from 'react';
-import { SearchSection, ResultsSection, Pagination } from './components';
+import {
+  SearchSection,
+  ResultsSection,
+  Pagination,
+  ErrorBoundary,
+} from './components';
 
 import { searchCharacters } from './api';
 import type { Character, PaginationInfo } from './api';
 
 import './App.css';
+import errorIcon from './assets/error.png';
 
 const LOCAL_STORAGE_SEARCH_TEXT = 'classComponentSearchText';
 const LOCAL_STORAGE_SEARCH_PAGE = 'classComponentSearchPage';
@@ -15,6 +21,7 @@ interface AppState {
   pages: PaginationInfo | null;
   isLoading: boolean;
   error: string | null;
+  shouldThrowError: boolean;
 }
 
 export class App extends Component<object, AppState> {
@@ -26,6 +33,7 @@ export class App extends Component<object, AppState> {
       pages: null,
       isLoading: false,
       error: null,
+      shouldThrowError: false,
     };
   }
 
@@ -95,6 +103,14 @@ export class App extends Component<object, AppState> {
     }
   };
 
+  simulateError = () => {
+    this.setState({ shouldThrowError: true });
+  };
+
+  resetError = () => {
+    this.setState({ shouldThrowError: false });
+  };
+
   render() {
     const { pages } = this.state;
 
@@ -117,20 +133,32 @@ export class App extends Component<object, AppState> {
     return (
       <div className="app-container">
         <div className="top-controls">
-          <p className="app-name">Harry Potter's API Test Page</p>
+          <div className="app-header">
+            <p className="app-name">Harry Potter's API Test Page</p>
+            <button onClick={this.simulateError} className="error-test-button">
+              <img
+                src={errorIcon}
+                alt="Simulate Error"
+                className="error-icon-img"
+              />
+            </button>
+          </div>
           <SearchSection
             onSearch={this.handleSearch}
             initialSearchText={this.state.searchText}
           />
         </div>
         <div className="bottom-results">
-          <ResultsSection
-            results={this.state.results}
-            isLoading={this.state.isLoading}
-            error={this.state.error}
-          />
+          <ErrorBoundary onReset={this.resetError}>
+            <ResultsSection
+              results={this.state.results}
+              isLoading={this.state.isLoading}
+              error={this.state.error}
+              shouldThrowError={this.state.shouldThrowError}
+            />
+          </ErrorBoundary>
         </div>
-        {totalPages > 1 && (
+        {totalPages > 1 && !this.state.shouldThrowError && (
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

@@ -9,9 +9,15 @@ interface ResultsSectionProps {
   results: Character[];
   isLoading: boolean;
   error: string | null;
+  shouldThrowError?: boolean;
 }
 
 export class ResultsSection extends Component<ResultsSectionProps> {
+  componentDidUpdate(prevProps: ResultsSectionProps) {
+    if (this.props.shouldThrowError && !prevProps.shouldThrowError) {
+      throw new Error('This is special error from test button');
+    }
+  }
   render() {
     const { results, isLoading, error } = this.props;
 

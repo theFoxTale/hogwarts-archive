@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import type { Character } from '../../api';
-import { ANONYMOUS_IMAGE, UI_MESSAGES } from '../../constants';
+import { ANONYMOUS_IMAGE, ERROR_MESSAGES, UI_MESSAGES } from '../../constants';
 
 import './ResultsSection.css';
 
@@ -14,7 +14,7 @@ interface ResultsSectionProps {
 export class ResultsSection extends Component<ResultsSectionProps> {
   componentDidUpdate(prevProps: ResultsSectionProps) {
     if (this.props.shouldThrowError && !prevProps.shouldThrowError) {
-      throw new Error(UI_MESSAGES.TEST_ERROR);
+      throw new Error(ERROR_MESSAGES.TEST);
     }
   }
   render() {

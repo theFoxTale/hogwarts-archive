@@ -4,7 +4,7 @@ import type {
   CharacterData,
   PaginationInfo,
 } from './types.ts';
-import { API_CONFIG } from '../constants';
+import { API_CONFIG, ERROR_MESSAGES } from '../constants';
 
 export interface SearchResponse {
   items: Character[];
@@ -30,7 +30,17 @@ export async function searchCharacters(
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`PotterDB API HTTP error! status: ${response.status}`);
+    if (response.status === 404) {
+      throw new Error(ERROR_MESSAGES.NOT_FOUND);
+    } else if (response.status >= 500) {
+      throw new Error(
+        `${ERROR_MESSAGES.SERVER}, server status ${response.status}`
+      );
+    } else {
+      throw new Error(
+        `${ERROR_MESSAGES.HTTP}, server status ${response.status}`
+      );
+    }
   }
 
   const json: ApiResponse = await response.json();

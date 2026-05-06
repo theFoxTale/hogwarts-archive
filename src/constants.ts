@@ -13,13 +13,20 @@ export const LOCAL_STORAGE_KEYS = {
   SEARCH_PAGE: 'classComponentSearchPage',
 } as const;
 
+// Сообщения об ошибках (технические и пользовательские)
+export const ERROR_MESSAGES = {
+  BOUNDARY: 'ErrorBoundary caught an error:',
+  NOT_FOUND: 'No characters match your search.',
+  SERVER: 'Server error has occurred, please try again later.',
+  HTTP: 'HTTP error has occurred, please try again later.',
+  TEST: 'This is special error from test button',
+  UNKNOWN: 'Unknown error',
+} as const;
+
+// Тексты интерфейса (пользовательские сообщения, заголовки, кнопки)
 export const UI_MESSAGES = {
-  ERROR_BOUNDARY: 'ErrorBoundary caught an error:',
-  ERROR_GENERIC: 'Failed to load characters. Please try again later.',
   LOADING: 'Loading characters...',
   NO_RESULTS: 'No characters found. Try another name.',
-  TEST_ERROR: 'This is special error from test button',
-  UNKNOWN_ERROR: 'Unknown error',
   FALLBACK_TITLE: 'Something went wrong',
   TRY_AGAIN: 'Try again',
   SEARCH_PLACEHOLDER: 'Search characters...',

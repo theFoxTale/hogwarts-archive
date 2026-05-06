@@ -1,5 +1,5 @@
 import { Component, type ReactNode } from 'react';
-import { UI_MESSAGES } from '../../constants';
+import { ERROR_MESSAGES, UI_MESSAGES } from '../../constants';
 
 import './ErrorBoundary.css';
 
@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error(UI_MESSAGES.ERROR_BOUNDARY, error, errorInfo);
+    console.error(ERROR_MESSAGES.BOUNDARY, error, errorInfo);
   }
 
   handleReset = () => {
@@ -42,7 +42,7 @@ export class ErrorBoundary extends Component<
       return (
         <div className="error-fallback">
           <h2>{UI_MESSAGES.FALLBACK_TITLE}</h2>
-          <p>{this.state.errorMessage || UI_MESSAGES.UNKNOWN_ERROR}</p>
+          <p>{this.state.errorMessage || ERROR_MESSAGES.UNKNOWN}</p>
           <button onClick={this.handleReset}>{UI_MESSAGES.TRY_AGAIN}</button>
         </div>
       );

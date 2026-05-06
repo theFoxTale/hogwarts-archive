@@ -6,7 +6,7 @@ import {
   ErrorBoundary,
   AppHeader,
 } from './components';
-import { LOADING_DELAY, LOCAL_STORAGE_KEYS, UI_MESSAGES } from './constants';
+import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from './constants';
 
 import { searchCharacters } from './api';
 import type { Character, PaginationInfo } from './api';
@@ -66,12 +66,11 @@ export class App extends Component<object, AppState> {
         isLoading: false,
       });
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
       this.setState({
-        error: UI_MESSAGES.ERROR_GENERIC,
+        error: errorMessage,
         isLoading: false,
       });
-
-      console.error(err);
     }
   };
 

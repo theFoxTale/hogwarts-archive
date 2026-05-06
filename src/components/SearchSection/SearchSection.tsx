@@ -34,6 +34,11 @@ export class SearchSection extends Component<
     this.setState({ inputValue: e.target.value });
   };
 
+  handleClear = () => {
+    this.setState({ inputValue: '' });
+    this.props.onSearch('');
+  };
+
   handleSearch = () => {
     const trimmedSearchText = this.state.inputValue.trim();
     this.props.onSearch(trimmedSearchText);
@@ -46,16 +51,30 @@ export class SearchSection extends Component<
   };
 
   render() {
+    const { inputValue } = this.state;
+
     return (
       <div className="search-section">
-        <input
-          type="text"
-          placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
-          className="search-input"
-          value={this.state.inputValue}
-          onChange={this.handleInputChange}
-          onKeyDown={this.handleKeyPress}
-        />
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
+            className="search-input"
+            value={inputValue}
+            onChange={this.handleInputChange}
+            onKeyDown={this.handleKeyPress}
+          />
+          {inputValue && (
+            <button
+              className="clear-button"
+              onClick={this.handleClear}
+              aria-label="Clear search"
+              type="button"
+            >
+              ✖
+            </button>
+          )}
+        </div>
         <button className="search-button" onClick={this.handleSearch}>
           Search
         </button>

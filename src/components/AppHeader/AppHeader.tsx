@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { APP_STRINGS } from '../../constants';
 
 import './AppHeader.css';
 import errorIcon from '../../assets/error.png';
@@ -11,14 +12,14 @@ export class AppHeader extends Component<AppHeaderProps> {
   render() {
     return (
       <div className="app-header">
-        <p className="app-name">Harry Potter's API Test Page</p>
+        <p className="app-name">{APP_STRINGS.APP_NAME}</p>
         <button
           onClick={this.props.onSimulateError}
           className="error-test-button"
         >
           <img
             src={errorIcon}
-            alt="Simulate Error"
+            alt={APP_STRINGS.ERROR_BUTTON_TOOLTIP}
             className="error-icon-img"
           />
         </button>

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
+import { UI_MESSAGES } from '../../constants';
 
 import './SearchSection.css';
 
@@ -49,7 +50,7 @@ export class SearchSection extends Component<
       <div className="search-section">
         <input
           type="text"
-          placeholder="Search characters..."
+          placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
           className="search-input"
           value={this.state.inputValue}
           onChange={this.handleInputChange}

@@ -6,14 +6,12 @@ import {
   ErrorBoundary,
   AppHeader,
 } from './components';
+import { LOCAL_STORAGE_KEYS, UI_MESSAGES } from './constants';
 
 import { searchCharacters } from './api';
 import type { Character, PaginationInfo } from './api';
 
 import './App.css';
-
-const LOCAL_STORAGE_SEARCH_TEXT = 'classComponentSearchText';
-const LOCAL_STORAGE_SEARCH_PAGE = 'classComponentSearchPage';
 
 interface AppState {
   searchText: string;
@@ -38,13 +36,13 @@ export class App extends Component<object, AppState> {
   }
 
   componentDidMount() {
-    const savedSearchText = localStorage.getItem(LOCAL_STORAGE_SEARCH_TEXT);
-    const savedSearchPage = localStorage.getItem(LOCAL_STORAGE_SEARCH_PAGE);
-    const pageNumber = savedSearchPage ? parseInt(savedSearchPage) : 1;
+    const savedText = localStorage.getItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT);
+    const savedPage = localStorage.getItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE);
+    const pageNumber = savedPage ? parseInt(savedPage) : 1;
 
-    if (savedSearchText) {
-      this.setState({ searchText: savedSearchText }, () => {
-        void this.fetchCharacters(savedSearchText, pageNumber);
+    if (savedText) {
+      this.setState({ searchText: savedText }, () => {
+        void this.fetchCharacters(savedText, pageNumber);
       });
     } else {
       void this.fetchCharacters('', pageNumber);
@@ -63,7 +61,7 @@ export class App extends Component<object, AppState> {
       });
     } catch (err) {
       this.setState({
-        error: 'Failed to load characters. Please try again later.',
+        error: UI_MESSAGES.ERROR_GENERIC,
         isLoading: false,
       });
 
@@ -75,8 +73,8 @@ export class App extends Component<object, AppState> {
     if (searchText === this.state.searchText) return;
 
     this.setState({ searchText: searchText });
-    localStorage.setItem(LOCAL_STORAGE_SEARCH_TEXT, searchText);
-    localStorage.setItem(LOCAL_STORAGE_SEARCH_PAGE, '1');
+    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT, searchText);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, '1');
 
     void this.fetchCharacters(searchText, 1);
   };
@@ -86,7 +84,7 @@ export class App extends Component<object, AppState> {
     const prevPage = pages?.pagination?.prev;
     if (prevPage) {
       void this.fetchCharacters(searchText, prevPage);
-      localStorage.setItem(LOCAL_STORAGE_SEARCH_PAGE, prevPage.toString());
+      localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, prevPage.toString());
     }
   };
 
@@ -95,7 +93,7 @@ export class App extends Component<object, AppState> {
     const nextPage = pages?.pagination?.next;
     if (nextPage) {
       void this.fetchCharacters(searchText, nextPage);
-      localStorage.setItem(LOCAL_STORAGE_SEARCH_PAGE, nextPage.toString());
+      localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, nextPage.toString());
     }
   };
 

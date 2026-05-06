@@ -4,9 +4,7 @@ import type {
   CharacterData,
   PaginationInfo,
 } from './types.ts';
-
-const BASE_URL = 'https://api.potterdb.com/v1/characters';
-const ITEMS_PER_PAGE = 3;
+import { API_CONFIG } from '../constants';
 
 export interface SearchResponse {
   items: Character[];
@@ -16,7 +14,7 @@ export interface SearchResponse {
 export async function searchCharacters(
   characterName: string,
   page: number = 1,
-  itemsPerPage: number = ITEMS_PER_PAGE
+  itemsPerPage: number = API_CONFIG.ITEMS_PER_PAGE
 ): Promise<SearchResponse> {
   const params = new URLSearchParams();
 
@@ -28,7 +26,7 @@ export async function searchCharacters(
   params.append('page[number]', page.toString());
   params.append('page[size]', itemsPerPage.toString());
 
-  const url = `${BASE_URL}?${params.toString()}`;
+  const url = `${API_CONFIG.BASE_URL}?${params.toString()}`;
   const response = await fetch(url);
 
   if (!response.ok) {

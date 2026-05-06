@@ -1,4 +1,6 @@
 import { Component, type ReactNode } from 'react';
+import { UI_MESSAGES } from '../../constants';
+
 import './ErrorBoundary.css';
 
 interface ErrorBoundaryProps {
@@ -25,7 +27,7 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error(UI_MESSAGES.ERROR_BOUNDARY, error, errorInfo);
   }
 
   handleReset = () => {
@@ -39,9 +41,9 @@ export class ErrorBoundary extends Component<
     if (this.state.hasError) {
       return (
         <div className="error-fallback">
-          <h2>Something went wrong</h2>
-          <p>{this.state.errorMessage || 'Unknown error'}</p>
-          <button onClick={this.handleReset}>Try again</button>
+          <h2>{UI_MESSAGES.FALLBACK_TITLE}</h2>
+          <p>{this.state.errorMessage || UI_MESSAGES.UNKNOWN_ERROR}</p>
+          <button onClick={this.handleReset}>{UI_MESSAGES.TRY_AGAIN}</button>
         </div>
       );
     }

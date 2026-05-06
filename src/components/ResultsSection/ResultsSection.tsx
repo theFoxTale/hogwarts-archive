@@ -1,9 +1,8 @@
 import { Component } from 'react';
 import type { Character } from '../../api';
+import { ANONYMOUS_IMAGE, UI_MESSAGES } from '../../constants';
 
 import './ResultsSection.css';
-
-const ANONYMOUS_IMAGE_URL = '/placeholder.jpg';
 
 interface ResultsSectionProps {
   results: Character[];
@@ -15,14 +14,14 @@ interface ResultsSectionProps {
 export class ResultsSection extends Component<ResultsSectionProps> {
   componentDidUpdate(prevProps: ResultsSectionProps) {
     if (this.props.shouldThrowError && !prevProps.shouldThrowError) {
-      throw new Error('This is special error from test button');
+      throw new Error(UI_MESSAGES.TEST_ERROR);
     }
   }
   render() {
     const { results, isLoading, error } = this.props;
 
     if (isLoading) {
-      return <div className="loading-indicator">Loading characters...</div>;
+      return <div className="loading-indicator">{UI_MESSAGES.LOADING}</div>;
     }
 
     if (error) {
@@ -30,9 +29,7 @@ export class ResultsSection extends Component<ResultsSectionProps> {
     }
 
     if (results.length === 0) {
-      return (
-        <div className="no-results">No characters found. Try another name.</div>
-      );
+      return <div className="no-results">{UI_MESSAGES.NO_RESULTS}</div>;
     }
 
     return (
@@ -40,8 +37,8 @@ export class ResultsSection extends Component<ResultsSectionProps> {
         {results.map((char, idx) => (
           <div key={idx} className="character-card">
             <img
-              src={char.image || ANONYMOUS_IMAGE_URL}
-              onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE_URL)}
+              src={char.image || ANONYMOUS_IMAGE}
+              onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
               alt={char.name}
               className="character-image"
             />

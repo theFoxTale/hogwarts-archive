@@ -4,13 +4,13 @@ import {
   ResultsSection,
   Pagination,
   ErrorBoundary,
+  AppHeader,
 } from './components';
 
 import { searchCharacters } from './api';
 import type { Character, PaginationInfo } from './api';
 
 import './App.css';
-import errorIcon from './assets/error.png';
 
 const LOCAL_STORAGE_SEARCH_TEXT = 'classComponentSearchText';
 const LOCAL_STORAGE_SEARCH_PAGE = 'classComponentSearchPage';
@@ -140,16 +140,7 @@ export class App extends Component<object, AppState> {
     return (
       <div className="app-container">
         <div className="top-controls">
-          <div className="app-header">
-            <p className="app-name">Harry Potter's API Test Page</p>
-            <button onClick={this.simulateError} className="error-test-button">
-              <img
-                src={errorIcon}
-                alt="Simulate Error"
-                className="error-icon-img"
-              />
-            </button>
-          </div>
+          <AppHeader onSimulateError={this.simulateError} />
           <SearchSection
             onSearch={this.handleSearch}
             initialSearchText={this.state.searchText}

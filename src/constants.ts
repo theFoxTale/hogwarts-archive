@@ -32,7 +32,8 @@ export const UI_MESSAGES = {
   SEARCH_PLACEHOLDER: 'Search characters...',
 } as const;
 
-export const ANONYMOUS_IMAGE = '/placeholder.jpg';
+// constants.ts
+export const ANONYMOUS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.jpg`;
 
 export const LOADING_DELAY = {
   IS_SIMULATED: true,

@@ -17,7 +17,6 @@ const LOCAL_STORAGE_SEARCH_PAGE = 'classComponentSearchPage';
 
 interface AppState {
   searchText: string;
-  currentPage: number;
   results: Character[];
   pages: PaginationInfo | null;
   isLoading: boolean;
@@ -30,7 +29,6 @@ export class App extends Component<object, AppState> {
     super(props);
     this.state = {
       searchText: '',
-      currentPage: 1,
       results: [],
       pages: null,
       isLoading: false,
@@ -58,9 +56,7 @@ export class App extends Component<object, AppState> {
 
     try {
       const data = await searchCharacters(searchText, pageNumber);
-      const currentPage = data.pages?.pagination?.current ?? pageNumber;
       this.setState({
-        currentPage: currentPage,
         results: data.items,
         pages: data.pages,
         isLoading: false,
@@ -78,32 +74,28 @@ export class App extends Component<object, AppState> {
   handleSearch = (searchText: string) => {
     if (searchText === this.state.searchText) return;
 
-    this.setState({ searchText: searchText, currentPage: 1 });
+    this.setState({ searchText: searchText });
     localStorage.setItem(LOCAL_STORAGE_SEARCH_TEXT, searchText);
     localStorage.setItem(LOCAL_STORAGE_SEARCH_PAGE, '1');
 
-    void this.fetchCharacters(searchText);
+    void this.fetchCharacters(searchText, 1);
   };
 
   navigateToPrevPage = () => {
     const { pages, searchText } = this.state;
-    if (pages?.pagination?.prev) {
-      void this.fetchCharacters(searchText, pages.pagination.prev);
-      localStorage.setItem(
-        LOCAL_STORAGE_SEARCH_PAGE,
-        pages.pagination.prev.toString()
-      );
+    const prevPage = pages?.pagination?.prev;
+    if (prevPage) {
+      void this.fetchCharacters(searchText, prevPage);
+      localStorage.setItem(LOCAL_STORAGE_SEARCH_PAGE, prevPage.toString());
     }
   };
 
   navigateToNextPage = () => {
     const { pages, searchText } = this.state;
-    if (pages?.pagination?.next) {
-      void this.fetchCharacters(searchText, pages.pagination.next);
-      localStorage.setItem(
-        LOCAL_STORAGE_SEARCH_PAGE,
-        pages.pagination.next.toString()
-      );
+    const nextPage = pages?.pagination?.next;
+    if (nextPage) {
+      void this.fetchCharacters(searchText, nextPage);
+      localStorage.setItem(LOCAL_STORAGE_SEARCH_PAGE, nextPage.toString());
     }
   };
 
@@ -112,30 +104,21 @@ export class App extends Component<object, AppState> {
   };
 
   resetError = () => {
+    const { searchText, pages } = this.state;
+    const currentPage = pages?.pagination?.current ?? 1;
     this.setState({ shouldThrowError: false }, () => {
-      const { searchText, currentPage } = this.state;
       void this.fetchCharacters(searchText, currentPage);
     });
   };
 
   render() {
-    const { pages } = this.state;
+    const { pages, isLoading, shouldThrowError, error, results, searchText } =
+      this.state;
 
-    let currentPage = 0;
-    let totalPages = 0;
-
-    let isPrevAvailable = false;
-    let isNextAvailable = false;
-
-    if (pages && pages.pagination && pages.pagination.current) {
-      currentPage = pages.pagination.current;
-      totalPages = pages.pagination.last
-        ? pages.pagination.last
-        : pages.pagination.current;
-
-      if (pages.pagination.prev) isPrevAvailable = true;
-      if (pages.pagination.next) isNextAvailable = true;
-    }
+    const currentPage = pages?.pagination?.current ?? 1;
+    const totalPages = pages?.pagination?.last ?? 1;
+    const isPrevAvailable = !!pages?.pagination?.prev;
+    const isNextAvailable = !!pages?.pagination?.next;
 
     return (
       <div className="app-container">
@@ -143,20 +126,20 @@ export class App extends Component<object, AppState> {
           <AppHeader onSimulateError={this.simulateError} />
           <SearchSection
             onSearch={this.handleSearch}
-            initialSearchText={this.state.searchText}
+            initialSearchText={searchText}
           />
         </div>
         <div className="bottom-results">
           <ErrorBoundary onReset={this.resetError}>
             <ResultsSection
-              results={this.state.results}
-              isLoading={this.state.isLoading}
-              error={this.state.error}
-              shouldThrowError={this.state.shouldThrowError}
+              results={results}
+              isLoading={isLoading}
+              error={error}
+              shouldThrowError={shouldThrowError}
             />
           </ErrorBoundary>
         </div>
-        {totalPages > 1 && !this.state.shouldThrowError && (
+        {totalPages > 1 && !shouldThrowError && (
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

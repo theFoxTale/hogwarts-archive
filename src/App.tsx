@@ -6,7 +6,7 @@ import {
   ErrorBoundary,
   AppHeader,
 } from './components';
-import { LOCAL_STORAGE_KEYS, UI_MESSAGES } from './constants';
+import { LOADING_DELAY, LOCAL_STORAGE_KEYS, UI_MESSAGES } from './constants';
 
 import { searchCharacters } from './api';
 import type { Character, PaginationInfo } from './api';
@@ -51,6 +51,12 @@ export class App extends Component<object, AppState> {
 
   fetchCharacters = async (searchText: string, pageNumber: number = 1) => {
     this.setState({ isLoading: true, error: null });
+
+    if (LOADING_DELAY.IS_SIMULATED) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, LOADING_DELAY.TIME_MS)
+      );
+    }
 
     try {
       const data = await searchCharacters(searchText, pageNumber);

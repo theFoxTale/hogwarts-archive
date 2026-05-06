@@ -26,3 +26,8 @@ export const UI_MESSAGES = {
 } as const;
 
 export const ANONYMOUS_IMAGE = '/placeholder.jpg';
+
+export const LOADING_DELAY = {
+  IS_SIMULATED: true,
+  TIME_MS: 300,
+} as const;

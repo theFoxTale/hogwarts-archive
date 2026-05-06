@@ -19,6 +19,13 @@
 | `npm run lint`    | Запуск ESLint для всех `.ts` / `.tsx` файлов            |
 | `npm run format`  | Автоматическое форматирование всего кода через Prettier |
 
+## Тестовое API
+
+В проекте используется публичное тестовое API potterdb
+
+- Ссылка на тестовый запрос персонажа - [тык](https://api.potterdb.com/v1/characters/6ce92f2b-2bca-49e6-a696-ddde6f555066)
+- Ссылка на тестовый запрос всех персонажей - [тык](https://api.potterdb.com/v1/characters/)
+
 ## Описание задания
 
 - [English](./docs/task-description.md)

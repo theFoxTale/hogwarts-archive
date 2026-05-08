@@ -5,6 +5,7 @@ import {
   Pagination,
   ErrorBoundary,
   AppHeader,
+  ErrorButton,
 } from './components';
 import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from './constants';
 
@@ -126,7 +127,7 @@ export class App extends Component<object, AppState> {
     return (
       <div className="app-container">
         <div className="top-controls">
-          <AppHeader onSimulateError={this.simulateError} />
+          <AppHeader />
           <SearchSection
             onSearch={this.handleSearch}
             initialSearchText={searchText}
@@ -152,6 +153,7 @@ export class App extends Component<object, AppState> {
             onNext={this.navigateToNextPage}
           />
         )}
+        <ErrorButton onSimulateError={this.simulateError} />
       </div>
     );
   }

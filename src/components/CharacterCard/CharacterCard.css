@@ -1,0 +1,36 @@
+.character-card {
+  display: flex;
+  gap: 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #fff;
+  transition: box-shadow 0.2s;
+}
+
+.character-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.character-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+}
+
+.character-info {
+  flex: 1;
+}
+
+.character-name {
+  margin: 0 0 8px 0;
+  font-size: 1.4rem;
+  color: #1e3c72;
+}
+
+.character-details p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}

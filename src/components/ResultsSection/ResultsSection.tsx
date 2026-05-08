@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import type { Character } from '../../api';
-import { ANONYMOUS_IMAGE, ERROR_MESSAGES, UI_MESSAGES } from '../../constants';
+import { CharacterCard } from '../CharacterCard/CharacterCard';
+import { UI_MESSAGES, ERROR_MESSAGES } from '../../constants';
 
 import './ResultsSection.css';
 
@@ -17,6 +18,7 @@ export class ResultsSection extends Component<ResultsSectionProps> {
       throw new Error(ERROR_MESSAGES.TEST);
     }
   }
+
   render() {
     const { results, isLoading, error } = this.props;
 
@@ -34,35 +36,8 @@ export class ResultsSection extends Component<ResultsSectionProps> {
 
     return (
       <div className="results-list">
-        {results.map((char, idx) => (
-          <div key={idx} className="character-card">
-            <img
-              src={char.image || ANONYMOUS_IMAGE}
-              onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
-              alt={char.name}
-              className="character-image"
-            />
-            <div className="character-info">
-              <h3 className="character-name">{char.name}</h3>
-              <div className="character-details">
-                {char.house && (
-                  <p>
-                    <strong>House:</strong> {char.house}
-                  </p>
-                )}
-                {char.species && (
-                  <p>
-                    <strong>Species:</strong> {char.species}
-                  </p>
-                )}
-                {char.gender && (
-                  <p>
-                    <strong>Gender:</strong> {char.gender}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
+        {results.map((character, idx) => (
+          <CharacterCard key={idx} character={character} />
         ))}
       </div>
     );

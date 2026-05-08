@@ -1,0 +1,14 @@
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.loading-indicator,
+.error-message,
+.no-results {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #555;
+}

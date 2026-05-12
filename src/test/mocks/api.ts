@@ -47,3 +47,14 @@ export const mockSearchSecondResponse = {
     },
   },
 };
+
+export const emptySearchResult = {
+  ok: true,
+  json: async () => ({
+    data: [],
+    meta: {
+      pagination: {},
+    },
+    links: {},
+  }),
+};

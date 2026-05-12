@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { ANONYMOUS_IMAGE } from '../constants';
 import { CharacterCard } from '../components';
 
@@ -56,5 +56,19 @@ describe('CharacterCard tests', () => {
     render(<CharacterCard character={withImage} />);
     const img: HTMLImageElement = screen.getByAltText('Luna Lovegood');
     expect(img.src).toBe('https://example.com/luna.jpg');
+  });
+
+  test('uses anonymous image when image loading fails', () => {
+    const characterWithBrokenImage = {
+      ...mockCharacter,
+      image: 'https://invalid.url/broken.jpg',
+    };
+    render(<CharacterCard character={characterWithBrokenImage} />);
+    const img: HTMLImageElement = screen.getByAltText('Luna Lovegood');
+
+    expect(img.src).toBe('https://invalid.url/broken.jpg');
+
+    fireEvent.error(img);
+    expect(img.src).toContain(ANONYMOUS_IMAGE);
   });
 });

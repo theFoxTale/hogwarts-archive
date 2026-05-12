@@ -16,7 +16,7 @@ vi.mock('../api/service', () => ({
   searchCharacters: vi.fn(),
 }));
 
-// отключила задержку времени для визуального отображения спиннера чтобы тесты были быстрее
+// убрала задержку времени для визуального отображения спиннера чтобы тесты были быстрее
 vi.mock('../constants', async () => {
   const actual = await vi.importActual('../constants');
   return {
@@ -35,7 +35,9 @@ describe('App Integration tests', () => {
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
 
     render(<App />);
-    expect(searchCharacters).toHaveBeenCalledWith('', 1);
+    await waitFor(() => {
+      expect(searchCharacters).toHaveBeenCalledWith('', 1);
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Harry Potter')).toBeInTheDocument();
@@ -51,7 +53,9 @@ describe('App Integration tests', () => {
 
     render(<App />);
 
-    expect(searchCharacters).toHaveBeenCalledWith('Hermione', 1);
+    await waitFor(() => {
+      expect(searchCharacters).toHaveBeenCalledWith('Hermione', 1);
+    });
     await waitFor(() => {
       expect(screen.getByText('Hermione Granger')).toBeInTheDocument();
     });
@@ -74,7 +78,9 @@ describe('App Integration tests', () => {
     });
     await userEvent.click(searchBtn);
 
-    expect(searchCharacters).toHaveBeenCalledWith('Harry', 1);
+    await waitFor(() => {
+      expect(searchCharacters).toHaveBeenCalledWith('Harry', 1);
+    });
     expect(localStorage.setItem).toHaveBeenCalledWith(
       LOCAL_STORAGE_KEYS.SEARCH_TEXT,
       'Harry'
@@ -83,6 +89,26 @@ describe('App Integration tests', () => {
       LOCAL_STORAGE_KEYS.SEARCH_PAGE,
       '1'
     );
+  });
+
+  test('restores search term and page from localStorage on mount', async () => {
+    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT, 'Hermione');
+    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, '2');
+
+    vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
+
+    render(<App />);
+    await waitFor(() => {
+      expect(searchCharacters).toHaveBeenCalledWith('Hermione', 2);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
+    });
+
+    const input: HTMLInputElement =
+      screen.getByPlaceholderText(/search characters/i);
+    expect(input.value).toBe('Hermione');
   });
 
   test('does not repeat search if term is same', async () => {
@@ -160,5 +186,61 @@ describe('App Integration tests', () => {
     await waitFor(() =>
       expect(screen.getByText('Harry Potter')).toBeInTheDocument()
     );
+  });
+
+  test('search resets page to 1 when performed after pagination', async () => {
+    vi.mocked(searchCharacters)
+      .mockResolvedValueOnce(mockSearchResponse)
+      .mockResolvedValueOnce(mockSearchSecondResponse)
+      .mockResolvedValueOnce(mockSearchResponse); // поиск после пагинации
+
+    render(<App />);
+
+    await waitFor(() =>
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
+    );
+
+    const nextButton = screen.getByRole('button', { name: /next/i });
+    await userEvent.click(nextButton);
+    await waitFor(() => expect(screen.getByText('Ron')).toBeInTheDocument());
+
+    const input = screen.getByPlaceholderText(/search characters/i);
+    await userEvent.type(input, 'Harry');
+    const searchBtn = screen.getByRole('button', {
+      name: UI_MESSAGES.SEARCH_BUTTON_TEXT,
+    });
+    await userEvent.click(searchBtn);
+
+    expect(searchCharacters).toHaveBeenLastCalledWith('Harry', 1);
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      LOCAL_STORAGE_KEYS.SEARCH_PAGE,
+      '1'
+    );
+    await waitFor(() =>
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
+    );
+  });
+
+  test('clicking floating error button triggers error boundary fallback', async () => {
+    vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
+    render(<App />);
+    await waitFor(() =>
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
+    );
+
+    const errorButton = screen.getByLabelText(/simulate error/i);
+    await userEvent.click(errorButton);
+
+    expect(screen.getByText(UI_MESSAGES.FALLBACK_TITLE)).toBeInTheDocument();
+    expect(screen.getByText(UI_MESSAGES.TRY_AGAIN)).toBeInTheDocument();
+
+    const tryAgainButton = screen.getByRole('button', {
+      name: UI_MESSAGES.TRY_AGAIN,
+    });
+    await userEvent.click(tryAgainButton);
+
+    await waitFor(() => {
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
+    });
   });
 });

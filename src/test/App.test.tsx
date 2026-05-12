@@ -2,7 +2,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 
-import { mockCharacters, mockSearchResponse } from './mocks/api';
+import {
+  mockCharacters,
+  mockSearchResponse,
+  mockSearchSecondResponse,
+} from './mocks/api';
 
 import { LOCAL_STORAGE_KEYS, UI_MESSAGES } from '../constants';
 import { searchCharacters } from '../api';
@@ -107,20 +111,9 @@ describe('App Integration tests', () => {
   });
 
   test('pagination: next page loads and saves page', async () => {
-    const firstPageResponse = mockSearchResponse;
-
-    const secondPageResponse = {
-      items: [
-        { name: 'Ron', house: null, species: null, gender: null, image: null },
-      ],
-      pages: {
-        pagination: { current: 2, next: 3, records: 10 },
-      },
-    };
-
     vi.mocked(searchCharacters)
-      .mockResolvedValueOnce(firstPageResponse)
-      .mockResolvedValueOnce(secondPageResponse);
+      .mockResolvedValueOnce(mockSearchResponse)
+      .mockResolvedValueOnce(mockSearchSecondResponse);
 
     render(<App />);
 
@@ -138,5 +131,34 @@ describe('App Integration tests', () => {
     );
 
     await waitFor(() => expect(screen.getByText('Ron')).toBeInTheDocument());
+  });
+
+  test('pagination: previous page loads and saves page', async () => {
+    vi.mocked(searchCharacters)
+      .mockResolvedValueOnce(mockSearchResponse) // первая страница при монтировании
+      .mockResolvedValueOnce(mockSearchSecondResponse) // переход на вторую
+      .mockResolvedValueOnce(mockSearchResponse); // возврат на первую
+
+    render(<App />);
+
+    await waitFor(() =>
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
+    );
+
+    const nextButton = screen.getByRole('button', { name: /next/i });
+    await userEvent.click(nextButton);
+    await waitFor(() => expect(screen.getByText('Ron')).toBeInTheDocument());
+
+    const prevButton = screen.getByRole('button', { name: /previous/i });
+    await userEvent.click(prevButton);
+
+    expect(searchCharacters).toHaveBeenLastCalledWith('', 1);
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      LOCAL_STORAGE_KEYS.SEARCH_PAGE,
+      '1'
+    );
+    await waitFor(() =>
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
+    );
   });
 });

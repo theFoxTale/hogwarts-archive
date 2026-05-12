@@ -26,3 +26,24 @@ export const mockSearchResponse = {
   items: mockCharacters,
   pages: mockPaginationInfo,
 };
+
+export const mockSearchSecondResponse = {
+  items: [
+    {
+      name: 'Ron',
+      house: null,
+      species: null,
+      gender: null,
+      image: null,
+    },
+  ],
+  pages: {
+    pagination: {
+      current: 2,
+      prev: 1,
+      next: 3,
+      records: 10,
+      last: 5,
+    },
+  },
+};

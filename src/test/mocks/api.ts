@@ -1,4 +1,4 @@
-import type { Character } from '../../api';
+import type { Character, PaginationInfo } from '../../api';
 
 export const mockCharacters: Character[] = [
   {
@@ -16,3 +16,13 @@ export const mockCharacters: Character[] = [
     image: null,
   },
 ];
+
+export const mockPaginationInfo: PaginationInfo = {
+  pagination: { current: 1, next: 2, records: 10, last: 5 },
+  links: { self: '', next: '' },
+};
+
+export const mockSearchResponse = {
+  items: mockCharacters,
+  pages: mockPaginationInfo,
+};

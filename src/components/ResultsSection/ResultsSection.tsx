@@ -14,7 +14,11 @@ interface ResultsSectionProps {
 
 export class ResultsSection extends Component<ResultsSectionProps> {
   componentDidUpdate(prevProps: ResultsSectionProps) {
-    if (this.props.shouldThrowError && !prevProps.shouldThrowError) {
+    if (
+      !this.props.isLoading &&
+      this.props.shouldThrowError &&
+      !prevProps.shouldThrowError
+    ) {
       throw new Error(ERROR_MESSAGES.TEST);
     }
   }

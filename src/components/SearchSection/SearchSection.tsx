@@ -76,7 +76,7 @@ export class SearchSection extends Component<
           )}
         </div>
         <button className="search-button" onClick={this.handleSearch}>
-          Search
+          {UI_MESSAGES.SEARCH_BUTTON_TEXT}
         </button>
       </div>
     );

@@ -7,3 +7,7 @@ echo "✅ Full lint check passed."
 echo "🔍 Running type check..."
 npm run type-check
 echo "✅ Type check passed."
+
+echo "🔍 Running unit tests..."
+npm run test
+echo "✅ All tests passed."

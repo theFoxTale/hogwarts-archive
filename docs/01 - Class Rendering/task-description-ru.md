@@ -210,7 +210,7 @@
 
 1. Создайте отдельную ветку для этого задания. Название ветки: `class-components`.
 
-2. Следуйте требованиям по настройке проекта, указанным [здесь](./project-setup.md)
+2. Следуйте требованиям по настройке проекта, указанным [здесь](project-setup.md)
 
 3. Выберите RESTful API, который поддерживает поиск и пагинацию (пагинация может быть реализована через параметры _offset_ и _limit_). Например: <https://pokeapi.co/>, для фанатов Star Wars <https://swapi.dev/api>, для фанатов Star Trek <https://stapi.co/api-documentation> (спецификацию OpenApi можно посмотреть здесь <https://editor.swagger.io/?url=https://stapi.co/api/v1/rest/common/download/stapi.yaml>), или вы можете выбрать другой API, соответствующий требованиям.
 

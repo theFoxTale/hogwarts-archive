@@ -88,9 +88,9 @@ npm run test:coverage # отчёт о покрытии (откроется в б
 
 ### Текущие показатели (на момент сдачи)
 
-| Метрика    | Значение |
-| ---------- | -------- |
-| Statements | 85.2%    |
-| Branches   | 72.5%    |
-| Functions  | 68.4%    |
-| Lines      | 85.2%    |
+- **Statements:** 100%
+- **Branches:** 84.7%
+- **Functions:** 100%
+- **Lines:** 100%
+
+![test_coverage](./docs/02%20-%20Unit%20Tests/test-coverage.png)

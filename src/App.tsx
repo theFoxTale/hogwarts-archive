@@ -120,7 +120,7 @@ export class App extends Component<object, AppState> {
       this.state;
 
     const currentPage = pages?.pagination?.current ?? 1;
-    const totalPages = pages?.pagination?.last ?? 1;
+    const totalPages = pages?.pagination?.last ?? currentPage;
     const isPrevAvailable = !!pages?.pagination?.prev;
     const isNextAvailable = !!pages?.pagination?.next;
 

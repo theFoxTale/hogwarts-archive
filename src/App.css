@@ -15,7 +15,6 @@
   margin-bottom: 30px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #f9f9f9;
 }
 
 .bottom-results {
@@ -26,7 +25,6 @@
   flex-grow: 1;
 
   padding-right: 20px;
-  background-color: #fff;
 
   overflow-y: auto;
 }

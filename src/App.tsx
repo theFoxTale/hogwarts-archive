@@ -6,6 +6,7 @@ import {
   ErrorBoundary,
   AppHeader,
   ErrorButton,
+  OrnateFrame,
 } from './components';
 import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from './constants';
 
@@ -126,13 +127,13 @@ export class App extends Component<object, AppState> {
 
     return (
       <div className="app-container">
-        <div className="top-controls glass-panel">
+        <OrnateFrame className="top-controls">
           <AppHeader />
           <SearchSection
             onSearch={this.handleSearch}
             initialSearchText={searchText}
           />
-        </div>
+        </OrnateFrame>
         <div className="bottom-results">
           <ErrorBoundary onReset={this.resetError}>
             <ResultsSection

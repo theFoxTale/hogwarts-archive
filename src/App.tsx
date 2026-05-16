@@ -126,7 +126,7 @@ export class App extends Component<object, AppState> {
 
     return (
       <div className="app-container">
-        <div className="top-controls">
+        <div className="top-controls glass-panel">
           <AppHeader />
           <SearchSection
             onSearch={this.handleSearch}

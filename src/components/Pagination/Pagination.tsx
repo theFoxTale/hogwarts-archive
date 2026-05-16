@@ -23,7 +23,7 @@ export class Pagination extends Component<PaginationProps> {
     } = this.props;
 
     return (
-      <div className="pagination">
+      <div className="pagination glass-panel">
         <button onClick={onPrev} disabled={!isPrevAvailable}>
           ← Previous
         </button>

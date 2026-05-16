@@ -1,0 +1,13 @@
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold, rgba(212, 175, 55, 0.35));
+  border-radius: var(--radius-lg, 24px);
+  box-shadow: var(--shadow-lg, 0 10px 30px -8px rgba(0, 0, 0, 0.5));
+  transition: var(--transition-normal, 0.25s ease);
+}
+
+.glass-panel:hover {
+  border-color: var(--gold-light, #f5d76e);
+  box-shadow: var(--shadow-gold, 0 0 20px rgba(212, 175, 55, 0.15));
+}

@@ -2,6 +2,8 @@ import { Component } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
 import { UI_MESSAGES } from '../../constants';
 
+import { RoundedFrame } from '../RoundedFrame/RoundedFrame';
+
 import './SearchSection.css';
 
 interface SearchSectionProps {
@@ -56,14 +58,16 @@ export class SearchSection extends Component<
     return (
       <div className="search-section">
         <div className="search-input-wrapper">
-          <input
-            type="text"
-            placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
-            className="search-input"
-            value={inputValue}
-            onChange={this.handleInputChange}
-            onKeyDown={this.handleKeyPress}
-          />
+          <RoundedFrame>
+            <input
+              type="text"
+              placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
+              className="search-input"
+              value={inputValue}
+              onChange={this.handleInputChange}
+              onKeyDown={this.handleKeyPress}
+            />
+          </RoundedFrame>
           {inputValue && (
             <button
               className="clear-button"

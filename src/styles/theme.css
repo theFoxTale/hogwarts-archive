@@ -12,7 +12,7 @@
   /* Цвета текста */
   --text-primary: #85602b;
   --text-secondary: #cfc7b0;
-  --text-muted: #9ca3af;
+  --text-muted: #a7824d;
 
   /* Рамки и тени */
   --border-gold: rgba(101, 77, 45, 0.5);
@@ -35,5 +35,5 @@
 
   /* Анимации */
   --transition-fast: 0.2s ease;
-  --transition-normal: 0.25s ease;
+  --transition-normal: 0.4s ease;
 }

@@ -1,157 +1,27 @@
-.gold-frame {
-  /* Переменные для размеров уголков */
-  --corner-size: 9px;
+.ornate-container {
   --ornate-corner-size: 60px;
-
-  /* Переменные для смещения уголков */
-  --corner-offset: 0px;
+  --ornate-line-inset: 30px;
   --ornate-corner-offset: -13px;
   --ornate-corner-offset-addition: -12px;
-
-  /* Отступ для линий относительно углов */
-  --ornate-line-inset: 30px;
-  --corner-line-inset: var(--corner-size);
-
-  position: relative;
-  transition: var(--transition-normal, 0.25s ease);
-}
-
-.gold-frame:hover {
-  box-shadow: var(--shadow-gold, 0 0 20px rgba(212, 175, 55, 0.15));
-}
-
-.gold-frame:hover .frame-line,
-.gold-frame:hover .ornate-line,
-.gold-frame:hover .corner,
-.gold-frame:hover .ornate-corner {
-  background-color: var(--border-gold-active);
-}
-
-/* Базовые стили для всех уголков */
-.corner,
-.ornate-corner {
-  position: absolute;
-  background-color: var(--border-gold);
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  opacity: 0.9;
-  pointer-events: none;
-  z-index: 3;
-  transition: background-color var(--transition-normal, 0.25s ease);
-}
-
-/* Базовые стили для всех линий рамки */
-.frame-line,
-.ornate-line {
-  position: absolute;
-  background-color: var(--border-gold);
-  transition: background-color var(--transition-normal, 0.25s ease);
-  pointer-events: none;
-}
-
-/* Рамка с круглыми вогнутыми углами */
-.corner-frame {
-  background: var(--bg-glass);
-  padding: 5px;
-}
-
-.corner {
-  width: var(--corner-size);
-  height: var(--corner-size);
-  mask-image: url('/src/assets/svg/rounded-corner.svg');
-  -webkit-mask-image: url('/src/assets/svg/rounded-corner.svg');
-}
-
-.corner-top-left {
-  top: var(--corner-offset);
-  left: var(--corner-offset);
-  transform: rotate(270deg);
-}
-
-.corner-top-right {
-  top: var(--corner-offset);
-  right: var(--corner-offset);
-}
-
-.corner-bottom-right {
-  bottom: var(--corner-offset);
-  right: var(--corner-offset);
-  transform: rotate(90deg);
-}
-
-.corner-bottom-left {
-  bottom: var(--corner-offset);
-  left: var(--corner-offset);
-  transform: rotate(180deg);
-}
-
-/* --- Линии рамки для внешнего блока --- */
-.frame-line {
-  z-index: 1;
-}
-
-.frame-line-top {
-  top: 0;
-  left: var(--corner-line-inset);
-  right: var(--corner-line-inset);
-  height: 1px;
-}
-
-.frame-line-bottom {
-  bottom: 0;
-  left: var(--corner-line-inset);
-  right: var(--corner-line-inset);
-  height: 1px;
-}
-
-.frame-line-left {
-  left: 0;
-  top: var(--corner-line-inset);
-  bottom: var(--corner-line-inset);
-  width: 1px;
-}
-
-.frame-line-right {
-  right: 0;
-  top: var(--corner-line-inset);
-  bottom: var(--corner-line-inset);
-  width: 1px;
-}
-
-/* Рамка с орнаментом */
-.ornate-frame {
-  position: relative;
-  border-radius: var(--radius-lg, 24px);
-  padding: 20px;
-}
-
-.ornate-frame-content {
-  position: relative;
-  z-index: 2;
-}
-
-/* Слой с текстурой шума */
-.ornate-frame::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/src/assets/textures/noise.jpg');
-  background-repeat: repeat;
-  opacity: 0.035;
-  pointer-events: none;
-  z-index: 1;
 }
 
 .ornate-corner {
+  position: absolute;
   width: var(--ornate-corner-size);
   height: var(--ornate-corner-size);
+  background-color: var(--border-gold);
+
   mask-image: url('/src/assets/svg/ornate-corner.svg');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+
   -webkit-mask-image: url('/src/assets/svg/ornate-corner.svg');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 4;
 }
 
 .ornate-corner-top-left {
@@ -159,53 +29,54 @@
   left: var(--ornate-corner-offset);
   transform: rotate(270deg);
 }
-
 .ornate-corner-top-right {
   top: var(--ornate-corner-offset);
   right: var(--ornate-corner-offset-addition);
 }
-
 .ornate-corner-bottom-right {
   bottom: var(--ornate-corner-offset-addition);
   right: var(--ornate-corner-offset);
   transform: rotate(90deg);
 }
-
 .ornate-corner-bottom-left {
   bottom: var(--ornate-corner-offset);
   left: var(--ornate-corner-offset-addition);
   transform: rotate(180deg);
 }
 
-/* Линии для ornate-frame */
 .ornate-line {
-  z-index: 2;
+  position: absolute;
+  background-color: var(--border-gold);
+  pointer-events: none;
+  z-index: 3;
 }
-
 .ornate-line-top {
   top: 0;
   left: var(--ornate-line-inset);
   right: var(--ornate-line-inset);
   height: 1px;
 }
-
 .ornate-line-bottom {
   bottom: 0;
   left: var(--ornate-line-inset);
   right: var(--ornate-line-inset);
   height: 1px;
 }
-
 .ornate-line-left {
   left: 0;
   top: var(--ornate-line-inset);
   bottom: var(--ornate-line-inset);
   width: 1px;
 }
-
 .ornate-line-right {
   right: 0;
   top: var(--ornate-line-inset);
   bottom: var(--ornate-line-inset);
   width: 1px;
+}
+
+.ornate-frame-content {
+  position: relative;
+  padding: 20px;
+  z-index: 2;
 }

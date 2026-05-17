@@ -1,0 +1,99 @@
+.rounded-frame {
+  --rounded-corner-size: 9px;
+  --rounded-corner-offset: 0;
+
+  position: relative;
+  background: var(--bg-glass);
+  padding: 5px;
+
+  transition: var(--transition-normal);
+}
+
+.rounded-frame:hover {
+  box-shadow: var(--shadow-gold, 0 0 20px rgba(212, 175, 55, 0.15));
+}
+
+.rounded-frame:hover .rounded-line,
+.rounded-frame:hover .ornate-line,
+.rounded-frame:hover .rounded-corner,
+.rounded-frame:hover .ornate-corner {
+  background-color: var(--border-gold-active);
+}
+
+.rounded-corner {
+  position: absolute;
+  width: var(--rounded-corner-size);
+  height: var(--rounded-corner-size);
+  background-color: var(--border-gold);
+
+  mask-image: url('/src/assets/svg/rounded-corner.svg');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-image: url('/src/assets/svg/rounded-corner.svg');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+
+  transition: background-color var(--transition-normal);
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 3;
+}
+
+.rounded-corner-top-left {
+  top: var(--rounded-corner-offset);
+  left: var(--rounded-corner-offset);
+  transform: rotate(270deg);
+}
+.rounded-corner-top-right {
+  top: var(--rounded-corner-offset);
+  right: var(--rounded-corner-offset);
+  transform: rotate(0deg);
+}
+.rounded-corner-bottom-right {
+  bottom: var(--rounded-corner-offset);
+  right: var(--rounded-corner-offset);
+  transform: rotate(90deg);
+}
+.rounded-corner-bottom-left {
+  bottom: var(--rounded-corner-offset);
+  left: var(--rounded-corner-offset);
+  transform: rotate(180deg);
+}
+
+.rounded-line {
+  position: absolute;
+  background-color: var(--border-gold);
+  transition: background-color var(--transition-normal);
+  pointer-events: none;
+  z-index: 2;
+}
+.rounded-line-top {
+  top: 0;
+  left: var(--rounded-corner-size);
+  right: var(--rounded-corner-size);
+  height: 1px;
+}
+.rounded-line-bottom {
+  bottom: 0;
+  left: var(--rounded-corner-size);
+  right: var(--rounded-corner-size);
+  height: 1px;
+}
+.rounded-line-left {
+  left: 0;
+  top: var(--rounded-corner-size);
+  bottom: var(--rounded-corner-size);
+  width: 1px;
+}
+.rounded-line-right {
+  right: 0;
+  top: var(--rounded-corner-size);
+  bottom: var(--rounded-corner-size);
+  width: 1px;
+}
+
+.rounded-frame-content {
+  position: relative;
+  z-index: 1;
+}

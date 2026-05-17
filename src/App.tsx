@@ -127,8 +127,8 @@ export class App extends Component<object, AppState> {
 
     return (
       <div className="app-container">
+        <AppHeader />
         <OrnateFrame className="top-controls">
-          <AppHeader />
           <SearchSection
             onSearch={this.handleSearch}
             initialSearchText={searchText}

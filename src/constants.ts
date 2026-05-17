@@ -1,5 +1,8 @@
 export const APP_STRINGS = {
-  APP_NAME: "Harry Potter's API Test Page",
+  APP_NAME: 'Hogwarts Archive',
+  APP_DESCRIPTION: 'Search the wizarding world',
+  APP_EMBLEM_TOOLTIP: 'Hogwarts Emblem',
+  APP_ORNAMENT_TOOLTIP: 'Header Ornament',
   ERROR_BUTTON_TOOLTIP: 'Simulate Error',
 } as const;
 

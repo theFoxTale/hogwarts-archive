@@ -1,14 +1,46 @@
 .app-header {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 6px;
   padding: 12px 0;
 }
 
-.app-name {
-  margin: 0 0 8px 0;
-  text-align: center;
+.app-header__emblem {
+  height: 80px;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.app-header__title {
+  font-family: var(--font-serif), serif;
   font-size: 1.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.app-header__description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-header__description-text {
+  font-family: var(--font-body), serif;
+  font-size: 0.8rem;
   font-weight: bold;
-  color: #005fa3;
+}
+
+.app-header__ornament {
+  height: 15px;
+  display: block;
+  opacity: 0.5;
+  user-select: none;
+  pointer-events: none;
+}
+
+.app-header__ornament--mirrored {
+  transform: scaleX(-1);
 }

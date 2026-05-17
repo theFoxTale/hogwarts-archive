@@ -22,7 +22,6 @@
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
 }
 
 .clear-button {

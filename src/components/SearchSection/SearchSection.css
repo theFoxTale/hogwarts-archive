@@ -39,11 +39,6 @@
 
 .highlighted-frame:hover {
   box-shadow: var(--shadow-gold);
-
-  .rounded-line,
-  .rounded-corner {
-    background-color: var(--border-gold-active);
-  }
 }
 
 /* Кнопка для очистки поля ввода */
@@ -75,17 +70,6 @@
 
   display: inline-flex;
 
-  background: linear-gradient(
-    to bottom,
-    rgba(58, 40, 21, 0.96),
-    rgba(26, 16, 10, 0.98)
-  );
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 220, 140, 0.08),
-    inset 0 -4px 12px rgba(0, 0, 0, 0.45),
-    0 6px 18px rgba(0, 0, 0, 0.55);
-
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -106,7 +90,7 @@
   filter: brightness(1.2) drop-shadow(0 0 6px rgba(255, 210, 120, 0.35));
 }
 
-.search-button-frame::before {
+.search-button-frame::after {
   content: '';
 
   position: absolute;
@@ -119,13 +103,45 @@
     transparent 80%
   );
 
-  opacity: 0;
+  opacity: 0.3;
 
   transition: opacity 0.4s ease;
 }
 
-.search-button-frame:hover::before {
+.search-button-frame:hover::after {
   opacity: 1;
+}
+
+.search-button-frame::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(58, 40, 21, 0.96),
+    rgba(26, 16, 10, 0.98)
+  );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 140, 0.08),
+    inset 0 -4px 12px rgba(0, 0, 0, 0.45);
+
+  clip-path: polygon(
+    10px 0,
+    calc(100% - 10px) 0,
+
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+
+    0 calc(100% - 10px),
+    0 10px
+  );
+
+  z-index: 0;
 }
 
 .search-button {
@@ -144,6 +160,7 @@
 
   color: #f4d28c;
 
+  overflow: hidden;
   background: transparent;
   border: none;
 

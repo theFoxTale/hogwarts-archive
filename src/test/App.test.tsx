@@ -60,8 +60,9 @@ describe('App Integration tests', () => {
       expect(screen.getByText('Hermione Granger')).toBeInTheDocument();
     });
 
-    const input: HTMLInputElement =
-      screen.getByPlaceholderText(/search characters/i);
+    const input: HTMLInputElement = screen.getByPlaceholderText(
+      UI_MESSAGES.SEARCH_PLACEHOLDER
+    );
     expect(input.value).toBe('Hermione');
   });
 
@@ -70,7 +71,7 @@ describe('App Integration tests', () => {
 
     render(<App />);
 
-    const input = screen.getByPlaceholderText(/search characters/i);
+    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
     await userEvent.type(input, 'Harry');
 
     const searchBtn = screen.getByRole('button', {
@@ -106,8 +107,9 @@ describe('App Integration tests', () => {
       expect(screen.getByText('Harry Potter')).toBeInTheDocument();
     });
 
-    const input: HTMLInputElement =
-      screen.getByPlaceholderText(/search characters/i);
+    const input: HTMLInputElement = screen.getByPlaceholderText(
+      UI_MESSAGES.SEARCH_PLACEHOLDER
+    );
     expect(input.value).toBe('Hermione');
   });
 
@@ -204,7 +206,7 @@ describe('App Integration tests', () => {
     await userEvent.click(nextButton);
     await waitFor(() => expect(screen.getByText('Ron')).toBeInTheDocument());
 
-    const input = screen.getByPlaceholderText(/search characters/i);
+    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
     await userEvent.type(input, 'Harry');
     const searchBtn = screen.getByRole('button', {
       name: UI_MESSAGES.SEARCH_BUTTON_TEXT,

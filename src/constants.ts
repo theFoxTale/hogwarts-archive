@@ -1,6 +1,6 @@
 export const APP_STRINGS = {
   APP_NAME: 'Hogwarts Archive',
-  APP_DESCRIPTION: 'Search the wizarding world',
+  APP_DESCRIPTION: 'Ministry of Magic • Restricted Section',
   APP_EMBLEM_TOOLTIP: 'Hogwarts Emblem',
   APP_ORNAMENT_TOOLTIP: 'Header Ornament',
   ERROR_BUTTON_TOOLTIP: 'Simulate Error',
@@ -32,7 +32,8 @@ export const UI_MESSAGES = {
   NO_RESULTS: 'No characters found. Try another name.',
   FALLBACK_TITLE: 'Something went wrong',
   TRY_AGAIN: 'Try again',
-  SEARCH_PLACEHOLDER: 'Search characters...',
+  SEARCH_HEADER: 'Search witches, wizards, and magical beings',
+  SEARCH_PLACEHOLDER: 'Find magical records...',
   SEARCH_BUTTON_TEXT: 'Accio',
 } as const;
 

@@ -1,12 +1,24 @@
 .search-section {
   display: flex;
+  flex-direction: column;
   gap: 12px;
-  justify-content: center;
 }
 
 .search-input-wrapper {
   position: relative;
   flex: 1;
+}
+
+.search-section-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.search-section-title {
+  font-family: var(--font-body), serif;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
 /* Поле ввода */

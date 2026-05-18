@@ -58,34 +58,39 @@ export class SearchSection extends Component<
 
     return (
       <div className="search-section">
-        <div className="search-input-wrapper">
-          <RoundedFrame className="search-input-frame highlighted-frame">
-            <input
-              type="text"
-              placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
-              className="search-input"
-              value={inputValue}
-              onChange={this.handleInputChange}
-              onKeyDown={this.handleKeyPress}
-            />
-          </RoundedFrame>
-          {inputValue && (
-            <button
-              className="clear-button"
-              onClick={this.handleClear}
-              aria-label="Clear search"
-              type="button"
-            >
-              ✖
+        <p className="search-section-title magic-title">
+          {UI_MESSAGES.SEARCH_HEADER}
+        </p>
+        <div className="search-section-container">
+          <div className="search-input-wrapper">
+            <RoundedFrame className="search-input-frame highlighted-frame">
+              <input
+                type="text"
+                placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
+                className="search-input"
+                value={inputValue}
+                onChange={this.handleInputChange}
+                onKeyDown={this.handleKeyPress}
+              />
+            </RoundedFrame>
+            {inputValue && (
+              <button
+                className="clear-button"
+                onClick={this.handleClear}
+                aria-label="Clear search"
+                type="button"
+              >
+                ✖
+              </button>
+            )}
+          </div>
+          <RoundedFrame className="search-button-frame highlighted-frame">
+            <button className="search-button" onClick={this.handleSearch}>
+              <img src={wandIcon} alt="" />
+              {UI_MESSAGES.SEARCH_BUTTON_TEXT}
             </button>
-          )}
+          </RoundedFrame>
         </div>
-        <RoundedFrame className="search-button-frame highlighted-frame">
-          <button className="search-button" onClick={this.handleSearch}>
-            <img src={wandIcon} alt="" />
-            {UI_MESSAGES.SEARCH_BUTTON_TEXT}
-          </button>
-        </RoundedFrame>
       </div>
     );
   }

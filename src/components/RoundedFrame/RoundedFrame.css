@@ -9,17 +9,6 @@
   transition: var(--transition-normal);
 }
 
-.rounded-frame:hover {
-  box-shadow: var(--shadow-gold, 0 0 20px rgba(212, 175, 55, 0.15));
-}
-
-.rounded-frame:hover .rounded-line,
-.rounded-frame:hover .ornate-line,
-.rounded-frame:hover .rounded-corner,
-.rounded-frame:hover .ornate-corner {
-  background-color: var(--border-gold-active);
-}
-
 .rounded-corner {
   position: absolute;
   width: var(--rounded-corner-size);

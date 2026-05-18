@@ -20,6 +20,15 @@
   transition: var(--transition-fast);
 }
 
+.highlighted-frame:hover {
+  box-shadow: var(--shadow-gold);
+
+  .rounded-line,
+  .rounded-corner {
+    background-color: var(--border-gold-active);
+  }
+}
+
 .search-input:focus {
   outline: none;
 }

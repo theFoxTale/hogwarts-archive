@@ -10,6 +10,13 @@
 }
 
 /* Поле ввода */
+.search-input-frame {
+  .rounded-corner,
+  .rounded-line {
+    animation: none;
+  }
+}
+
 .search-input {
   width: 100%;
   padding: 10px 32px 10px 10px;
@@ -19,6 +26,11 @@
   border: none;
   background-color: transparent;
   transition: var(--transition-fast);
+}
+
+.search-input::placeholder {
+  font-family: var(--font-body), serif;
+  color: rgba(241, 231, 204, 0.45);
 }
 
 .search-input:focus {
@@ -92,6 +104,28 @@
 .search-button-frame:hover .rounded-line,
 .search-button-frame:hover .rounded-corner {
   filter: brightness(1.2) drop-shadow(0 0 6px rgba(255, 210, 120, 0.35));
+}
+
+.search-button-frame::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 80%
+  );
+
+  opacity: 0;
+
+  transition: opacity 0.4s ease;
+}
+
+.search-button-frame:hover::before {
+  opacity: 1;
 }
 
 .search-button {

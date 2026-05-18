@@ -3,6 +3,7 @@
 @import './styles/background.css';
 @import './styles/glassmorph.css';
 @import './styles/text.css';
+@import './styles/animations/frame-glow.css';
 
 *,
 *::before,

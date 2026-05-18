@@ -7,9 +7,11 @@
 
 .ornate-corner {
   position: absolute;
+
   width: var(--ornate-corner-size);
   height: var(--ornate-corner-size);
-  background-color: var(--border-gold);
+
+  background: linear-gradient(to bottom, #f0cf7a, #b7792b, #5a320f);
 
   mask-image: url('/src/assets/svg/ornate-corner.svg');
   mask-size: contain;
@@ -19,8 +21,19 @@
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
 
+  filter: drop-shadow(0 0 4px rgba(194, 135, 50, 0.18))
+    drop-shadow(0 0 10px rgba(122, 74, 20, 0.12));
+
+  opacity: 0.95;
+
+  animation: frameGlow 5s ease-in-out infinite;
+
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
   pointer-events: none;
-  opacity: 0.9;
   z-index: 4;
 }
 
@@ -46,10 +59,26 @@
 
 .ornate-line {
   position: absolute;
-  background-color: var(--border-gold);
+
+  background: linear-gradient(
+    to bottom,
+    rgba(240, 207, 122, 0.9),
+    rgba(183, 121, 43, 0.85),
+    rgba(90, 50, 15, 0.8)
+  );
+
+  box-shadow: 0 0 6px rgba(194, 135, 50, 0.08);
+
+  animation: frameGlow 5s ease-in-out infinite;
+
   pointer-events: none;
   z-index: 3;
+
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
 .ornate-line-top {
   top: 0;
   left: var(--ornate-line-inset);

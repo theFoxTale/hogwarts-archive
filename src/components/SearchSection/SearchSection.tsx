@@ -59,7 +59,7 @@ export class SearchSection extends Component<
     return (
       <div className="search-section">
         <div className="search-input-wrapper">
-          <RoundedFrame className="highlighted-frame">
+          <RoundedFrame className="search-input-frame highlighted-frame">
             <input
               type="text"
               placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}

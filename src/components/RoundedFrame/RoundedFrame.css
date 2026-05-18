@@ -11,9 +11,13 @@
 
 .rounded-corner {
   position: absolute;
+
   width: var(--rounded-corner-size);
   height: var(--rounded-corner-size);
-  background-color: var(--border-gold);
+
+  background: linear-gradient(to bottom, #f5d487, #c28732, #5c330d);
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.18));
+  opacity: 0.95;
 
   mask-image: url('/src/assets/svg/rounded-corner.svg');
   mask-size: contain;
@@ -23,9 +27,11 @@
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
 
-  transition: background-color var(--transition-normal);
+  animation: frameGlow 5s ease-in-out infinite;
+
+  transition: all 0.3s ease;
+
   pointer-events: none;
-  opacity: 0.9;
   z-index: 3;
 }
 
@@ -52,11 +58,19 @@
 
 .rounded-line {
   position: absolute;
-  background-color: var(--border-gold);
-  transition: background-color var(--transition-normal);
+
+  background: linear-gradient(to bottom, #f2d27a, #b7792b, #5f340d);
+
+  opacity: 0.9;
+
+  animation: frameGlow 5s ease-in-out infinite;
+
+  transition: all 0.3s ease;
+
   pointer-events: none;
   z-index: 2;
 }
+
 .rounded-line-top {
   top: 0;
   left: var(--rounded-corner-size);

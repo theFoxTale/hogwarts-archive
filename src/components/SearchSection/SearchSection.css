@@ -9,6 +9,7 @@
   flex: 1;
 }
 
+/* Поле ввода */
 .search-input {
   width: 100%;
   padding: 10px 32px 10px 10px;
@@ -20,6 +21,10 @@
   transition: var(--transition-fast);
 }
 
+.search-input:focus {
+  outline: none;
+}
+
 .highlighted-frame:hover {
   box-shadow: var(--shadow-gold);
 
@@ -29,10 +34,7 @@
   }
 }
 
-.search-input:focus {
-  outline: none;
-}
-
+/* Кнопка для очистки поля ввода */
 .clear-button {
   position: absolute;
   right: 12px;
@@ -55,16 +57,81 @@
   color: var(--gold-dark);
 }
 
+/* Кнопка поиска */
+.search-button-frame {
+  --rounded-corner-size: 7px;
+
+  display: inline-flex;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(58, 40, 21, 0.96),
+    rgba(26, 16, 10, 0.98)
+  );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 140, 0.08),
+    inset 0 -4px 12px rgba(0, 0, 0, 0.45),
+    0 6px 18px rgba(0, 0, 0, 0.55);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.search-button-frame:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 180, 0.15),
+    inset 0 0 18px rgba(212, 175, 55, 0.06),
+    0 0 18px rgba(212, 175, 55, 0.18),
+    0 10px 28px rgba(0, 0, 0, 0.65);
+}
+
+.search-button-frame:hover .rounded-line,
+.search-button-frame:hover .rounded-corner {
+  filter: brightness(1.2) drop-shadow(0 0 6px rgba(255, 210, 120, 0.35));
+}
+
 .search-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #0077cc;
-  color: white;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 22px;
+
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #f4d28c;
+
+  background: transparent;
   border: none;
-  border-radius: 4px;
+
   cursor: pointer;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+
+  z-index: 5;
 }
 
 .search-button:hover {
-  background-color: #005fa3;
+  transform: translateY(-1px);
+  border-color: rgba(255, 215, 120, 0.7);
+}
+
+.search-button img {
+  width: 16px;
+  height: 16px;
+
+  opacity: 0.9;
+
+  filter: drop-shadow(0 0 6px rgba(255, 210, 120, 0.3));
 }

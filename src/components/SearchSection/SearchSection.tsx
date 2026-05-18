@@ -5,6 +5,7 @@ import { UI_MESSAGES } from '../../constants';
 import { RoundedFrame } from '../RoundedFrame/RoundedFrame';
 
 import './SearchSection.css';
+import wandIcon from '../../assets/images/wand-accio.png';
 
 interface SearchSectionProps {
   onSearch: (searchText: string) => void;
@@ -79,9 +80,12 @@ export class SearchSection extends Component<
             </button>
           )}
         </div>
-        <button className="search-button" onClick={this.handleSearch}>
-          {UI_MESSAGES.SEARCH_BUTTON_TEXT}
-        </button>
+        <RoundedFrame className="search-button-frame highlighted-frame">
+          <button className="search-button" onClick={this.handleSearch}>
+            <img src={wandIcon} alt="" />
+            {UI_MESSAGES.SEARCH_BUTTON_TEXT}
+          </button>
+        </RoundedFrame>
       </div>
     );
   }

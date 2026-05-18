@@ -33,7 +33,7 @@ export const UI_MESSAGES = {
   FALLBACK_TITLE: 'Something went wrong',
   TRY_AGAIN: 'Try again',
   SEARCH_PLACEHOLDER: 'Search characters...',
-  SEARCH_BUTTON_TEXT: 'Search',
+  SEARCH_BUTTON_TEXT: 'Accio',
 } as const;
 
 // constants.ts

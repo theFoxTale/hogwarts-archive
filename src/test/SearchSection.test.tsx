@@ -14,7 +14,7 @@ describe('SearchSection tests', () => {
   test('renders input and button', () => {
     render(<SearchSection onSearch={mockOnSearch} />);
     expect(
-      screen.getByPlaceholderText(/search characters/i)
+      screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER)
     ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: UI_MESSAGES.SEARCH_BUTTON_TEXT })
@@ -29,21 +29,22 @@ describe('SearchSection tests', () => {
 
   test('displays initial search text from prop', () => {
     render(<SearchSection onSearch={mockOnSearch} initialSearchText="Harry" />);
-    const input: HTMLInputElement =
-      screen.getByPlaceholderText(/search characters/i);
+    const input: HTMLInputElement = screen.getByPlaceholderText(
+      UI_MESSAGES.SEARCH_PLACEHOLDER
+    );
     expect(input.value).toBe('Harry');
   });
 
   test('updates input value on user typing', async () => {
     render(<SearchSection onSearch={mockOnSearch} />);
-    const input = screen.getByPlaceholderText(/search characters/i);
+    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
     await userEvent.type(input, 'Ron');
     expect(input).toHaveValue('Ron');
   });
 
   test('calls onSearch with trimmed value on button click', async () => {
     render(<SearchSection onSearch={mockOnSearch} />);
-    const input = screen.getByPlaceholderText(/search characters/i);
+    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
     await userEvent.type(input, '  Hermione  ');
 
     const button = screen.getByRole('button', {
@@ -56,7 +57,7 @@ describe('SearchSection tests', () => {
 
   test('calls onSearch with trimmed value on Enter key', async () => {
     render(<SearchSection onSearch={mockOnSearch} />);
-    const input = screen.getByPlaceholderText(/search characters/i);
+    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
     await userEvent.type(input, '  Draco  {enter}');
     expect(mockOnSearch).toHaveBeenCalledWith('Draco');
   });
@@ -66,8 +67,9 @@ describe('SearchSection tests', () => {
     const clearButton = screen.getByLabelText(/clear search/i);
     await userEvent.click(clearButton);
 
-    const input: HTMLInputElement =
-      screen.getByPlaceholderText(/search characters/i);
+    const input: HTMLInputElement = screen.getByPlaceholderText(
+      UI_MESSAGES.SEARCH_PLACEHOLDER
+    );
 
     expect(input.value).toBe('');
     expect(mockOnSearch).toHaveBeenCalledWith('');
@@ -75,14 +77,14 @@ describe('SearchSection tests', () => {
 
   test('calls onSearch with empty string when input contains only spaces and Enter pressed', async () => {
     render(<SearchSection onSearch={mockOnSearch} />);
-    const input = screen.getByPlaceholderText(/search characters/i);
+    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
     await userEvent.type(input, '     {enter}');
     expect(mockOnSearch).toHaveBeenCalledWith('');
   });
 
   test('calls onSearch with empty string when input contains only spaces and button clicked', async () => {
     render(<SearchSection onSearch={mockOnSearch} />);
-    const input = screen.getByPlaceholderText(/search characters/i);
+    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
     await userEvent.type(input, '     ');
 
     const button = screen.getByRole('button', {

@@ -63,7 +63,7 @@ export class SearchSection extends Component<
         </p>
         <div className="search-section-container">
           <div className="search-input-wrapper">
-            <RoundedFrame className="search-input-frame highlighted-frame">
+            <RoundedFrame className="search-input-frame variant-input">
               <input
                 type="text"
                 placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
@@ -84,7 +84,7 @@ export class SearchSection extends Component<
               </button>
             )}
           </div>
-          <RoundedFrame className="search-button-frame highlighted-frame">
+          <RoundedFrame className="search-button-frame variant-gold">
             <button className="search-button" onClick={this.handleSearch}>
               <img src={wandIcon} alt="" />
               {UI_MESSAGES.SEARCH_BUTTON_TEXT}

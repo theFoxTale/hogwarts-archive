@@ -2,12 +2,126 @@
   --rounded-corner-size: 9px;
   --rounded-corner-offset: 0;
 
+  /* ===== Variant variables ===== */
+  --frame-bg: linear-gradient(
+    to bottom,
+    rgba(58, 40, 21, 0.96),
+    rgba(26, 16, 10, 0.98)
+  );
+
+  --frame-hover-scale: 1;
+
+  --frame-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+
+  --frame-hover-shadow:
+    0 0 18px rgba(212, 175, 55, 0.18), 0 10px 28px rgba(0, 0, 0, 0.65);
+
+  --frame-border-glow: brightness(1.2)
+    drop-shadow(0 0 6px rgba(255, 210, 120, 0.35));
+
+  --frame-inner-highlight:
+    inset 0 1px 0 rgba(255, 220, 140, 0.08),
+    inset 0 -4px 12px rgba(0, 0, 0, 0.45);
+
+  --frame-shape: polygon(
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px),
+    0 10px
+  );
+
   position: relative;
-  background: var(--bg-glass);
+
   padding: 5px;
 
-  transition: var(--transition-normal);
+  background: var(--bg-glass);
+
+  transform-origin: center;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease,
+    opacity 0.25s ease;
 }
+
+/* =========================================
+   Background Shape Layer
+========================================= */
+
+.rounded-frame::before {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: var(--frame-bg);
+
+  clip-path: var(--frame-shape);
+
+  box-shadow: var(--frame-inner-highlight);
+
+  z-index: 0;
+}
+
+/* =========================================
+   Hover Glow Layer
+========================================= */
+
+.rounded-frame::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+
+  border-radius: 4px;
+
+  box-shadow: var(--frame-hover-shadow);
+
+  transition: opacity 0.3s ease;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =========================================
+   Hover States
+========================================= */
+
+.rounded-frame:hover:not(.disabled) {
+  transform: scale(var(--frame-hover-scale));
+}
+
+.rounded-frame:hover:not(.disabled)::after {
+  opacity: 1;
+}
+
+.rounded-frame:hover:not(.disabled) .rounded-line,
+.rounded-frame:hover:not(.disabled) .rounded-corner {
+  filter: var(--frame-border-glow);
+}
+
+/* =========================================
+   Disabled State
+========================================= */
+
+.rounded-frame.disabled {
+  opacity: 0.45;
+
+  filter: saturate(0.6) brightness(0.8);
+
+  pointer-events: none;
+
+  transform: none;
+}
+
+/* =========================================
+   Corner Elements
+========================================= */
 
 .rounded-corner {
   position: absolute;
@@ -16,8 +130,10 @@
   height: var(--rounded-corner-size);
 
   background: linear-gradient(to bottom, #f5d487, #c28732, #5c330d);
-  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.18));
+
   opacity: 0.95;
+
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.18));
 
   mask-image: url('/src/assets/svg/rounded-corner.svg');
   mask-size: contain;
@@ -29,7 +145,9 @@
 
   animation: frameGlow 5s ease-in-out infinite;
 
-  transition: all 0.3s ease;
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease;
 
   pointer-events: none;
   z-index: 3;
@@ -38,23 +156,34 @@
 .rounded-corner-top-left {
   top: var(--rounded-corner-offset);
   left: var(--rounded-corner-offset);
+
   transform: rotate(270deg);
 }
+
 .rounded-corner-top-right {
   top: var(--rounded-corner-offset);
   right: var(--rounded-corner-offset);
+
   transform: rotate(0deg);
 }
+
 .rounded-corner-bottom-right {
   bottom: var(--rounded-corner-offset);
   right: var(--rounded-corner-offset);
+
   transform: rotate(90deg);
 }
+
 .rounded-corner-bottom-left {
   bottom: var(--rounded-corner-offset);
   left: var(--rounded-corner-offset);
+
   transform: rotate(180deg);
 }
+
+/* =========================================
+   Border Lines
+========================================= */
 
 .rounded-line {
   position: absolute;
@@ -65,7 +194,9 @@
 
   animation: frameGlow 5s ease-in-out infinite;
 
-  transition: all 0.3s ease;
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease;
 
   pointer-events: none;
   z-index: 2;
@@ -75,28 +206,145 @@
   top: 0;
   left: var(--rounded-corner-size);
   right: var(--rounded-corner-size);
+
   height: 1px;
 }
+
 .rounded-line-bottom {
   bottom: 0;
   left: var(--rounded-corner-size);
   right: var(--rounded-corner-size);
+
   height: 1px;
 }
+
 .rounded-line-left {
   left: 0;
   top: var(--rounded-corner-size);
   bottom: var(--rounded-corner-size);
+
   width: 1px;
 }
+
 .rounded-line-right {
   right: 0;
   top: var(--rounded-corner-size);
   bottom: var(--rounded-corner-size);
+
   width: 1px;
 }
 
+/* =========================================
+   Content Layer
+========================================= */
+
 .rounded-frame-content {
   position: relative;
-  z-index: 1;
+  z-index: 5;
+}
+
+/* =========================================
+   GOLD Variant
+========================================= */
+
+.rounded-frame.variant-gold {
+  --frame-bg: linear-gradient(
+    to bottom,
+    rgba(58, 40, 21, 0.96),
+    rgba(26, 16, 10, 0.98)
+  );
+
+  --frame-hover-shadow:
+    0 0 18px rgba(212, 175, 55, 0.18), 0 10px 28px rgba(0, 0, 0, 0.65);
+
+  --frame-border-glow: brightness(1.2)
+    drop-shadow(0 0 6px rgba(255, 210, 120, 0.35));
+
+  --frame-hover-scale: 1.05;
+}
+
+/* =========================================
+   DARK Variant
+========================================= */
+
+.rounded-frame.variant-dark {
+  --frame-bg: linear-gradient(
+    to bottom,
+    #33281f 0%,
+    #1d1813 32%,
+    #14110d 68%,
+    #0d0b09 100%
+  );
+
+  --frame-hover-shadow:
+    0 0 14px rgba(194, 135, 50, 0.08), 0 8px 18px rgba(0, 0, 0, 0.55);
+
+  --frame-border-glow: brightness(1.05)
+    drop-shadow(0 0 4px rgba(255, 210, 120, 0.18));
+
+  --frame-inner-highlight:
+    inset 0 1px 0 rgba(255, 230, 160, 0.05), inset 0 -4px 8px rgba(0, 0, 0, 0.5);
+
+  --frame-hover-scale: 1.03;
+}
+
+/* =========================================
+   CONTAINER Variant
+========================================= */
+
+.rounded-frame.variant-container {
+  background: transparent;
+}
+
+.rounded-frame.variant-container::before {
+  display: none;
+}
+
+.rounded-frame.variant-container::after {
+  display: none;
+}
+
+.rounded-frame.variant-container:hover {
+  transform: none;
+}
+
+.rounded-frame.variant-container .rounded-line,
+.rounded-frame.variant-container .rounded-corner {
+  opacity: 0.5;
+
+  filter: none;
+}
+
+/* =========================================
+   INPUT Variant
+========================================= */
+
+.rounded-frame.variant-input {
+  background: transparent;
+}
+
+.rounded-frame.variant-input .rounded-line,
+.rounded-frame.variant-input .rounded-corner {
+  opacity: 0.7;
+
+  filter: none;
+}
+
+.rounded-frame.variant-input::before {
+  display: none;
+}
+
+.rounded-frame.variant-input::after {
+  display: none;
+}
+
+.rounded-frame.variant-input:hover {
+  transform: none;
+}
+
+.rounded-frame.variant-input:hover .rounded-line,
+.rounded-frame.variant-input:hover .rounded-corner {
+  opacity: 0.9;
+
+  filter: brightness(1.15) drop-shadow(0 0 20px rgba(255, 220, 140, 0.22));
 }

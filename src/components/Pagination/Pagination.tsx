@@ -24,10 +24,10 @@ export class Pagination extends Component<PaginationProps> {
     } = this.props;
 
     return (
-      <RoundedFrame className="pagination-frame">
+      <RoundedFrame className="pagination-frame variant-container">
         <div className="pagination">
           <RoundedFrame
-            className={`pagination-button-frame ${
+            className={`pagination-button-frame variant-dark ${
               !isPrevAvailable ? 'disabled' : ''
             }`}
           >
@@ -39,7 +39,7 @@ export class Pagination extends Component<PaginationProps> {
             Page {currentPage} of {totalPages}
           </span>
           <RoundedFrame
-            className={`pagination-button-frame ${
+            className={`pagination-button-frame variant-dark ${
               !isNextAvailable ? 'disabled' : ''
             }`}
           >

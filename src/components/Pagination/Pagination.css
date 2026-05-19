@@ -1,92 +1,44 @@
 .pagination-frame {
   width: fit-content;
+
   margin: auto;
   padding: 0 40px;
-
-  .rounded-corner,
-  .rounded-line {
-    opacity: 0.3;
-  }
 }
+
+/* =========================================
+   Pagination Layout
+========================================= */
 
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 32px;
+
   padding: 12px 0;
 }
+
+/* =========================================
+   Pagination Button Frame
+========================================= */
 
 .pagination-button-frame {
   --rounded-corner-size: 7px;
 
   display: inline-flex;
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
 }
 
-.pagination-button-frame::before {
-  content: '';
-
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    to bottom,
-    #33281f 0%,
-    #1d1813 32%,
-    #14110d 68%,
-    #0d0b09 100%
-  );
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 230, 160, 0.06),
-    inset 0 -4px 8px rgba(0, 0, 0, 0.45),
-    0 6px 14px rgba(0, 0, 0, 0.45);
-
-  clip-path: polygon(
-    10px 0,
-    calc(100% - 10px) 0,
-
-    100% 10px,
-    100% calc(100% - 10px),
-    calc(100% - 10px) 100%,
-    10px 100%,
-
-    0 calc(100% - 10px),
-    0 10px
-  );
-
-  z-index: 0;
+.pagination-button-frame:hover:not(.disabled)::after {
+  opacity: 0.65;
 }
 
-.pagination-button-frame:hover:not(.disabled) {
-  transform: translateY(-1px);
-
-  background: linear-gradient(to bottom, #3f3124 0%, #241c15 42%, #17120e 100%);
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 240, 190, 0.1),
-    0 0 16px rgba(194, 135, 50, 0.14),
-    0 10px 22px rgba(0, 0, 0, 0.65);
-}
-
-.pagination-button-frame.disabled {
-  opacity: 0.45;
-
-  filter: saturate(0.6) brightness(0.8);
-
-  transform: none;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.02),
-    0 4px 10px rgba(0, 0, 0, 0.35);
-}
+/* =========================================
+   Pagination Button
+========================================= */
 
 .pagination button {
   position: relative;
+
   padding: 8px 16px;
 
   font-family: var(--font-serif), serif;
@@ -96,16 +48,21 @@
 
   color: #f4d28c;
 
-  overflow: hidden;
   background: transparent;
   border: none;
 
+  overflow: hidden;
   cursor: pointer;
-  transition: color 0.25s ease;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+
+  z-index: 5;
 }
 
 .pagination button:hover:not(:disabled) {
-  border-color: rgba(255, 215, 120, 0.7);
+  color: #ffe2a8;
 }
 
 .pagination button:disabled {
@@ -113,8 +70,27 @@
   cursor: not-allowed;
 }
 
+/* =========================================
+   Page Info
+========================================= */
+
 .page-info-title {
   font-family: var(--font-body), serif;
   font-size: 0.8rem;
   font-weight: bold;
+
+  color: var(--text-secondary);
+}
+
+/* =========================================
+   Pagination Outer Frame
+========================================= */
+
+.pagination-frame .rounded-line,
+.pagination-frame .rounded-corner {
+  opacity: 0.2;
+}
+
+.pagination-frame .rounded-corner {
+  filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.12));
 }

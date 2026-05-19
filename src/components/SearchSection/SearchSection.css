@@ -165,8 +165,9 @@
 
   padding: 10px 22px;
 
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-serif), serif;
   font-size: 15px;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 

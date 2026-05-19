@@ -35,7 +35,7 @@ export class Pagination extends Component<PaginationProps> {
               ← Previous
             </button>
           </RoundedFrame>
-          <span className="page-info-title magic-title">
+          <span className="page-info-title magic-subtitle">
             Page {currentPage} of {totalPages}
           </span>
           <RoundedFrame

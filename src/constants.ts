@@ -35,6 +35,7 @@ export const UI_MESSAGES = {
   SEARCH_HEADER: 'Search witches, wizards, and magical beings',
   SEARCH_PLACEHOLDER: 'Find magical records...',
   SEARCH_BUTTON_TEXT: 'Accio',
+  NO_DETAILS: 'No records in the magical archives',
 } as const;
 
 // constants.ts
@@ -43,4 +44,13 @@ export const ANONYMOUS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.jpg`;
 export const LOADING_DELAY = {
   IS_SIMULATED: true,
   TIME_MS: 300,
+} as const;
+
+export const SEARCH_STRINGS = {
+  SEARCH_DESCRIPTION: 'Magical Archive Record',
+  SEARCH_LINE_TOOLTIP: 'Line Emblem',
+  SEARCH_PARTS_TOOLTIP: 'Part Emblem',
+  SEARCH_HOUSE: 'House',
+  SEARCH_SPECIES: 'Species',
+  SEARCH_GENDER: 'Gender',
 } as const;

@@ -22,3 +22,24 @@
     0 0 10px rgba(183, 121, 43, 0.25),
     0 0 24px rgba(122, 74, 20, 0.18);
 }
+
+.magic-subtitle {
+  letter-spacing: 0.12em;
+
+  position: relative;
+  user-select: none;
+
+  background: linear-gradient(
+    to bottom,
+    #ffe8a3 0%,
+    #e0b85c 18%,
+    #b7792b 42%,
+    #7a4a14 72%,
+    #4b2d0b 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+}

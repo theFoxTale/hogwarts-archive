@@ -5,10 +5,12 @@ import './OrnateFrame.css';
 interface OrnateFrameProps {
   children: ReactNode;
   className?: string;
+  noInnerPadding?: boolean;
 }
 
 export class OrnateFrame extends Component<OrnateFrameProps> {
   render() {
+    const { noInnerPadding = false } = this.props;
     return (
       <RoundedFrame
         className={`ornate-container ${this.props.className || ''}`}
@@ -25,7 +27,11 @@ export class OrnateFrame extends Component<OrnateFrameProps> {
         <span className="ornate-line ornate-line-left" />
         <span className="ornate-line ornate-line-right" />
 
-        <div className="ornate-frame-content">{this.props.children}</div>
+        <div
+          className={`ornate-frame-content ${noInnerPadding ? 'ornate-frame-content--no-padding' : ''}`}
+        >
+          {this.props.children}
+        </div>
       </RoundedFrame>
     );
   }

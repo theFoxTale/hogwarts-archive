@@ -58,7 +58,7 @@ export class SearchSection extends Component<
 
     return (
       <div className="search-section">
-        <p className="search-section-title magic-title">
+        <p className="search-section-title magic-subtitle">
           {UI_MESSAGES.SEARCH_HEADER}
         </p>
         <div className="search-section-container">

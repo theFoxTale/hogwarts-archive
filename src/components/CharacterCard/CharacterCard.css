@@ -1,14 +1,23 @@
 .character-card {
   display: flex;
-  gap: 20px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 16px;
-  transition: box-shadow 0.2s;
 }
 
-.character-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.character-image-container {
+  background-color: #1c1c1c;
+  padding: 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.character-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
 }
 
 .character-image {
@@ -18,17 +27,90 @@
   border-radius: 8px;
 }
 
-.character-info {
+.character-info-container {
+  position: relative;
+  overflow: hidden;
   flex: 1;
+
+  background: linear-gradient(135deg, #e6d5b8, #c8aa7a);
+  padding: 16px;
+}
+
+/* Слой с текстурой шума */
+.character-info-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/src/assets/textures/noise.jpg');
+  background-repeat: repeat;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Поднимаем контент выше текстуры */
+.character-info-container > * {
+  position: relative;
+  z-index: 1;
 }
 
 .character-name {
-  margin: 0 0 8px 0;
-  font-size: 1.4rem;
-  color: #1e3c72;
+  margin: 0 0 10px 0;
+  text-align: center;
+
+  font-family: var(--font-serif), serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+
+  color: #5a3815;
+
+  text-shadow:
+    0 1px 0 rgba(255, 248, 220, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
-.character-details p {
+.character-ornament {
+  height: 20px;
+  display: block;
+  margin: 0 auto;
+
+  opacity: 0.5;
+  user-select: none;
+  pointer-events: none;
+}
+
+.character-details-text {
   margin: 4px 0;
+  font-family: var(--font-body), serif;
   font-size: 0.95rem;
+  color: #1c1c1c;
+}
+
+.character__description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.character__description-text {
+  font-family: var(--font-body), serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.character__ornament {
+  height: 15px;
+  display: block;
+  opacity: 0.5;
+  user-select: none;
+  pointer-events: none;
+}
+
+.character__ornament--mirrored {
+  transform: scaleX(-1);
 }

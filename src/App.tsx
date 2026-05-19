@@ -16,7 +16,8 @@ import type { Character, PaginationInfo } from './api';
 import './App.css';
 
 interface AppState {
-  searchText: string;
+  inputValue: string;
+  searchQuery: string;
   results: Character[];
   pages: PaginationInfo | null;
   isLoading: boolean;
@@ -27,8 +28,10 @@ interface AppState {
 export class App extends Component<object, AppState> {
   constructor(props: object) {
     super(props);
+
     this.state = {
-      searchText: '',
+      inputValue: '',
+      searchQuery: '',
       results: [],
       pages: null,
       isLoading: false,
@@ -38,21 +41,26 @@ export class App extends Component<object, AppState> {
   }
 
   componentDidMount() {
-    const savedText = localStorage.getItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT);
-    const savedPage = localStorage.getItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE);
-    const pageNumber = savedPage ? parseInt(savedPage) : 1;
+    const savedText =
+      localStorage.getItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT) || '';
 
-    if (savedText) {
-      this.setState({ searchText: savedText }, () => {
-        void this.fetchCharacters(savedText, pageNumber);
-      });
-    } else {
-      void this.fetchCharacters('', pageNumber);
-    }
+    const savedPage = localStorage.getItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE);
+
+    const pageNumber = savedPage ? parseInt(savedPage, 10) : 1;
+
+    this.setState({
+      inputValue: savedText,
+      searchQuery: savedText,
+    });
+
+    void this.fetchCharacters(savedText, pageNumber);
   }
 
   fetchCharacters = async (searchText: string, pageNumber: number = 1) => {
-    this.setState({ isLoading: true, error: null });
+    this.setState({
+      isLoading: true,
+      error: null,
+    });
 
     if (LOADING_DELAY.IS_SIMULATED) {
       await new Promise((resolve) =>
@@ -62,6 +70,7 @@ export class App extends Component<object, AppState> {
 
     try {
       const data = await searchCharacters(searchText, pageNumber);
+
       this.setState({
         results: data.items,
         pages: data.pages,
@@ -69,6 +78,7 @@ export class App extends Component<object, AppState> {
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
+
       this.setState({
         error: errorMessage,
         isLoading: false,
@@ -77,63 +87,95 @@ export class App extends Component<object, AppState> {
   };
 
   handleSearch = (searchText: string) => {
-    if (searchText === this.state.searchText) return;
+    if (searchText === this.state.searchQuery) {
+      return;
+    }
 
-    this.setState({ searchText: searchText });
+    this.setState({
+      searchQuery: searchText,
+      inputValue: searchText,
+    });
+
     localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT, searchText);
+
     localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, '1');
 
     void this.fetchCharacters(searchText, 1);
   };
 
   navigateToPrevPage = () => {
-    const { pages, searchText } = this.state;
+    const { pages, searchQuery } = this.state;
+
     const prevPage = pages?.pagination?.prev;
+
     if (prevPage) {
-      void this.fetchCharacters(searchText, prevPage);
       localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, prevPage.toString());
+
+      void this.fetchCharacters(searchQuery, prevPage);
     }
   };
 
   navigateToNextPage = () => {
-    const { pages, searchText } = this.state;
+    const { pages, searchQuery } = this.state;
+
     const nextPage = pages?.pagination?.next;
+
     if (nextPage) {
-      void this.fetchCharacters(searchText, nextPage);
       localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, nextPage.toString());
+
+      void this.fetchCharacters(searchQuery, nextPage);
     }
   };
 
   simulateError = () => {
-    this.setState({ shouldThrowError: true });
-  };
-
-  resetError = () => {
-    const { searchText, pages } = this.state;
-    const currentPage = pages?.pagination?.current ?? 1;
-    this.setState({ shouldThrowError: false }, () => {
-      void this.fetchCharacters(searchText, currentPage);
+    this.setState({
+      shouldThrowError: true,
     });
   };
 
+  resetError = () => {
+    const { searchQuery, pages } = this.state;
+
+    const currentPage = pages?.pagination?.current ?? 1;
+
+    this.setState(
+      {
+        shouldThrowError: false,
+      },
+      () => {
+        void this.fetchCharacters(searchQuery, currentPage);
+      }
+    );
+  };
+
   render() {
-    const { pages, isLoading, shouldThrowError, error, results, searchText } =
+    const { inputValue, results, pages, isLoading, error, shouldThrowError } =
       this.state;
 
     const currentPage = pages?.pagination?.current ?? 1;
+
     const totalPages = pages?.pagination?.last ?? currentPage;
+
     const isPrevAvailable = !!pages?.pagination?.prev;
+
     const isNextAvailable = !!pages?.pagination?.next;
 
     return (
       <div className="app-container">
         <AppHeader />
+
         <OrnateFrame className="variant-container">
           <SearchSection
+            value={inputValue}
+            onChange={(newValue) =>
+              this.setState({
+                inputValue: newValue,
+              })
+            }
             onSearch={this.handleSearch}
-            initialSearchText={searchText}
           />
         </OrnateFrame>
+
         <div className="bottom-results">
           <ErrorBoundary onReset={this.resetError}>
             <ResultsSection
@@ -144,6 +186,7 @@ export class App extends Component<object, AppState> {
             />
           </ErrorBoundary>
         </div>
+
         {totalPages > 1 && !shouldThrowError && (
           <Pagination
             currentPage={currentPage}
@@ -154,6 +197,7 @@ export class App extends Component<object, AppState> {
             onNext={this.navigateToNextPage}
           />
         )}
+
         <ErrorButton onSimulateError={this.simulateError} />
       </div>
     );

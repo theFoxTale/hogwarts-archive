@@ -98,9 +98,12 @@
 }
 
 .character__description-text {
-  font-family: var(--font-body), serif;
+  font-family: var(--font-serif), serif;
   font-size: 0.8rem;
-  font-weight: bold;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  color: #1c1c1c;
 }
 
 .character__ornament {

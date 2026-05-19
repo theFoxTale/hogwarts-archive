@@ -14,7 +14,6 @@ interface CharacterCardProps {
 export class CharacterCard extends Component<CharacterCardProps> {
   render() {
     const { name, house, species, gender, image } = this.props.character;
-
     const hasDetails = !!(house || species || gender);
 
     return (
@@ -38,7 +37,7 @@ export class CharacterCard extends Component<CharacterCardProps> {
                 alt={SEARCH_STRINGS.SEARCH_PARTS_TOOLTIP}
                 className="character__ornament"
               />
-              <p className="character__description-text magic-subtitle">
+              <p className="character__description-text">
                 {SEARCH_STRINGS.SEARCH_DESCRIPTION}
               </p>
               <img
@@ -57,17 +56,20 @@ export class CharacterCard extends Component<CharacterCardProps> {
                 <>
                   {house && (
                     <p className="character-details-text">
-                      <strong>House:</strong> {house}
+                      <strong>{SEARCH_STRINGS.CARD_HOUSE_LABEL}:</strong>{' '}
+                      {house}
                     </p>
                   )}
                   {species && (
                     <p className="character-details-text">
-                      <strong>Species:</strong> {species}
+                      <strong>{SEARCH_STRINGS.CARD_SPECIES_LABEL}:</strong>{' '}
+                      {species}
                     </p>
                   )}
                   {gender && (
                     <p className="character-details-text">
-                      <strong>Gender:</strong> {gender}
+                      <strong>{SEARCH_STRINGS.CARD_GENDER_LABEL}:</strong>{' '}
+                      {gender}
                     </p>
                   )}
                 </>

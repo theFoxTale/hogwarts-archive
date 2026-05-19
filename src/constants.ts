@@ -50,7 +50,8 @@ export const SEARCH_STRINGS = {
   SEARCH_DESCRIPTION: 'Magical Archive Record',
   SEARCH_LINE_TOOLTIP: 'Line Emblem',
   SEARCH_PARTS_TOOLTIP: 'Part Emblem',
-  SEARCH_HOUSE: 'House',
-  SEARCH_SPECIES: 'Species',
-  SEARCH_GENDER: 'Gender',
+
+  CARD_HOUSE_LABEL: 'House',
+  CARD_SPECIES_LABEL: 'Species',
+  CARD_GENDER_LABEL: 'Gender',
 } as const;

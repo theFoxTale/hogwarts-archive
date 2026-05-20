@@ -1,4 +1,5 @@
-import { Component } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+
 import {
   SearchSection,
   ResultsSection,
@@ -8,198 +9,146 @@ import {
   ErrorButton,
   OrnateFrame,
 } from './components';
-import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from './constants';
 
+import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from './constants';
 import { searchCharacters } from './api';
 import type { Character, PaginationInfo } from './api';
+import { useLocalStorage } from './hooks';
 
 import './App.css';
 
-interface AppState {
-  inputValue: string;
-  searchQuery: string;
-  results: Character[];
-  pages: PaginationInfo | null;
-  isLoading: boolean;
-  error: string | null;
-  shouldThrowError: boolean;
-}
+export function App() {
+  const [searchQuery, setSearchQuery] = useLocalStorage(
+    LOCAL_STORAGE_KEYS.SEARCH_TEXT,
+    ''
+  );
 
-export class App extends Component<object, AppState> {
-  constructor(props: object) {
-    super(props);
+  const [page, setPage] = useLocalStorage(LOCAL_STORAGE_KEYS.SEARCH_PAGE, 1);
 
-    this.state = {
-      inputValue: '',
-      searchQuery: '',
-      results: [],
-      pages: null,
-      isLoading: false,
-      error: null,
-      shouldThrowError: false,
-    };
-  }
+  const [inputValue, setInputValue] = useState(searchQuery);
 
-  componentDidMount() {
-    const savedText =
-      localStorage.getItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT) || '';
+  const [results, setResults] = useState<Character[]>([]);
 
-    const savedPage = localStorage.getItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE);
+  const [pages, setPages] = useState<PaginationInfo | null>(null);
 
-    const pageNumber = savedPage ? parseInt(savedPage, 10) : 1;
+  const [isLoading, setIsLoading] = useState(true);
 
-    this.setState({
-      inputValue: savedText,
-      searchQuery: savedText,
+  const [error, setError] = useState<string | null>(null);
+
+  const [shouldThrowError, setShouldThrowError] = useState(false);
+
+  const fetchCharacters = useCallback(
+    async (searchText: string, pageNumber: number) => {
+      setIsLoading(true);
+      setError(null);
+
+      if (LOADING_DELAY.IS_SIMULATED) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, LOADING_DELAY.TIME_MS)
+        );
+      }
+
+      try {
+        const data = await searchCharacters(searchText, pageNumber);
+
+        setResults(data.items);
+        setPages(data.pages);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      void fetchCharacters(searchQuery, page);
     });
+  }, [fetchCharacters, searchQuery, page]);
 
-    void this.fetchCharacters(savedText, pageNumber);
-  }
-
-  fetchCharacters = async (searchText: string, pageNumber: number = 1) => {
-    this.setState({
-      isLoading: true,
-      error: null,
-    });
-
-    if (LOADING_DELAY.IS_SIMULATED) {
-      await new Promise((resolve) =>
-        setTimeout(resolve, LOADING_DELAY.TIME_MS)
-      );
-    }
-
-    try {
-      const data = await searchCharacters(searchText, pageNumber);
-
-      this.setState({
-        results: data.items,
-        pages: data.pages,
-        isLoading: false,
-      });
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : String(err);
-
-      this.setState({
-        error: errorMessage,
-        isLoading: false,
-      });
-    }
-  };
-
-  handleSearch = (searchText: string) => {
-    if (searchText === this.state.searchQuery) {
+  const handleSearch = (searchText: string) => {
+    if (searchText === searchQuery) {
       return;
     }
 
-    this.setState({
-      searchQuery: searchText,
-      inputValue: searchText,
-    });
-
-    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT, searchText);
-
-    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, '1');
-
-    void this.fetchCharacters(searchText, 1);
+    setSearchQuery(searchText);
+    setInputValue(searchText);
+    setPage(1);
   };
 
-  navigateToPrevPage = () => {
-    const { pages, searchQuery } = this.state;
-
+  const navigateToPrevPage = () => {
     const prevPage = pages?.pagination?.prev;
 
     if (prevPage) {
-      localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, prevPage.toString());
-
-      void this.fetchCharacters(searchQuery, prevPage);
+      setPage(prevPage);
     }
   };
 
-  navigateToNextPage = () => {
-    const { pages, searchQuery } = this.state;
-
+  const navigateToNextPage = () => {
     const nextPage = pages?.pagination?.next;
 
     if (nextPage) {
-      localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, nextPage.toString());
-
-      void this.fetchCharacters(searchQuery, nextPage);
+      setPage(nextPage);
     }
   };
 
-  simulateError = () => {
-    this.setState({
-      shouldThrowError: true,
-    });
+  const simulateError = () => {
+    setShouldThrowError(true);
   };
 
-  resetError = () => {
-    const { searchQuery, pages } = this.state;
+  const resetError = () => {
+    setShouldThrowError(false);
 
-    const currentPage = pages?.pagination?.current ?? 1;
+    const currentPage = pages?.pagination?.current ?? page;
 
-    this.setState(
-      {
-        shouldThrowError: false,
-      },
-      () => {
-        void this.fetchCharacters(searchQuery, currentPage);
-      }
-    );
+    void fetchCharacters(searchQuery, currentPage);
   };
 
-  render() {
-    const { inputValue, results, pages, isLoading, error, shouldThrowError } =
-      this.state;
+  const currentPage = pages?.pagination?.current ?? page;
 
-    const currentPage = pages?.pagination?.current ?? 1;
+  const totalPages = pages?.pagination?.last ?? currentPage;
 
-    const totalPages = pages?.pagination?.last ?? currentPage;
+  const isPrevAvailable = !!pages?.pagination?.prev;
 
-    const isPrevAvailable = !!pages?.pagination?.prev;
+  const isNextAvailable = !!pages?.pagination?.next;
 
-    const isNextAvailable = !!pages?.pagination?.next;
+  return (
+    <div className="app-container">
+      <AppHeader />
 
-    return (
-      <div className="app-container">
-        <AppHeader />
+      <OrnateFrame className="variant-container">
+        <SearchSection
+          value={inputValue}
+          onChange={setInputValue}
+          onSearch={handleSearch}
+        />
+      </OrnateFrame>
 
-        <OrnateFrame className="variant-container">
-          <SearchSection
-            value={inputValue}
-            onChange={(newValue) =>
-              this.setState({
-                inputValue: newValue,
-              })
-            }
-            onSearch={this.handleSearch}
+      <div className="bottom-results">
+        <ErrorBoundary onReset={resetError}>
+          <ResultsSection
+            results={results}
+            isLoading={isLoading}
+            error={error}
+            shouldThrowError={shouldThrowError}
           />
-        </OrnateFrame>
-
-        <div className="bottom-results">
-          <ErrorBoundary onReset={this.resetError}>
-            <ResultsSection
-              results={results}
-              isLoading={isLoading}
-              error={error}
-              shouldThrowError={shouldThrowError}
-            />
-          </ErrorBoundary>
-        </div>
-
-        {totalPages > 1 && !shouldThrowError && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            isPrevAvailable={isPrevAvailable}
-            isNextAvailable={isNextAvailable}
-            onPrev={this.navigateToPrevPage}
-            onNext={this.navigateToNextPage}
-          />
-        )}
-
-        <ErrorButton onSimulateError={this.simulateError} />
+        </ErrorBoundary>
       </div>
-    );
-  }
+
+      {totalPages > 1 && !shouldThrowError && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          isPrevAvailable={isPrevAvailable}
+          isNextAvailable={isNextAvailable}
+          onPrev={navigateToPrevPage}
+          onNext={navigateToNextPage}
+        />
+      )}
+
+      <ErrorButton onSimulateError={simulateError} />
+    </div>
+  );
 }

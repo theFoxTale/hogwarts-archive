@@ -45,7 +45,10 @@ describe('App Integration tests', () => {
   });
 
   test('uses saved search term from localStorage on mount', async () => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT, 'Hermione');
+    localStorage.setItem(
+      LOCAL_STORAGE_KEYS.SEARCH_TEXT,
+      JSON.stringify('Hermione')
+    );
     vi.mocked(searchCharacters).mockResolvedValue({
       items: [mockCharacters[1]],
       pages: null,
@@ -84,7 +87,7 @@ describe('App Integration tests', () => {
     });
     expect(localStorage.setItem).toHaveBeenCalledWith(
       LOCAL_STORAGE_KEYS.SEARCH_TEXT,
-      'Harry'
+      JSON.stringify('Harry')
     );
     expect(localStorage.setItem).toHaveBeenCalledWith(
       LOCAL_STORAGE_KEYS.SEARCH_PAGE,
@@ -93,7 +96,10 @@ describe('App Integration tests', () => {
   });
 
   test('restores search term and page from localStorage on mount', async () => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT, 'Hermione');
+    localStorage.setItem(
+      LOCAL_STORAGE_KEYS.SEARCH_TEXT,
+      JSON.stringify('Hermione')
+    );
     localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, '2');
 
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);

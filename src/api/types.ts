@@ -1,4 +1,5 @@
 export interface Character {
+  id: string;
   name: string;
   house: string | null;
   species: string | null;

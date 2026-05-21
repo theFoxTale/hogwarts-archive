@@ -1,8 +1,10 @@
+import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ANONYMOUS_IMAGE } from '../constants';
 import { CharacterCard } from '../components';
 
 const mockCharacter = {
+  id: 'luna-1',
   name: 'Luna Lovegood',
   house: 'Ravenclaw',
   species: 'Human',
@@ -10,15 +12,22 @@ const mockCharacter = {
   image: null,
 };
 
+const renderWithRouter = (ui: React.ReactElement) => {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+};
+
 describe('CharacterCard tests', () => {
   test('renders character name', () => {
-    render(<CharacterCard character={mockCharacter} />);
+    renderWithRouter(
+      <CharacterCard character={mockCharacter} currentPage={1} />
+    );
     expect(screen.getByText('Luna Lovegood')).toBeInTheDocument();
   });
 
   test('renders house, species, gender when provided', () => {
-    render(<CharacterCard character={mockCharacter} />);
-
+    renderWithRouter(
+      <CharacterCard character={mockCharacter} currentPage={1} />
+    );
     expect(screen.getByText(/House:/i)).toBeInTheDocument();
     expect(screen.getByText(/Ravenclaw/i)).toBeInTheDocument();
     expect(screen.getByText(/Species:/i)).toBeInTheDocument();
@@ -29,13 +38,16 @@ describe('CharacterCard tests', () => {
 
   test('does not render missing fields', () => {
     const partialCharacter = {
+      id: 'dobby-1',
       name: 'Dobby',
       house: null,
       species: 'Elf',
       gender: null,
       image: null,
     };
-    render(<CharacterCard character={partialCharacter} />);
+    renderWithRouter(
+      <CharacterCard character={partialCharacter} currentPage={1} />
+    );
     expect(screen.queryByText(/House:/i)).not.toBeInTheDocument();
     expect(screen.getByText(/Species:/i)).toBeInTheDocument();
     expect(screen.getByText(/Elf/i)).toBeInTheDocument();
@@ -43,7 +55,9 @@ describe('CharacterCard tests', () => {
   });
 
   test('uses anonymous image when image is null', () => {
-    render(<CharacterCard character={mockCharacter} />);
+    renderWithRouter(
+      <CharacterCard character={mockCharacter} currentPage={1} />
+    );
     const img: HTMLImageElement = screen.getByAltText('Luna Lovegood');
     expect(img.src).toContain(ANONYMOUS_IMAGE);
   });
@@ -53,7 +67,7 @@ describe('CharacterCard tests', () => {
       ...mockCharacter,
       image: 'https://example.com/luna.jpg',
     };
-    render(<CharacterCard character={withImage} />);
+    renderWithRouter(<CharacterCard character={withImage} currentPage={1} />);
     const img: HTMLImageElement = screen.getByAltText('Luna Lovegood');
     expect(img.src).toBe('https://example.com/luna.jpg');
   });
@@ -63,11 +77,11 @@ describe('CharacterCard tests', () => {
       ...mockCharacter,
       image: 'https://invalid.url/broken.jpg',
     };
-    render(<CharacterCard character={characterWithBrokenImage} />);
+    renderWithRouter(
+      <CharacterCard character={characterWithBrokenImage} currentPage={1} />
+    );
     const img: HTMLImageElement = screen.getByAltText('Luna Lovegood');
-
     expect(img.src).toBe('https://invalid.url/broken.jpg');
-
     fireEvent.error(img);
     expect(img.src).toContain(ANONYMOUS_IMAGE);
   });

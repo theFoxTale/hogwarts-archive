@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { useSearchParams, useNavigate, Outlet } from 'react-router-dom';
 
 import {
   SearchSection,
@@ -19,13 +19,18 @@ import { useLocalStorage } from '../../hooks';
 import './HomePage.css';
 
 export function HomePage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const detailsId = searchParams.get('details');
+
   const [searchQuery, setSearchQuery] = useLocalStorage(
     LOCAL_STORAGE_KEYS.SEARCH_TEXT,
     ''
   );
-
-  const [page, setPage] = useLocalStorage(LOCAL_STORAGE_KEYS.SEARCH_PAGE, 1);
   const [inputValue, setInputValue] = useState(searchQuery);
+
   const [results, setResults] = useState<Character[]>([]);
   const [pages, setPages] = useState<PaginationInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,49 +64,46 @@ export function HomePage() {
 
   useEffect(() => {
     queueMicrotask(() => {
-      void fetchCharacters(searchQuery, page);
+      void fetchCharacters(searchQuery, currentPage);
     });
-  }, [fetchCharacters, searchQuery, page]);
+  }, [fetchCharacters, searchQuery, currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('page', newPage.toString());
+    if (detailsId) {
+      newParams.set('details', detailsId);
+    } else {
+      newParams.delete('details');
+    }
+    setSearchParams(newParams, { replace: true });
+  };
 
   const handleSearch = (searchText: string) => {
-    if (searchText === searchQuery) {
-      return;
-    }
-
+    if (searchText === searchQuery) return;
     setSearchQuery(searchText);
     setInputValue(searchText);
-    setPage(1);
+
+    setSearchParams({ page: '1' });
   };
 
   const navigateToPrevPage = () => {
     const prevPage = pages?.pagination?.prev;
-
-    if (prevPage) {
-      setPage(prevPage);
-    }
+    if (prevPage) handlePageChange(prevPage);
   };
 
   const navigateToNextPage = () => {
     const nextPage = pages?.pagination?.next;
-
-    if (nextPage) {
-      setPage(nextPage);
-    }
+    if (nextPage) handlePageChange(nextPage);
   };
 
-  const simulateError = () => {
-    setShouldThrowError(true);
-  };
+  const simulateError = () => setShouldThrowError(true);
 
   const resetError = () => {
     setShouldThrowError(false);
-
-    const currentPage = pages?.pagination?.current ?? page;
-
     void fetchCharacters(searchQuery, currentPage);
   };
 
-  const currentPage = pages?.pagination?.current ?? page;
   const totalPages = pages?.pagination?.last ?? currentPage;
   const isPrevAvailable = !!pages?.pagination?.prev;
   const isNextAvailable = !!pages?.pagination?.next;
@@ -111,9 +113,21 @@ export function HomePage() {
       <AppHeader />
 
       <nav
-        style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          padding: '0 20px 10px',
+        }}
       >
-        <Link to="/about">About</Link>
+        <a
+          href="/about"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate('/about');
+          }}
+        >
+          About
+        </a>
       </nav>
 
       <OrnateFrame className="variant-container">
@@ -124,15 +138,21 @@ export function HomePage() {
         />
       </OrnateFrame>
 
-      <div className="bottom-results">
-        <ErrorBoundary onReset={resetError}>
-          <ResultsSection
-            results={results}
-            isLoading={isLoading}
-            error={error}
-            shouldThrowError={shouldThrowError}
-          />
-        </ErrorBoundary>
+      <div className="homepage-layout">
+        <div className="results-panel">
+          <ErrorBoundary onReset={resetError}>
+            <ResultsSection
+              results={results}
+              isLoading={isLoading}
+              error={error}
+              shouldThrowError={shouldThrowError}
+              currentPage={currentPage}
+            />
+          </ErrorBoundary>
+        </div>
+        <div className="details-panel">
+          <Outlet />
+        </div>
       </div>
 
       {totalPages > 1 && !shouldThrowError && (

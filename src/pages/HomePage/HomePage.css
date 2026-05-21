@@ -11,6 +11,11 @@
   font-family: sans-serif;
 }
 
+.homepage-layout {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 .bottom-results {
   width: 100%;
 

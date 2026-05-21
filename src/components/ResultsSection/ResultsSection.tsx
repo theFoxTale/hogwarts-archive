@@ -10,6 +10,7 @@ interface ResultsSectionProps {
   isLoading: boolean;
   error: string | null;
   shouldThrowError?: boolean;
+  currentPage: number;
 }
 
 export function ResultsSection({
@@ -17,6 +18,7 @@ export function ResultsSection({
   isLoading,
   error,
   shouldThrowError,
+  currentPage,
 }: ResultsSectionProps) {
   const prevShouldThrowErrorRef = useRef(shouldThrowError);
 
@@ -41,8 +43,12 @@ export function ResultsSection({
 
   return (
     <div className="results-list">
-      {results.map((character, idx) => (
-        <CharacterCard key={idx} character={character} />
+      {results.map((character) => (
+        <CharacterCard
+          key={character.id}
+          character={character}
+          currentPage={currentPage}
+        />
       ))}
     </div>
   );

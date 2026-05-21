@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 
 import { mockSearchResponse } from './mocks/api';
@@ -19,7 +20,7 @@ vi.mock('../constants', async () => {
   };
 });
 
-describe.skip('HomePage with simulated loading delay', () => {
+describe('HomePage with simulated loading delay', () => {
   beforeEach(() => {
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
   });
@@ -29,7 +30,11 @@ describe.skip('HomePage with simulated loading delay', () => {
   });
 
   test('shows loading indicator during simulated delay and hides after', async () => {
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     expect(screen.getByText(UI_MESSAGES.LOADING)).toBeInTheDocument();
 
     await waitFor(() => {

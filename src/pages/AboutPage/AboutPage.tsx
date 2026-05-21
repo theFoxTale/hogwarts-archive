@@ -6,7 +6,16 @@ export function AboutPage() {
     <div className="about-container">
       <h1>About Hogwarts Archive</h1>
       <p>This application is a test page for HarryPotter API.</p>
-      <p>Author: Annie theFoxTale</p>
+      <p>
+        Author:{' '}
+        <a
+          href="https://github.com/theFoxTale"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Annie theFoxTale
+        </a>
+      </p>
       <p>
         Course:{' '}
         <a

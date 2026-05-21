@@ -56,6 +56,7 @@ export async function searchCharacters(
     const attrs = item.attributes;
 
     return {
+      id: item.id,
       name: attrs.name || 'Unnamed',
       house: attrs.house ?? null,
       species: attrs.species ?? null,
@@ -73,4 +74,36 @@ export async function searchCharacters(
   }
 
   return { items, pages };
+}
+
+export async function getCharacterById(id: string): Promise<Character> {
+  const url = `${API_CONFIG.BASE_URL}/${id}`;
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(
+      response.status === 404 ? ERROR_MESSAGES.NOT_FOUND : ERROR_MESSAGES.HTTP
+    );
+  }
+
+  const json: { data: CharacterData } = await response.json();
+  const attrs = json.data.attributes;
+
+  return {
+    id: json.data.id,
+    name: attrs.name || 'Unnamed',
+    house: attrs.house ?? null,
+    species: attrs.species ?? null,
+    gender: attrs.gender ?? null,
+    image: attrs.image ?? null,
+
+    born: attrs.born ?? null,
+    died: attrs.died ?? null,
+    blood_status: attrs.blood_status ?? null,
+    nationality: attrs.nationality ?? null,
+    patronus: attrs.patronus ?? null,
+    wands: attrs.wands ?? null,
+    jobs: attrs.jobs ?? null,
+    alias_names: attrs.alias_names ?? undefined,
+  };
 }

@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import { RoundedFrame } from '../RoundedFrame/RoundedFrame';
+import { ActionButton, RoundedFrame } from '../../components';
 
 import './Pagination.css';
 
@@ -12,43 +11,27 @@ interface PaginationProps {
   onNext: () => void;
 }
 
-export class Pagination extends Component<PaginationProps> {
-  render() {
-    const {
-      currentPage,
-      totalPages,
-      isPrevAvailable,
-      isNextAvailable,
-      onPrev,
-      onNext,
-    } = this.props;
-
-    return (
-      <RoundedFrame className="pagination-frame variant-container">
-        <div className="pagination">
-          <RoundedFrame
-            className={`pagination-button-frame variant-dark ${
-              !isPrevAvailable ? 'disabled' : ''
-            }`}
-          >
-            <button onClick={onPrev} disabled={!isPrevAvailable}>
-              ← Previous
-            </button>
-          </RoundedFrame>
-          <span className="page-info-title magic-subtitle">
-            Page {currentPage} of {totalPages}
-          </span>
-          <RoundedFrame
-            className={`pagination-button-frame variant-dark ${
-              !isNextAvailable ? 'disabled' : ''
-            }`}
-          >
-            <button onClick={onNext} disabled={!isNextAvailable}>
-              Next →
-            </button>
-          </RoundedFrame>
-        </div>
-      </RoundedFrame>
-    );
-  }
+export function Pagination({
+  currentPage,
+  totalPages,
+  isPrevAvailable,
+  isNextAvailable,
+  onPrev,
+  onNext,
+}: PaginationProps) {
+  return (
+    <RoundedFrame className="pagination-frame variant-container">
+      <div className="pagination">
+        <ActionButton onClick={onPrev} disabled={!isPrevAvailable}>
+          ← Previous
+        </ActionButton>
+        <span className="page-info-title magic-subtitle">
+          Page {currentPage} of {totalPages}
+        </span>
+        <ActionButton onClick={onNext} disabled={!isNextAvailable}>
+          Next →
+        </ActionButton>
+      </div>
+    </RoundedFrame>
+  );
 }

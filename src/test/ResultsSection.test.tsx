@@ -1,23 +1,44 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+
 import { ERROR_MESSAGES, UI_MESSAGES } from '../constants';
 import { ResultsSection } from '../components';
 import { mockCharacters } from './mocks/api';
 
 describe('ResultsSection tests', () => {
   test('shows loading indicator when isLoading is true', () => {
-    render(<ResultsSection results={[]} isLoading={true} error={null} />);
+    render(
+      <ResultsSection
+        results={[]}
+        isLoading={true}
+        error={null}
+        currentPage={1}
+      />
+    );
     expect(screen.getByText(UI_MESSAGES.LOADING)).toBeInTheDocument();
   });
 
   test('shows error message when error prop is provided', () => {
     render(
-      <ResultsSection results={[]} isLoading={false} error="Network error" />
+      <ResultsSection
+        results={[]}
+        isLoading={false}
+        error="Network error"
+        currentPage={1}
+      />
     );
     expect(screen.getByText('Network error')).toBeInTheDocument();
   });
 
   test('does not show error or no-results messages when loading', () => {
-    render(<ResultsSection results={[]} isLoading={true} error="Some error" />);
+    render(
+      <ResultsSection
+        results={[]}
+        isLoading={true}
+        error="Some error"
+        currentPage={1}
+      />
+    );
 
     expect(screen.getByText(UI_MESSAGES.LOADING)).toBeInTheDocument();
     expect(screen.queryByText('Some error')).not.toBeInTheDocument();
@@ -25,13 +46,27 @@ describe('ResultsSection tests', () => {
   });
 
   test('shows no results message when results array is empty', () => {
-    render(<ResultsSection results={[]} isLoading={false} error={null} />);
+    render(
+      <ResultsSection
+        results={[]}
+        isLoading={false}
+        error={null}
+        currentPage={1}
+      />
+    );
     expect(screen.getByText(UI_MESSAGES.NO_RESULTS)).toBeInTheDocument();
   });
 
   test('renders list of characters when results are provided', () => {
     render(
-      <ResultsSection results={mockCharacters} isLoading={false} error={null} />
+      <MemoryRouter>
+        <ResultsSection
+          results={mockCharacters}
+          isLoading={false}
+          error={null}
+          currentPage={1}
+        />
+      </MemoryRouter>
     );
     expect(screen.getByText('Harry Potter')).toBeInTheDocument();
     expect(screen.getByText('Hermione Granger')).toBeInTheDocument();
@@ -47,6 +82,7 @@ describe('ResultsSection tests', () => {
           isLoading={false}
           error={null}
           shouldThrowError={true}
+          currentPage={1}
         />
       );
     }).not.toThrow();
@@ -63,6 +99,7 @@ describe('ResultsSection tests', () => {
         isLoading={false}
         error={null}
         shouldThrowError={false}
+        currentPage={1}
       />
     );
 
@@ -73,6 +110,7 @@ describe('ResultsSection tests', () => {
           isLoading={false}
           error={null}
           shouldThrowError={true}
+          currentPage={1}
         />
       );
     }).toThrow(ERROR_MESSAGES.TEST);
@@ -89,6 +127,7 @@ describe('ResultsSection tests', () => {
         isLoading={false}
         error={null}
         shouldThrowError={true}
+        currentPage={1}
       />
     );
 
@@ -99,6 +138,7 @@ describe('ResultsSection tests', () => {
           isLoading={false}
           error={null}
           shouldThrowError={true}
+          currentPage={1}
         />
       );
     }).not.toThrow();
@@ -115,6 +155,7 @@ describe('ResultsSection tests', () => {
         isLoading={true}
         error={null}
         shouldThrowError={false}
+        currentPage={1}
       />
     );
 
@@ -125,6 +166,7 @@ describe('ResultsSection tests', () => {
           isLoading={true}
           error={null}
           shouldThrowError={true}
+          currentPage={1}
         />
       );
     }).not.toThrow();

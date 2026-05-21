@@ -45,7 +45,7 @@ describe('searchCharacters', () => {
     const mockApiResponse = {
       data: [
         {
-          id: '1',
+          id: 'harry-1',
           type: 'character',
           attributes: {
             name: 'Harry Potter',
@@ -79,6 +79,7 @@ describe('searchCharacters', () => {
 
     expect(result.items).toHaveLength(1);
     expect(result.items[0]).toEqual({
+      id: 'harry-1',
       name: 'Harry Potter',
       house: 'Gryffindor',
       species: 'Human',

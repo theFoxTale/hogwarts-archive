@@ -1,0 +1,8 @@
+.not-found {
+  text-align: center;
+  padding: 80px 20px;
+}
+.not-found h1 {
+  font-size: 72px;
+  margin-bottom: 20px;
+}

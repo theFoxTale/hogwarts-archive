@@ -2,6 +2,7 @@ import type { Character, PaginationInfo } from '../../api';
 
 export const mockCharacters: Character[] = [
   {
+    id: 'harry-1',
     name: 'Harry Potter',
     house: 'Gryffindor',
     species: 'Human',
@@ -9,6 +10,7 @@ export const mockCharacters: Character[] = [
     image: null,
   },
   {
+    id: 'hermione-1',
     name: 'Hermione Granger',
     house: 'Gryffindor',
     species: 'Human',
@@ -30,6 +32,7 @@ export const mockSearchResponse = {
 export const mockSearchSecondResponse = {
   items: [
     {
+      id: 'ron-1',
       name: 'Ron',
       house: null,
       species: null,

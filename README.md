@@ -74,6 +74,7 @@ GET https://api.potterdb.com/v1/characters?filter[name_cont]=Harry&page[number]=
 
 - [English](./docs/03-%20Hooks%20and%20routing/functional-routing.md)
 - [Русский](./docs/03-%20Hooks%20and%20routing/functional-routing-ru.md)
+- [Результат выполнения](./docs/03-%20Hooks%20and%20routing/results.md)
 
 ## Тестирование
 

@@ -1,4 +1,4 @@
-import { RoundedFrame } from '../RoundedFrame/RoundedFrame';
+import { ActionButton, RoundedFrame } from '../../components';
 
 import './Pagination.css';
 
@@ -22,27 +22,15 @@ export function Pagination({
   return (
     <RoundedFrame className="pagination-frame variant-container">
       <div className="pagination">
-        <RoundedFrame
-          className={`pagination-button-frame variant-dark ${
-            !isPrevAvailable ? 'disabled' : ''
-          }`}
-        >
-          <button onClick={onPrev} disabled={!isPrevAvailable}>
-            ← Previous
-          </button>
-        </RoundedFrame>
+        <ActionButton onClick={onPrev} disabled={!isPrevAvailable}>
+          ← Previous
+        </ActionButton>
         <span className="page-info-title magic-subtitle">
           Page {currentPage} of {totalPages}
         </span>
-        <RoundedFrame
-          className={`pagination-button-frame variant-dark ${
-            !isNextAvailable ? 'disabled' : ''
-          }`}
-        >
-          <button onClick={onNext} disabled={!isNextAvailable}>
-            Next →
-          </button>
-        </RoundedFrame>
+        <ActionButton onClick={onNext} disabled={!isNextAvailable}>
+          Next →
+        </ActionButton>
       </div>
     </RoundedFrame>
   );

@@ -12,6 +12,15 @@ const mockCharacter = {
   image: null,
 };
 
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
 const renderWithRouter = (ui: React.ReactElement) => {
   return render(<MemoryRouter>{ui}</MemoryRouter>);
 };
@@ -84,5 +93,14 @@ describe('CharacterCard tests', () => {
     expect(img.src).toBe('https://invalid.url/broken.jpg');
     fireEvent.error(img);
     expect(img.src).toContain(ANONYMOUS_IMAGE);
+  });
+
+  test('navigates to details page with current page when view details button is clicked', () => {
+    renderWithRouter(
+      <CharacterCard character={mockCharacter} currentPage={3} />
+    );
+    const button = screen.getByText('View Details');
+    fireEvent.click(button);
+    expect(mockNavigate).toHaveBeenCalledWith('/details/luna-1?page=3');
   });
 });

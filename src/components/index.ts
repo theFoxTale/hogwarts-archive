@@ -9,5 +9,7 @@ export { CharacterDetails } from './CharacterDetails/CharacterDetails';
 export { RoundedFrame } from './RoundedFrame/RoundedFrame';
 export { OrnateFrame } from './OrnateFrame/OrnateFrame';
 
+export { ActionButton } from './ActionButton/ActionButton';
+
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 export { ErrorButton } from './ErrorButton/ErrorButton';

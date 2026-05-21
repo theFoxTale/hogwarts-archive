@@ -5,6 +5,16 @@ export interface Character {
   species: string | null;
   gender: string | null;
   image: string | null;
+
+  // Дополнительные поля для детального просмотра
+  born?: string | null;
+  died?: string | null;
+  blood_status?: string | null;
+  nationality?: string | null;
+  patronus?: string | null;
+  wands?: string[] | null;
+  jobs?: string[] | null;
+  alias_names?: string[];
 }
 
 export interface CharacterData {

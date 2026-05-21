@@ -51,17 +51,81 @@ export function CharacterDetails() {
           src={character.image || ANONYMOUS_IMAGE}
           onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
           alt={character.name}
+          className="details-image"
         />
-        <h2>{character.name}</h2>
-        <p>
-          <strong>House:</strong> {character.house || 'Unknown'}
-        </p>
-        <p>
-          <strong>Species:</strong> {character.species || 'Unknown'}
-        </p>
-        <p>
-          <strong>Gender:</strong> {character.gender || 'Unknown'}
-        </p>
+        <h2 className="details-title magic-title">{character.name}</h2>
+
+        <div className="details-section">
+          <h3 className="magic-subtitle">Basic Info</h3>
+          <p>
+            <strong>House:</strong> {character.house || 'Unknown'}
+          </p>
+          <p>
+            <strong>Species:</strong> {character.species || 'Unknown'}
+          </p>
+          <p>
+            <strong>Gender:</strong> {character.gender || 'Unknown'}
+          </p>
+        </div>
+
+        {character.born && (
+          <div className="details-section">
+            <h3 className="magic-subtitle">Life</h3>
+            <p>
+              <strong>Born:</strong> {character.born}
+            </p>
+            <p>
+              <strong>Died:</strong> {character.died || 'Still alive'}
+            </p>
+          </div>
+        )}
+
+        {(character.blood_status || character.nationality) && (
+          <div className="details-section">
+            <h3 className="magic-subtitle">Heritage</h3>
+            {character.blood_status && (
+              <p>
+                <strong>Blood Status:</strong> {character.blood_status}
+              </p>
+            )}
+            {character.nationality && (
+              <p>
+                <strong>Nationality:</strong> {character.nationality}
+              </p>
+            )}
+          </div>
+        )}
+
+        {character.patronus && (
+          <div className="details-section">
+            <h3 className="magic-subtitle">Magic</h3>
+            <p>
+              <strong>Patronus:</strong> {character.patronus}
+            </p>
+          </div>
+        )}
+
+        {character.wands && character.wands.length > 0 && (
+          <div className="details-section">
+            <h3 className="magic-subtitle">Wand(s)</h3>
+            <ul>
+              {character.wands.map((wand, idx) => (
+                <li key={idx}>{wand}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {character.jobs && character.jobs.length > 0 && (
+          <div className="details-section">
+            <h3 className="magic-subtitle">Occupation(s)</h3>
+            <ul>
+              {character.jobs.map((job, idx) => (
+                <li key={idx}>{job}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </OrnateFrame>
   );

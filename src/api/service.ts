@@ -96,5 +96,14 @@ export async function getCharacterById(id: string): Promise<Character> {
     species: attrs.species ?? null,
     gender: attrs.gender ?? null,
     image: attrs.image ?? null,
+
+    born: attrs.born ?? null,
+    died: attrs.died ?? null,
+    blood_status: attrs.blood_status ?? null,
+    nationality: attrs.nationality ?? null,
+    patronus: attrs.patronus ?? null,
+    wands: attrs.wands ?? null,
+    jobs: attrs.jobs ?? null,
+    alias_names: attrs.alias_names ?? undefined,
   };
 }

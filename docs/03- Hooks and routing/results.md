@@ -9,16 +9,45 @@
 
 ---
 
-## Технические требования (проверено, штрафы отсутствуют)
+### Feature 1: Pagination (**30 points**)
 
-- ✅ Все классовые компоненты (кроме `ErrorBoundary`) переписаны на функциональные с хуками.
-- ✅ Создан кастомный хук `useLocalStorage` для работы с localStorage.
-- ✅ Используется React Router v6 (вложенные маршруты, `Outlet`, `useNavigate`, `useParams`, `useSearchParams`).
-- ✅ Пагинация синхронизирована с URL через параметр `?page=`.
-- ✅ Детали персонажа открываются по маршруту `/details/:characterId?page=X`, что сохраняет состояние пагинации.
-- ✅ При закрытии деталей происходит возврат на `/?page=X`.
-- ✅ About Page доступна по маршруту `/about`, страница 404 обрабатывает все неизвестные пути.
-- ✅ TypeScript используется, `any` и `ts-ignore` отсутствуют.
-- ✅ Прямые DOM‑манипуляции не применяются.
-- ✅ Сторонние UI‑библиотеки не используются.
-- ✅ Код соответствует правилам ESLint (для эффектов используется `queueMicrotask` для избежания `set-state-in-effect`).
+- [x] **(+10)** Pagination controls are visible after items are loaded.
+- [x] **(+10)** Changing the page updates the URL with the correct `page` parameter (e.g., `?page=2`).
+- [x] **(+10)** The visible page matches the page in the URL at all times.
+
+### Feature 2: Master-Detail View (**45 points**)
+
+- [x] **(+20)** Clicking an item opens a details panel on the right, using `<Outlet>`.
+- [x] **(+5)** The left side always shows the list of results.
+- [x] **(+5)** A loading indicator is visible while details are being fetched.
+- [x] **(+5)** The details panel can be closed via a close button or by clicking the main panel (close button implemented).
+- [x] **(+5)** The URL always reflects the current page and selected item (e.g., `/details/:characterId?page=2`).
+- [x] **(+5)** On initial load, no item is selected and the details panel is closed.
+
+### Feature 3: About Page (**15 points**)
+
+- [x] **(+8)** The About page displays author information and a link to the RS School React course.
+- [x] **(+7)** The About page is accessible via a navigation link from the main application.
+
+### Feature 4: 404 Page (**10 points**)
+
+- [x] **(+3)** A 404 page is displayed for all unknown or non-existing routes.
+- [x] **(+3)** The 404 page contains a clear message that the page was not found.
+- [x] **(+4)** The 404 page provides a navigation option (e.g., button or link) to return to the main app.
+
+---
+
+## Технические требования (штрафы)
+
+- [ ] Проект инициализирован с помощью Vite и шаблона `react-ts`.
+- [ ] TypeScript используется.
+- [ ] Использование `any`.
+- [ ] Использование `ts-ignore`.
+- [ ] Code-smells (божественный объект, дублирование, закомментированный код).
+- [ ] Прямые манипуляции с DOM.
+- [ ] Использование React-хуков (требование задания).
+- [ ] Использование Redux или других библиотек управления состоянием.
+- [ ] Использование сторонних библиотек компонентов (Material UI, Ant Design).
+- [ ] Pull Request соответствует гайдлайну.
+- [ ] Ветка `hooks-and-routing` создана от `unit-testing`, файлы настройки React не в `main`.
+- [ ] Декомпозиция компонентов выполнена.

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useNavigate, Outlet } from 'react-router-dom';
+import { useSearchParams, Outlet } from 'react-router-dom';
 
 import {
   SearchSection,
@@ -20,7 +20,6 @@ import './HomePage.css';
 
 export function HomePage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
 
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const detailsId = searchParams.get('details');
@@ -111,24 +110,6 @@ export function HomePage() {
   return (
     <div className="app-container">
       <AppHeader />
-
-      <nav
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          padding: '0 20px 10px',
-        }}
-      >
-        <a
-          href="/about"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('/about');
-          }}
-        >
-          About
-        </a>
-      </nav>
 
       <OrnateFrame className="variant-container">
         <SearchSection

@@ -1,0 +1,12 @@
+@keyframes flagGlow {
+  0% {
+    filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4))
+      drop-shadow(0 0 16px rgba(212, 175, 55, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.2));
+  }
+}

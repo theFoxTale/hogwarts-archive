@@ -1,4 +1,6 @@
 export { AppHeader } from './AppHeader/AppHeader';
+export { AboutFlag } from './AboutFlag/AboutFlag';
+
 export { SearchSection } from './SearchSection/SearchSection';
 export { ResultsSection } from './ResultsSection/ResultsSection';
 export { Pagination } from './Pagination/Pagination';

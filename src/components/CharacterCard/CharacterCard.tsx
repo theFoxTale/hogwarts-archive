@@ -1,12 +1,70 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { GoldCheckbox, RoundedFrame } from '../../components';
 import type { Character } from '../../api';
-import { ANONYMOUS_IMAGE, SEARCH_STRINGS, UI_MESSAGES } from '../../constants';
-import { ActionButton, OrnateFrame } from '../../components';
 
 import './CharacterCard.css';
-import lineOrnamentIcon from '../../assets/images/character-ornament.png';
-import endsOrnamentIcon from '../../assets/images/character-ends-ornament.png';
+
+import defaultFacultyIcon from '../../assets/images/faculties/NoOne.png';
+import gryffindorFacultyIcon from '../../assets/images/faculties/Gryffindor.png';
+import hufflepuffFacultyIcon from '../../assets/images/faculties/Hufflepuff.png';
+import ravenclawFacultyIcon from '../../assets/images/faculties/Ravenclaw.png';
+import slytherinFacultyIcon from '../../assets/images/faculties/Slytherin.png';
+
+import defaultGenderIcon from '../../assets/images/gender/Default.png';
+import maleGenderIcon from '../../assets/images/gender/Male.png';
+import femaleGenderIcon from '../../assets/images/gender/Female.png';
+
+import defaultSpeciesIcon from '../../assets/images/species/Unknown.png';
+import humanSpeciesIcon from '../../assets/images/species/Human.png';
+import catSpeciesIcon from '../../assets/images/species/Cat.png';
+import dogSpeciesIcon from '../../assets/images/species/Dog.png';
+import owlSpeciesIcon from '../../assets/images/species/Owl.png';
+import phoenixSpeciesIcon from '../../assets/images/species/Phoenix.png';
+import witchSpeciesIcon from '../../assets/images/species/Witch.png';
+import wizardSpeciesIcon from '../../assets/images/species/Wizard.png';
+
+const getHouseIcon = (house: string | null): string => {
+  if (!house) return defaultFacultyIcon;
+
+  const mapping: Record<string, string> = {
+    Gryffindor: gryffindorFacultyIcon,
+    Hufflepuff: hufflepuffFacultyIcon,
+    Ravenclaw: ravenclawFacultyIcon,
+    Slytherin: slytherinFacultyIcon,
+  };
+
+  return mapping[house] || defaultFacultyIcon;
+};
+
+const getGenderIcon = (gender: string | null): string => {
+  if (!gender) return defaultGenderIcon;
+
+  const normalized = gender.toLowerCase();
+  if (normalized === 'male') return maleGenderIcon;
+  if (normalized === 'female') return femaleGenderIcon;
+
+  return defaultGenderIcon;
+};
+
+const getSpeciesIcon = (species: string | null): string => {
+  if (!species) return defaultSpeciesIcon;
+
+  const normalized =
+    species.charAt(0).toUpperCase() + species.slice(1).toLowerCase();
+
+  const mapping: Record<string, string> = {
+    Human: humanSpeciesIcon,
+    Cat: catSpeciesIcon,
+    Dog: dogSpeciesIcon,
+    Owl: owlSpeciesIcon,
+    Phoenix: phoenixSpeciesIcon,
+    Witch: witchSpeciesIcon,
+    Wizard: wizardSpeciesIcon,
+  };
+
+  return mapping[normalized] || defaultSpeciesIcon;
+};
 
 interface CharacterCardProps {
   character: Character;
@@ -14,79 +72,58 @@ interface CharacterCardProps {
 }
 
 export function CharacterCard({ character, currentPage }: CharacterCardProps) {
-  const { name, house, species, gender, image } = character;
-  const hasDetails = !!(house || species || gender);
-
   const navigate = useNavigate();
-  const handleViewDetails = () => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCardClick = () => {
     navigate(`/details/${character.id}?page=${currentPage}`);
   };
 
   return (
-    <OrnateFrame noInnerPadding className="variant-container">
-      <div className="character-card">
-        <div className="character-image-container">
-          <img
-            src={image || ANONYMOUS_IMAGE}
-            onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
-            alt={name}
-            className="character-image"
+    <RoundedFrame className="variant-paper">
+      <div className="character-card" onClick={handleCardClick}>
+        {/* Чекбокс */}
+        <div className="character-card__checkbox">
+          <GoldCheckbox
+            checked={isChecked}
+            onChange={(checked) => setIsChecked(checked)}
+            id={`char-${character.id}`}
           />
         </div>
-        <div className="character-info-container">
-          <h3 className="character-name" title={name}>
-            {name}
-          </h3>
-          <div className="character__description">
-            <img
-              src={endsOrnamentIcon}
-              alt={SEARCH_STRINGS.SEARCH_PARTS_TOOLTIP}
-              className="character__ornament"
-            />
-            <p className="character__description-text">
-              {SEARCH_STRINGS.SEARCH_DESCRIPTION}
-            </p>
-            <img
-              src={endsOrnamentIcon}
-              alt={SEARCH_STRINGS.SEARCH_PARTS_TOOLTIP}
-              className="character__ornament character__ornament--mirrored"
-            />
-          </div>
+
+        {/* Иконка факультета */}
+        <div className="character-card__house-icon">
           <img
-            src={lineOrnamentIcon}
-            alt={SEARCH_STRINGS.SEARCH_LINE_TOOLTIP}
-            className="character-ornament"
+            src={getHouseIcon(character.house)}
+            alt={character.house || 'house'}
           />
-          <div className="character-details">
-            {hasDetails ? (
-              <>
-                {house && (
-                  <p className="character-details-text">
-                    <strong>{SEARCH_STRINGS.CARD_HOUSE_LABEL}:</strong> {house}
-                  </p>
-                )}
-                {species && (
-                  <p className="character-details-text">
-                    <strong>{SEARCH_STRINGS.CARD_SPECIES_LABEL}:</strong>{' '}
-                    {species}
-                  </p>
-                )}
-                {gender && (
-                  <p className="character-details-text">
-                    <strong>{SEARCH_STRINGS.CARD_GENDER_LABEL}:</strong>{' '}
-                    {gender}
-                  </p>
-                )}
-              </>
-            ) : (
-              <p className="character-details-text character-details-text--empty">
-                {UI_MESSAGES.NO_DETAILS}
-              </p>
-            )}
+        </div>
+
+        {/* Информация */}
+        <div className="character-card__info">
+          <div className="character-card__name magic-title-light">
+            {character.name}
           </div>
-          <ActionButton onClick={handleViewDetails}>View Details</ActionButton>
+          <div className="character-card__traits">
+            <img
+              src={getSpeciesIcon(character.species)}
+              alt={character.species || 'species'}
+              className="trait-icon"
+            />
+            <span className="trait__name magic-subtitle">
+              {character.species || 'Unknown'}
+            </span>
+            <img
+              src={getGenderIcon(character.gender)}
+              alt={character.gender || 'gender'}
+              className="trait-icon"
+            />
+            <span className="trait__name magic-subtitle">
+              {character.gender || 'Unknown'}
+            </span>
+          </div>
         </div>
       </div>
-    </OrnateFrame>
+    </RoundedFrame>
   );
 }

@@ -289,6 +289,43 @@
 }
 
 /* =========================================
+   PAPER Variant
+========================================= */
+
+.rounded-frame.variant-paper {
+  --frame-bg: linear-gradient(135deg, #e6d5b8, #c8aa7a);
+
+  --frame-hover-shadow:
+    0 0 18px rgba(212, 175, 55, 0.18), 0 10px 28px rgba(0, 0, 0, 0.65);
+
+  --frame-border-glow: brightness(1.2)
+    drop-shadow(0 0 6px rgba(255, 210, 120, 0.35));
+
+  clip-path: var(--frame-shape);
+
+  transform-origin: left;
+  --frame-hover-scale: 1.03;
+}
+
+.rounded-frame.variant-paper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/src/assets/textures/paper.jpg');
+  background-repeat: repeat;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rounded-frame.variant-paper:hover:not(.disabled)::after {
+  opacity: 0.3;
+}
+
+/* =========================================
    CONTAINER Variant
 ========================================= */
 

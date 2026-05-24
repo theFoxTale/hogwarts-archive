@@ -1,6 +1,21 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { emptySearchResult } from './mocks/api';
 
+// Принудительное отключение mock-режима для тестов
+vi.mock('../constants', async () => {
+  const actual =
+    await vi.importActual<typeof import('../constants')>('../constants');
+  return {
+    ...actual,
+    API_CONFIG: {
+      BASE_URL: actual.API_CONFIG.BASE_URL,
+      ITEMS_PER_PAGE: actual.API_CONFIG.ITEMS_PER_PAGE,
+      USE_MOCK_API: false,
+      USE_MOCK_DELAY: false,
+    },
+  };
+});
+
 import { API_CONFIG, ERROR_MESSAGES } from '../constants';
 import { searchCharacters } from '../api';
 

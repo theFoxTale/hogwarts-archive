@@ -1,7 +1,6 @@
 .action-button-frame {
   --rounded-corner-size: 7px;
 
-  clip-path: var(--frame-shape);
   display: inline-flex;
 }
 

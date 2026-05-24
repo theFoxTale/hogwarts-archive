@@ -24,14 +24,14 @@
     inset 0 -4px 12px rgba(0, 0, 0, 0.45);
 
   --frame-shape: polygon(
-    10px 0,
-    calc(100% - 10px) 0,
-    100% 10px,
-    100% calc(100% - 10px),
-    calc(100% - 10px) 100%,
-    10px 100%,
-    0 calc(100% - 10px),
-    0 10px
+    var(--rounded-corner-size) 0,
+    calc(100% - var(--rounded-corner-size)) 0,
+    100% var(--rounded-corner-size),
+    100% calc(100% - var(--rounded-corner-size)),
+    calc(100% - var(--rounded-corner-size)) 100%,
+    var(--rounded-corner-size) 100%,
+    0 calc(100% - var(--rounded-corner-size)),
+    0 var(--rounded-corner-size)
   );
 
   position: relative;
@@ -301,8 +301,6 @@
   --frame-border-glow: brightness(1.2)
     drop-shadow(0 0 6px rgba(255, 210, 120, 0.35));
 
-  clip-path: var(--frame-shape);
-
   transform-origin: left;
   --frame-hover-scale: 1.03;
 }
@@ -318,6 +316,7 @@
   background-repeat: repeat;
   opacity: 0.3;
   pointer-events: none;
+  clip-path: var(--frame-shape);
   z-index: 0;
 }
 

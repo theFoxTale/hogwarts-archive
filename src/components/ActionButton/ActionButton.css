@@ -11,10 +11,10 @@
 .action-button {
   position: relative;
 
-  padding: 8px 16px;
+  padding: 8px;
 
   font-family: var(--font-serif), serif;
-  font-size: 15px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
 

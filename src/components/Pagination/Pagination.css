@@ -2,7 +2,7 @@
   width: fit-content;
 
   margin: auto;
-  padding: 0 40px;
+  padding: 14px;
 }
 
 /* =========================================
@@ -14,8 +14,6 @@
   justify-content: center;
   align-items: center;
   gap: 32px;
-
-  padding: 12px 0;
 }
 
 /* =========================================
@@ -24,7 +22,7 @@
 
 .page-info-title {
   font-family: var(--font-body), serif;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: bold;
 
   color: var(--text-secondary);

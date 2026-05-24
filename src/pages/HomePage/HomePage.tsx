@@ -9,6 +9,7 @@ import {
   AppHeader,
   ErrorButton,
   OrnateFrame,
+  Flyout,
 } from '../../components';
 
 import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from '../../constants';
@@ -132,16 +133,19 @@ export function HomePage() {
         </div>
       </div>
 
-      {totalPages > 1 && !shouldThrowError && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          isPrevAvailable={isPrevAvailable}
-          isNextAvailable={isNextAvailable}
-          onPrev={navigateToPrevPage}
-          onNext={navigateToNextPage}
-        />
-      )}
+      <div className="app-footer">
+        <Flyout />
+        {totalPages > 1 && !shouldThrowError && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            isPrevAvailable={isPrevAvailable}
+            isNextAvailable={isNextAvailable}
+            onPrev={navigateToPrevPage}
+            onNext={navigateToNextPage}
+          />
+        )}
+      </div>
 
       <ErrorButton onSimulateError={simulateError} />
     </div>

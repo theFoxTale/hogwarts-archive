@@ -1,0 +1,39 @@
+.flyout__frame {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.flyout__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 8px;
+  flex-wrap: wrap;
+}
+
+.flyout__count {
+  font-family: var(--font-body), serif;
+  font-size: 0.7rem;
+  font-weight: bold;
+
+  color: var(--text-secondary);
+}
+
+.flyout__actions {
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .flyout__content {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .flyout__actions {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -44,16 +44,11 @@
   width: 100%;
 }
 
-.bottom-results {
-  width: 100%;
-
+.app-footer {
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-
-  padding-right: 20px;
-
-  overflow-y: auto;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 
 @media (max-width: 768px) {

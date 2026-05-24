@@ -1,7 +1,12 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoldCheckbox, RoundedFrame } from '../../components';
 import type { Character } from '../../api';
+
+import { useAppDispatch, useAppSelector } from '../../store';
+import {
+  selectIsSelected,
+  toggleSelect,
+} from '../../features/selectedItemsSlice';
 
 import './CharacterCard.css';
 
@@ -73,7 +78,12 @@ interface CharacterCardProps {
 
 export function CharacterCard({ character, currentPage }: CharacterCardProps) {
   const navigate = useNavigate();
-  const [isChecked, setIsChecked] = useState(false);
+  const dispatch = useAppDispatch();
+  const isSelected = useAppSelector(selectIsSelected(character.id));
+
+  const handleCheckboxChange = () => {
+    dispatch(toggleSelect(character));
+  };
 
   const handleCardClick = () => {
     navigate(`/${currentPage}/${character.id}`);
@@ -85,8 +95,8 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
         {/* Чекбокс */}
         <div className="character-card__checkbox">
           <GoldCheckbox
-            checked={isChecked}
-            onChange={(checked) => setIsChecked(checked)}
+            checked={isSelected}
+            onChange={handleCheckboxChange}
             id={`char-${character.id}`}
           />
         </div>

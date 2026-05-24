@@ -76,7 +76,7 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCardClick = () => {
-    navigate(`/details/${character.id}?page=${currentPage}`);
+    navigate(`/${currentPage}/${character.id}`);
   };
 
   return (

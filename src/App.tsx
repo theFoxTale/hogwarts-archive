@@ -8,8 +8,8 @@ export function App() {
   return (
     <BrowserRouter basename={basename}>
       <Routes>
-        <Route path="/" element={<HomePage />}>
-          <Route path="details/:characterId" element={<CharacterDetails />} />
+        <Route path="/:page?" element={<HomePage />}>
+          <Route path=":characterId?" element={<CharacterDetails />} />
         </Route>
         <Route path="/about" element={<AboutPage />} />
         <Route path="*" element={<NotFoundPage />} />

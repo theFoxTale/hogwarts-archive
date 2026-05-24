@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { getCharacterById } from '../../api';
 import type { Character } from '../../api';
@@ -10,10 +10,11 @@ import { ANONYMOUS_IMAGE, UI_MESSAGES } from '../../constants.ts';
 import './CharacterDetails.css';
 
 export function CharacterDetails() {
-  const { characterId } = useParams<{ characterId: string }>();
+  const { page = '1', characterId } = useParams<{
+    page?: string;
+    characterId?: string;
+  }>();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get('page') || '1';
 
   const [character, setCharacter] = useState<Character | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +33,7 @@ export function CharacterDetails() {
   }, [characterId]);
 
   const handleClose = () => {
-    navigate(`/?page=${page}`);
+    navigate(`/${page}`);
   };
 
   if (loading)

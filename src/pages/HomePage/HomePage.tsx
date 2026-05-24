@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, Outlet } from 'react-router-dom';
+import { Outlet, useParams, useNavigate } from 'react-router-dom';
 
 import {
   SearchSection,
@@ -19,10 +19,12 @@ import { useLocalStorage } from '../../hooks';
 import './HomePage.css';
 
 export function HomePage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const currentPage = parseInt(searchParams.get('page') || '1', 10);
-  const detailsId = searchParams.get('details');
+  const { page = '1', characterId } = useParams<{
+    page?: string;
+    characterId?: string;
+  }>();
+  const currentPage = parseInt(page, 10);
+  const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useLocalStorage(
     LOCAL_STORAGE_KEYS.SEARCH_TEXT,
@@ -68,22 +70,20 @@ export function HomePage() {
   }, [fetchCharacters, searchQuery, currentPage]);
 
   const handlePageChange = (newPage: number) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set('page', newPage.toString());
-    if (detailsId) {
-      newParams.set('details', detailsId);
+    if (characterId) {
+      navigate(`/${newPage}/${characterId}`);
     } else {
-      newParams.delete('details');
+      navigate(`/${newPage}`);
     }
-    setSearchParams(newParams, { replace: true });
   };
 
   const handleSearch = (searchText: string) => {
     if (searchText === searchQuery) return;
+
     setSearchQuery(searchText);
     setInputValue(searchText);
 
-    setSearchParams({ page: '1' });
+    navigate(`/1`);
   };
 
   const navigateToPrevPage = () => {

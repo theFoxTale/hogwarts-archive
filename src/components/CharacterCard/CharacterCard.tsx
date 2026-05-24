@@ -110,7 +110,7 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
               alt={character.species || 'species'}
               className="trait-icon"
             />
-            <span className="trait__name magic-subtitle">
+            <span className="trait__name">
               {character.species || 'Unknown'}
             </span>
             <img
@@ -118,9 +118,7 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
               alt={character.gender || 'gender'}
               className="trait-icon"
             />
-            <span className="trait__name magic-subtitle">
-              {character.gender || 'Unknown'}
-            </span>
+            <span className="trait__name">{character.gender || 'Unknown'}</span>
           </div>
         </div>
       </div>

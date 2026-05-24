@@ -51,3 +51,8 @@ export interface ApiResponse {
   };
   links?: LinksData;
 }
+
+export interface SearchResponse {
+  items: Character[];
+  pages: PaginationInfo | null;
+}

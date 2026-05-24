@@ -9,6 +9,8 @@ export const APP_STRINGS = {
 export const API_CONFIG = {
   BASE_URL: 'https://api.potterdb.com/v1/characters',
   ITEMS_PER_PAGE: 3,
+  USE_MOCK_API: import.meta.env.VITE_USE_MOCK_API === 'true',
+  MOCK_DELAY_MS: Number(import.meta.env.VITE_MOCK_DELAY_MS) || 0,
 } as const;
 
 export const LOCAL_STORAGE_KEYS = {

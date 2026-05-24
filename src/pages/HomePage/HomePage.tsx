@@ -19,12 +19,12 @@ import { useLocalStorage } from '../../hooks';
 import './HomePage.css';
 
 export function HomePage() {
+  const navigate = useNavigate();
   const { page = '1', characterId } = useParams<{
     page?: string;
     characterId?: string;
   }>();
   const currentPage = parseInt(page, 10);
-  const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useLocalStorage(
     LOCAL_STORAGE_KEYS.SEARCH_TEXT,
@@ -70,11 +70,7 @@ export function HomePage() {
   }, [fetchCharacters, searchQuery, currentPage]);
 
   const handlePageChange = (newPage: number) => {
-    if (characterId) {
-      navigate(`/${newPage}/${characterId}`);
-    } else {
-      navigate(`/${newPage}`);
-    }
+    navigate(`/${newPage}`);
   };
 
   const handleSearch = (searchText: string) => {
@@ -119,7 +115,7 @@ export function HomePage() {
         />
       </OrnateFrame>
 
-      <div className="homepage-layout">
+      <div className={`homepage-layout ${characterId ? 'has-details' : ''}`}>
         <div className="results-panel">
           <ErrorBoundary onReset={resetError}>
             <ResultsSection

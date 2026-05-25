@@ -338,7 +338,8 @@
 ========================================= */
 
 .rounded-frame.variant-container {
-  background: transparent;
+  background: var(--panels-background);
+  clip-path: var(--frame-shape);
 }
 
 .rounded-frame.variant-container::before {
@@ -365,7 +366,8 @@
 ========================================= */
 
 .rounded-frame.variant-input {
-  background: transparent;
+  background: var(--search-input-background);
+  clip-path: var(--frame-shape);
 }
 
 .rounded-frame.variant-input .rounded-line,

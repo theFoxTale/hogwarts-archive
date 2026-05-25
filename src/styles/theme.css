@@ -39,10 +39,17 @@
   /* Анимации */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.4s ease;
+
+  --panels-background: transparent;
+  --search-input-background: transparent;
 }
 
 [data-theme='light'] {
   --placeholder-color: rgba(90, 55, 30, 0.8);
+
   --text-secondary: #2e251e;
   --button-text: #2e251e;
+
+  --panels-background: rgba(253, 232, 195, 0.35);
+  --search-input-background: rgba(255, 252, 246, 0.35);
 }

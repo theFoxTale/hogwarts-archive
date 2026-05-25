@@ -1,22 +1,35 @@
 import type { Character, PaginationInfo } from '../../api';
 
+export const mockHarryCharacter: Character = {
+  id: 'harry-1',
+  name: 'Harry Potter',
+  house: 'Gryffindor',
+  species: 'Human',
+  gender: 'Male',
+  image: null,
+};
+
+export const mockHermioneCharacter: Character = {
+  id: 'hermione-1',
+  name: 'Hermione Granger',
+  house: 'Gryffindor',
+  species: 'Human',
+  gender: 'Female',
+  image: null,
+};
+
+export const mockLunaCharacter: Character = {
+  id: 'luna-1',
+  name: 'Luna Lovegood',
+  house: 'Ravenclaw',
+  species: 'Human',
+  gender: 'Female',
+  image: null,
+};
+
 export const mockCharacters: Character[] = [
-  {
-    id: 'harry-1',
-    name: 'Harry Potter',
-    house: 'Gryffindor',
-    species: 'Human',
-    gender: 'Male',
-    image: null,
-  },
-  {
-    id: 'hermione-1',
-    name: 'Hermione Granger',
-    house: 'Gryffindor',
-    species: 'Human',
-    gender: 'Female',
-    image: null,
-  },
+  mockHarryCharacter,
+  mockHermioneCharacter,
 ];
 
 export const mockPaginationInfo: PaginationInfo = {

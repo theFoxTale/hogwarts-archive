@@ -9,6 +9,8 @@ export const APP_STRINGS = {
 export const API_CONFIG = {
   BASE_URL: 'https://api.potterdb.com/v1/characters',
   ITEMS_PER_PAGE: 3,
+  USE_MOCK_API: import.meta.env.VITE_USE_MOCK_API === 'true',
+  MOCK_DELAY_MS: Number(import.meta.env.VITE_MOCK_DELAY_MS) || 0,
 } as const;
 
 export const LOCAL_STORAGE_KEYS = {
@@ -38,8 +40,7 @@ export const UI_MESSAGES = {
   NO_DETAILS: 'No records in the magical archives',
 } as const;
 
-// constants.ts
-export const ANONYMOUS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.jpg`;
+export const ANONYMOUS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.png`;
 
 export const LOADING_DELAY = {
   IS_SIMULATED: true,
@@ -54,4 +55,55 @@ export const SEARCH_STRINGS = {
   CARD_HOUSE_LABEL: 'House',
   CARD_SPECIES_LABEL: 'Species',
   CARD_GENDER_LABEL: 'Gender',
+
+  CLEAR_BUTTON_LABEL: 'Clear search',
+} as const;
+
+export const FLYOUT_STRINGS = {
+  SELECTED_LABEL: 'Selected',
+  UNSELECT_ALL: 'Unselect all',
+  DOWNLOAD_CSV: 'Download CSV',
+} as const;
+
+export const CSV_EXPORT = {
+  FILE_NAME: '_items',
+} as const;
+
+export const PAGINATION_STRINGS = {
+  PREVIOUS: '← Previous',
+  NEXT: 'Next →',
+  PAGE_OF: (current: number, total: number) => `Page ${current} of ${total}`,
+} as const;
+
+export const DETAILS_STRINGS = {
+  CLOSE: '✖',
+  BASIC_INFO: 'Basic Info',
+  LIFE: 'Life',
+  HERITAGE: 'Heritage',
+  MAGIC: 'Magic',
+  WANDS: 'Wand(s)',
+  OCCUPATIONS: 'Occupation(s)',
+  STILL_ALIVE: 'Still alive',
+  UNKNOWN: 'Unknown',
+  HOUSE: 'House',
+  SPECIES: 'Species',
+  GENDER: 'Gender',
+  BORN: 'Born',
+  DIED: 'Died',
+  BLOOD_STATUS: 'Blood Status',
+  NATIONALITY: 'Nationality',
+  PATRONUS: 'Patronus',
+} as const;
+
+export const ABOUT_STRINGS = {
+  TEXT: 'ABOUT',
+} as const;
+
+export const THEME_STRINGS = {
+  ALT_LIGHT: 'Light theme',
+  ALT_DARK: 'Dark theme',
+} as const;
+
+export const CHARACTER_CARD_STRINGS = {
+  UNKNOWN: 'Unknown',
 } as const;

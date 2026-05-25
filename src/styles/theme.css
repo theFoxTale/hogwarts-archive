@@ -13,6 +13,9 @@
   --text-primary: #85602b;
   --text-secondary: #cfc7b0;
   --text-muted: #a7824d;
+  --dark-text: #2e251e;
+  --placeholder-color: rgba(241, 231, 204, 0.45);
+  --button-text: #f4d28c;
 
   /* Рамки и тени */
   --border-gold: rgba(170, 110, 45, 0.65);
@@ -36,4 +39,17 @@
   /* Анимации */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.4s ease;
+
+  --panels-background: transparent;
+  --search-input-background: transparent;
+}
+
+[data-theme='light'] {
+  --placeholder-color: rgba(90, 55, 30, 0.8);
+
+  --text-secondary: #2e251e;
+  --button-text: #2e251e;
+
+  --panels-background: rgba(253, 232, 195, 0.35);
+  --search-input-background: rgba(255, 252, 246, 0.35);
 }

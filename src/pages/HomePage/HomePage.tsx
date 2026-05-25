@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useNavigate, Outlet } from 'react-router-dom';
+import { Outlet, useParams, useNavigate } from 'react-router-dom';
 
 import {
   SearchSection,
@@ -9,6 +9,7 @@ import {
   AppHeader,
   ErrorButton,
   OrnateFrame,
+  Flyout,
 } from '../../components';
 
 import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from '../../constants';
@@ -19,11 +20,12 @@ import { useLocalStorage } from '../../hooks';
 import './HomePage.css';
 
 export function HomePage() {
-  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-
-  const currentPage = parseInt(searchParams.get('page') || '1', 10);
-  const detailsId = searchParams.get('details');
+  const { page = '1', characterId } = useParams<{
+    page?: string;
+    characterId?: string;
+  }>();
+  const currentPage = parseInt(page, 10);
 
   const [searchQuery, setSearchQuery] = useLocalStorage(
     LOCAL_STORAGE_KEYS.SEARCH_TEXT,
@@ -69,22 +71,16 @@ export function HomePage() {
   }, [fetchCharacters, searchQuery, currentPage]);
 
   const handlePageChange = (newPage: number) => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set('page', newPage.toString());
-    if (detailsId) {
-      newParams.set('details', detailsId);
-    } else {
-      newParams.delete('details');
-    }
-    setSearchParams(newParams, { replace: true });
+    navigate(`/${newPage}`);
   };
 
   const handleSearch = (searchText: string) => {
     if (searchText === searchQuery) return;
+
     setSearchQuery(searchText);
     setInputValue(searchText);
 
-    setSearchParams({ page: '1' });
+    navigate(`/1`);
   };
 
   const navigateToPrevPage = () => {
@@ -112,24 +108,6 @@ export function HomePage() {
     <div className="app-container">
       <AppHeader />
 
-      <nav
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          padding: '0 20px 10px',
-        }}
-      >
-        <a
-          href="/about"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('/about');
-          }}
-        >
-          About
-        </a>
-      </nav>
-
       <OrnateFrame className="variant-container">
         <SearchSection
           value={inputValue}
@@ -138,7 +116,7 @@ export function HomePage() {
         />
       </OrnateFrame>
 
-      <div className="homepage-layout">
+      <div className={`homepage-layout ${characterId ? 'has-details' : ''}`}>
         <div className="results-panel">
           <ErrorBoundary onReset={resetError}>
             <ResultsSection
@@ -155,16 +133,19 @@ export function HomePage() {
         </div>
       </div>
 
-      {totalPages > 1 && !shouldThrowError && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          isPrevAvailable={isPrevAvailable}
-          isNextAvailable={isNextAvailable}
-          onPrev={navigateToPrevPage}
-          onNext={navigateToNextPage}
-        />
-      )}
+      <div className="app-footer">
+        <Flyout />
+        {totalPages > 1 && !shouldThrowError && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            isPrevAvailable={isPrevAvailable}
+            isNextAvailable={isNextAvailable}
+            onPrev={navigateToPrevPage}
+            onNext={navigateToNextPage}
+          />
+        )}
+      </div>
 
       <ErrorButton onSimulateError={simulateError} />
     </div>

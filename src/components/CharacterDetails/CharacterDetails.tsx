@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { getCharacterById } from '../../api';
 import type { Character } from '../../api';
 
 import { OrnateFrame } from '../index.ts';
-import { ANONYMOUS_IMAGE, UI_MESSAGES } from '../../constants.ts';
+import {
+  ANONYMOUS_IMAGE,
+  UI_MESSAGES,
+  DETAILS_STRINGS,
+} from '../../constants.ts';
 
 import './CharacterDetails.css';
 
 export function CharacterDetails() {
-  const { characterId } = useParams<{ characterId: string }>();
+  const { page = '1', characterId } = useParams<{
+    page?: string;
+    characterId?: string;
+  }>();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const page = searchParams.get('page') || '1';
 
   const [character, setCharacter] = useState<Character | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +37,7 @@ export function CharacterDetails() {
   }, [characterId]);
 
   const handleClose = () => {
-    navigate(`/?page=${page}`);
+    navigate(`/${page}`);
   };
 
   if (loading)
@@ -45,7 +50,7 @@ export function CharacterDetails() {
     <OrnateFrame noInnerPadding>
       <div className="character-details">
         <button className="details-close" onClick={handleClose}>
-          ✖
+          {DETAILS_STRINGS.CLOSE}
         </button>
         <img
           src={character.image || ANONYMOUS_IMAGE}
@@ -56,41 +61,47 @@ export function CharacterDetails() {
         <h2 className="details-title magic-title">{character.name}</h2>
 
         <div className="details-section">
-          <h3 className="magic-subtitle">Basic Info</h3>
+          <h3 className="magic-subtitle">{DETAILS_STRINGS.BASIC_INFO}</h3>
           <p>
-            <strong>House:</strong> {character.house || 'Unknown'}
+            <strong>{DETAILS_STRINGS.HOUSE}:</strong>{' '}
+            {character.house || DETAILS_STRINGS.UNKNOWN}
           </p>
           <p>
-            <strong>Species:</strong> {character.species || 'Unknown'}
+            <strong>{DETAILS_STRINGS.SPECIES}:</strong>{' '}
+            {character.species || DETAILS_STRINGS.UNKNOWN}
           </p>
           <p>
-            <strong>Gender:</strong> {character.gender || 'Unknown'}
+            <strong>{DETAILS_STRINGS.GENDER}:</strong>{' '}
+            {character.gender || DETAILS_STRINGS.UNKNOWN}
           </p>
         </div>
 
         {character.born && (
           <div className="details-section">
-            <h3 className="magic-subtitle">Life</h3>
+            <h3 className="magic-subtitle">{DETAILS_STRINGS.LIFE}</h3>
             <p>
-              <strong>Born:</strong> {character.born}
+              <strong>{DETAILS_STRINGS.BORN}:</strong> {character.born}
             </p>
             <p>
-              <strong>Died:</strong> {character.died || 'Still alive'}
+              <strong>{DETAILS_STRINGS.DIED}:</strong>{' '}
+              {character.died || DETAILS_STRINGS.STILL_ALIVE}
             </p>
           </div>
         )}
 
         {(character.blood_status || character.nationality) && (
           <div className="details-section">
-            <h3 className="magic-subtitle">Heritage</h3>
+            <h3 className="magic-subtitle">{DETAILS_STRINGS.HERITAGE}</h3>
             {character.blood_status && (
               <p>
-                <strong>Blood Status:</strong> {character.blood_status}
+                <strong>{DETAILS_STRINGS.BLOOD_STATUS}:</strong>{' '}
+                {character.blood_status}
               </p>
             )}
             {character.nationality && (
               <p>
-                <strong>Nationality:</strong> {character.nationality}
+                <strong>{DETAILS_STRINGS.NATIONALITY}:</strong>{' '}
+                {character.nationality}
               </p>
             )}
           </div>
@@ -98,16 +109,16 @@ export function CharacterDetails() {
 
         {character.patronus && (
           <div className="details-section">
-            <h3 className="magic-subtitle">Magic</h3>
+            <h3 className="magic-subtitle">{DETAILS_STRINGS.MAGIC}</h3>
             <p>
-              <strong>Patronus:</strong> {character.patronus}
+              <strong>{DETAILS_STRINGS.PATRONUS}:</strong> {character.patronus}
             </p>
           </div>
         )}
 
         {character.wands && character.wands.length > 0 && (
           <div className="details-section">
-            <h3 className="magic-subtitle">Wand(s)</h3>
+            <h3 className="magic-subtitle">{DETAILS_STRINGS.WANDS}</h3>
             <ul>
               {character.wands.map((wand, idx) => (
                 <li key={idx}>{wand}</li>
@@ -118,7 +129,7 @@ export function CharacterDetails() {
 
         {character.jobs && character.jobs.length > 0 && (
           <div className="details-section">
-            <h3 className="magic-subtitle">Occupation(s)</h3>
+            <h3 className="magic-subtitle">{DETAILS_STRINGS.OCCUPATIONS}</h3>
             <ul>
               {character.jobs.map((job, idx) => (
                 <li key={idx}>{job}</li>

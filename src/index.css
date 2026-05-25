@@ -4,6 +4,7 @@
 
 @import './styles/text.css';
 @import './styles/animations/frame-glow.css';
+@import './styles/animations/flag-glow.css';
 
 *,
 *::before,

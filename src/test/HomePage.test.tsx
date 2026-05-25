@@ -1,7 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
+
+import { Provider } from 'react-redux';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { configureStore } from '@reduxjs/toolkit';
 
 import {
   mockCharacters,
@@ -9,9 +12,12 @@ import {
   mockSearchSecondResponse,
 } from './mocks/api';
 
+import selectedItemsReducer from '../features/selectedItemsSlice';
 import { LOCAL_STORAGE_KEYS, UI_MESSAGES } from '../constants';
 import { searchCharacters } from '../api';
+
 import { HomePage } from '../pages';
+import { ThemeProvider } from '../contexts';
 
 vi.mock('../api/service', () => ({
   searchCharacters: vi.fn(),
@@ -26,13 +32,27 @@ vi.mock('../constants', async () => {
   };
 });
 
-const renderWithRouter = (ui: React.ReactElement, initialEntries = ['/']) => {
+const createEmptyStore = () =>
+  configureStore({
+    reducer: { selectedItems: selectedItemsReducer },
+    preloadedState: { selectedItems: {} },
+  });
+
+const renderWithRouter = (initialEntries = ['/']) => {
   return render(
-    <MemoryRouter initialEntries={initialEntries}>{ui}</MemoryRouter>
+    <Provider store={createEmptyStore()}>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={initialEntries}>
+          <Routes>
+            <Route path="/:page?" element={<HomePage />} />
+          </Routes>
+        </MemoryRouter>
+      </ThemeProvider>
+    </Provider>
   );
 };
 
-describe('HomePage Integration tests', () => {
+describe('HomePage Integration', () => {
   beforeEach(() => {
     vi.mocked(searchCharacters).mockClear();
     localStorage.clear();
@@ -41,7 +61,7 @@ describe('HomePage Integration tests', () => {
   test('loads initial data without saved search term in localStorage', async () => {
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
 
-    renderWithRouter(<HomePage />);
+    renderWithRouter(['/']);
     await waitFor(() => {
       expect(searchCharacters).toHaveBeenCalledWith('', 1);
     });
@@ -62,8 +82,7 @@ describe('HomePage Integration tests', () => {
       pages: null,
     });
 
-    renderWithRouter(<HomePage />);
-
+    renderWithRouter(['/']);
     await waitFor(() => {
       expect(searchCharacters).toHaveBeenCalledWith('Hermione', 1);
     });
@@ -80,7 +99,7 @@ describe('HomePage Integration tests', () => {
   test('performs search and saves term to localStorage', async () => {
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
 
-    renderWithRouter(<HomePage />);
+    renderWithRouter(['/']);
 
     const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
     await userEvent.type(input, 'Harry');
@@ -99,16 +118,14 @@ describe('HomePage Integration tests', () => {
     );
   });
 
-  test('restores search term and page from localStorage on mount', async () => {
+  test('restores search term from localStorage and page from URL on mount', async () => {
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.SEARCH_TEXT,
       JSON.stringify('Hermione')
     );
-    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_PAGE, '2');
-
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
 
-    renderWithRouter(<HomePage />, ['/?page=2']);
+    renderWithRouter(['/2']);
 
     await waitFor(() => {
       expect(searchCharacters).toHaveBeenCalledWith('Hermione', 2);
@@ -127,7 +144,7 @@ describe('HomePage Integration tests', () => {
   test('does not repeat search if term is same', async () => {
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
 
-    renderWithRouter(<HomePage />);
+    renderWithRouter(['/']);
 
     const searchBtn = screen.getByRole('button', {
       name: UI_MESSAGES.SEARCH_BUTTON_TEXT,
@@ -142,10 +159,18 @@ describe('HomePage Integration tests', () => {
   test('handles API error and displays error message', async () => {
     vi.mocked(searchCharacters).mockRejectedValue(new Error('Network error'));
 
-    renderWithRouter(<HomePage />);
+    renderWithRouter(['/']);
 
     await waitFor(() => {
       expect(screen.getByText('Network error')).toBeInTheDocument();
+    });
+  });
+
+  test('shows no results message when search returns empty list', async () => {
+    vi.mocked(searchCharacters).mockResolvedValue({ items: [], pages: null });
+    renderWithRouter(['/']);
+    await waitFor(() => {
+      expect(screen.getByText(UI_MESSAGES.NO_RESULTS)).toBeInTheDocument();
     });
   });
 
@@ -154,7 +179,7 @@ describe('HomePage Integration tests', () => {
       .mockResolvedValueOnce(mockSearchResponse)
       .mockResolvedValueOnce(mockSearchSecondResponse);
 
-    renderWithRouter(<HomePage />);
+    renderWithRouter(['/']);
 
     await waitFor(() =>
       expect(screen.getByText('Harry Potter')).toBeInTheDocument()
@@ -172,11 +197,11 @@ describe('HomePage Integration tests', () => {
 
   test('pagination: previous page loads and saves page', async () => {
     vi.mocked(searchCharacters)
-      .mockResolvedValueOnce(mockSearchResponse) // первая страница при монтировании
-      .mockResolvedValueOnce(mockSearchSecondResponse) // переход на вторую
-      .mockResolvedValueOnce(mockSearchResponse); // возврат на первую
+      .mockResolvedValueOnce(mockSearchResponse)
+      .mockResolvedValueOnce(mockSearchSecondResponse)
+      .mockResolvedValueOnce(mockSearchResponse);
 
-    renderWithRouter(<HomePage />);
+    renderWithRouter(['/']);
 
     await waitFor(() =>
       expect(screen.getByText('Harry Potter')).toBeInTheDocument()
@@ -189,7 +214,10 @@ describe('HomePage Integration tests', () => {
     const prevButton = screen.getByRole('button', { name: /previous/i });
     await userEvent.click(prevButton);
 
-    expect(searchCharacters).toHaveBeenLastCalledWith('', 1);
+    await waitFor(() => {
+      expect(searchCharacters).toHaveBeenLastCalledWith('', 1);
+    });
+
     await waitFor(() =>
       expect(screen.getByText('Harry Potter')).toBeInTheDocument()
     );
@@ -198,12 +226,11 @@ describe('HomePage Integration tests', () => {
   test('search resets page to 1 when performed after pagination', async () => {
     const mock = vi.mocked(searchCharacters);
     mock
-      .mockResolvedValueOnce(mockSearchResponse) // начальная загрузка (страница 1, поиск '')
-      .mockResolvedValueOnce(mockSearchSecondResponse) // переход на вторую страницу
-      .mockResolvedValueOnce(mockSearchResponse) // поиск 'Harry' на странице 1
-      .mockResolvedValue(mockSearchResponse); // на случай дополнительных вызовов
+      .mockResolvedValueOnce(mockSearchResponse)
+      .mockResolvedValueOnce(mockSearchSecondResponse)
+      .mockResolvedValue(mockSearchResponse);
 
-    renderWithRouter(<HomePage />, ['/?page=1']);
+    renderWithRouter(['/']);
 
     await waitFor(() =>
       expect(screen.getByText('Harry Potter')).toBeInTheDocument()
@@ -225,15 +252,19 @@ describe('HomePage Integration tests', () => {
       expect(searchCharacters).toHaveBeenLastCalledWith('Harry', 1);
     });
 
-    await waitFor(() =>
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.queryByText('Ron')).not.toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
+    });
   });
 
   test('clicking floating error button triggers error boundary fallback', async () => {
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
 
-    renderWithRouter(<HomePage />);
+    renderWithRouter(['/']);
 
     await waitFor(() =>
       expect(screen.getByText('Harry Potter')).toBeInTheDocument()
@@ -242,7 +273,9 @@ describe('HomePage Integration tests', () => {
     const errorButton = screen.getByLabelText(/simulate error/i);
     await userEvent.click(errorButton);
 
-    expect(screen.getByText(UI_MESSAGES.FALLBACK_TITLE)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(UI_MESSAGES.FALLBACK_TITLE)).toBeInTheDocument();
+    });
     expect(screen.getByText(UI_MESSAGES.TRY_AGAIN)).toBeInTheDocument();
 
     const tryAgainButton = screen.getByRole('button', {

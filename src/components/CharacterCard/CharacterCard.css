@@ -1,119 +1,89 @@
 .character-card {
   display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  cursor: pointer;
 }
 
-.character-image-container {
-  background-color: #1c1c1c;
-  padding: 16px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* Чекбокс */
+.character-card__checkbox {
   flex-shrink: 0;
 }
 
-.character-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-  display: block;
+.character-card__checkbox input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 
-.character-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.character-info-container {
-  position: relative;
+.character-card__image {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   overflow: hidden;
-  flex: 1;
-
-  background: linear-gradient(135deg, #e6d5b8, #c8aa7a);
-  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Слой с текстурой шума */
-.character-info-container::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+.character-card__image img {
   width: 100%;
   height: 100%;
-  background-image: url('/src/assets/textures/noise.jpg');
-  background-repeat: repeat;
-  opacity: 0.035;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Поднимаем контент выше текстуры */
-.character-info-container > * {
-  position: relative;
-  z-index: 1;
-}
-
-.character-name {
-  margin: 0 0 10px 0;
-  text-align: center;
-
-  font-family: var(--font-serif), serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.2;
-
-  color: #5a3815;
-
-  text-shadow:
-    0 1px 0 rgba(255, 248, 220, 0.4),
-    0 2px 4px rgba(0, 0, 0, 0.25);
-}
-
-.character-ornament {
-  height: 20px;
+  object-fit: cover;
   display: block;
-  margin: 0 auto;
-
-  opacity: 0.5;
-  user-select: none;
-  pointer-events: none;
 }
 
-.character-details-text {
-  margin: 4px 0;
-  font-family: var(--font-body), serif;
-  font-size: 0.95rem;
-  color: #1c1c1c;
+/* Информация о персонаже */
+.character-card__info {
+  flex: 1;
 }
 
-.character__description {
+.character-card__name {
+  font-family: var(--font-serif), serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #f4d28c;
+  margin-bottom: 6px;
+}
+
+/* Строка характеристик */
+.character-card__traits {
   display: flex;
-  justify-content: center;
+  gap: 12px;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.character__description-text {
-  font-family: var(--font-serif), serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-
-  color: #1c1c1c;
+.trait-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.character__ornament {
-  height: 15px;
-  display: block;
-  opacity: 0.5;
-  user-select: none;
-  pointer-events: none;
+.trait-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.8;
 }
 
-.character__ornament--mirrored {
-  transform: scaleX(-1);
+.trait-name {
+  font-family: var(--font-body), serif;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--dark-text);
+}
+
+@media (max-width: 480px) {
+  .character-card__traits {
+    gap: 8px;
+  }
+  .trait-name {
+    font-size: 0.7rem;
+  }
+  .character-card__image {
+    width: 48px;
+    height: 48px;
+  }
 }

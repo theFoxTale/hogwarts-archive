@@ -52,8 +52,7 @@
 
 .search-input::placeholder {
   font-family: var(--font-body), serif;
-
-  color: rgba(241, 231, 204, 0.45);
+  color: var(--placeholder-color, rgba(241, 231, 204, 0.45));
 }
 
 .search-input:focus {
@@ -135,7 +134,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 
-  color: #f4d28c;
+  color: var(--button-text);
 
   background: transparent;
   border: none;

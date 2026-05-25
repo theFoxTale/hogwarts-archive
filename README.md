@@ -1,9 +1,12 @@
-# Class Components App
+# Hogwarts Archive
 
 ## Технологический стек
 
-- **React** (классовые компоненты, без хуков)
+- **React** (функциональные компоненты, хуки)
 - **TypeScript**
+- **Redux Toolkit** – управление состоянием выбранных элементов
+- **Context API** – тема (light/dark)
+- **React Router DOM** – маршрутизация
 - **Vite** – сборка и разработка
 - **Vitest** – тестирование (unit / интеграционное)
 - **ESLint** – статический анализ кода
@@ -76,6 +79,12 @@ GET https://api.potterdb.com/v1/characters?filter[name_cont]=Harry&page[number]=
 - [Русский](./docs/03-%20Hooks%20and%20routing/functional-routing-ru.md)
 - [Результат выполнения](./docs/03-%20Hooks%20and%20routing/results.md)
 
+### 04 - React: State Management and Context API
+
+- [English](./docs/04%20-%20State%20Management%20and%20Context%20API/state-management.md)
+- [Русский](./docs/04%20-%20State%20Management%20and%20Context%20API/state-management-ru.md)
+- [Результат выполнения](./docs/04%20-%20State%20Management%20and%20Context%20API/results.md)
+
 ## Тестирование
 
 Для запуска тестов и проверки покрытия используйте команды:
@@ -94,9 +103,9 @@ npm run test:coverage # отчёт о покрытии (откроется в б
 
 ### Текущие показатели (на момент сдачи)
 
-- **Statements:** 100%
-- **Branches:** 84.7%
+- **Statements:** 98,79%
+- **Branches:** 89.13%
 - **Functions:** 100%
-- **Lines:** 100%
+- **Lines:** 98,7%
 
-![test_coverage](./docs/02%20-%20Unit%20Tests/test-coverage.png)
+![test_coverage](./docs/04%20-%20State%20Management%20and%20Context%20API/test-coverage.png)

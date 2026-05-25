@@ -1,4 +1,5 @@
 import { ActionButton, RoundedFrame } from '../../components';
+import { PAGINATION_STRINGS } from '../../constants';
 
 import './Pagination.css';
 
@@ -23,13 +24,13 @@ export function Pagination({
     <RoundedFrame className="pagination-frame variant-container">
       <div className="pagination">
         <ActionButton onClick={onPrev} disabled={!isPrevAvailable}>
-          ← Previous
+          {PAGINATION_STRINGS.PREVIOUS}
         </ActionButton>
         <span className="page-info-title magic-subtitle">
-          Page {currentPage} of {totalPages}
+          {PAGINATION_STRINGS.PAGE_OF(currentPage, totalPages)}
         </span>
         <ActionButton onClick={onNext} disabled={!isNextAvailable}>
-          Next →
+          {PAGINATION_STRINGS.NEXT}
         </ActionButton>
       </div>
     </RoundedFrame>

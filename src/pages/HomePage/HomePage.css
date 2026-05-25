@@ -24,7 +24,6 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  min-width: 600px;
 }
 
 .details-panel {
@@ -36,16 +35,20 @@
   min-width: 0;
 }
 
-.bottom-results {
+.homepage-layout:not(.has-details) .details-panel {
+  display: none;
+}
+
+.homepage-layout:not(.has-details) .results-panel {
+  flex: 1;
   width: 100%;
+}
 
+.app-footer {
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-
-  padding-right: 20px;
-
-  overflow-y: auto;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 
 @media (max-width: 768px) {

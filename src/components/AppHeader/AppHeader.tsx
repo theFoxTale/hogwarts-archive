@@ -1,3 +1,4 @@
+import { AboutFlag, ThemeFlag } from '../../components';
 import { APP_STRINGS } from '../../constants';
 
 import './AppHeader.css';
@@ -7,6 +8,7 @@ import ornamentIcon from '../../assets/images/hogwarts-ornaments.png';
 export function AppHeader() {
   return (
     <div className="app-header">
+      <AboutFlag />
       <img
         src={emblemIcon}
         alt={APP_STRINGS.APP_EMBLEM_TOOLTIP}
@@ -28,6 +30,7 @@ export function AppHeader() {
           className="app-header__ornament app-header__ornament--mirrored"
         />
       </div>
+      <ThemeFlag />
     </div>
   );
 }

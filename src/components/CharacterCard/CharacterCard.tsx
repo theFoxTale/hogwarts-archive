@@ -1,12 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-
+import { GoldCheckbox, RoundedFrame } from '../../components';
 import type { Character } from '../../api';
-import { ANONYMOUS_IMAGE, SEARCH_STRINGS, UI_MESSAGES } from '../../constants';
-import { ActionButton, OrnateFrame } from '../../components';
+
+import { getGenderIcon, getHouseIcon, getSpeciesIcon } from '../../utils';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { CHARACTER_CARD_STRINGS, ANONYMOUS_IMAGE } from '../../constants';
+import {
+  selectIsSelected,
+  toggleSelect,
+} from '../../features/selectedItemsSlice';
 
 import './CharacterCard.css';
-import lineOrnamentIcon from '../../assets/images/character-ornament.png';
-import endsOrnamentIcon from '../../assets/images/character-ends-ornament.png';
 
 interface CharacterCardProps {
   character: Character;
@@ -14,79 +18,72 @@ interface CharacterCardProps {
 }
 
 export function CharacterCard({ character, currentPage }: CharacterCardProps) {
-  const { name, house, species, gender, image } = character;
-  const hasDetails = !!(house || species || gender);
-
   const navigate = useNavigate();
-  const handleViewDetails = () => {
-    navigate(`/details/${character.id}?page=${currentPage}`);
+  const dispatch = useAppDispatch();
+  const isSelected = useAppSelector(selectIsSelected(character.id));
+
+  const handleCheckboxChange = () => {
+    dispatch(toggleSelect(character));
   };
 
+  const handleCardClick = () => {
+    navigate(`/${currentPage}/${character.id}`);
+  };
+
+  const houseIcon = getHouseIcon(character.house);
+  const houseName = character.house || CHARACTER_CARD_STRINGS.UNKNOWN;
+  const speciesIcon = getSpeciesIcon(character.species);
+  const speciesName = character.species || CHARACTER_CARD_STRINGS.UNKNOWN;
+  const genderIcon = getGenderIcon(character.gender);
+  const genderName = character.gender || CHARACTER_CARD_STRINGS.UNKNOWN;
+
   return (
-    <OrnateFrame noInnerPadding className="variant-container">
-      <div className="character-card">
-        <div className="character-image-container">
-          <img
-            src={image || ANONYMOUS_IMAGE}
-            onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
-            alt={name}
-            className="character-image"
+    <RoundedFrame className="variant-paper">
+      <div className="character-card" onClick={handleCardClick}>
+        {/* Чекбокс */}
+        <div className="character-card__checkbox">
+          <GoldCheckbox
+            checked={isSelected}
+            onChange={handleCheckboxChange}
+            id={`char-${character.id}`}
           />
         </div>
-        <div className="character-info-container">
-          <h3 className="character-name" title={name}>
-            {name}
-          </h3>
-          <div className="character__description">
-            <img
-              src={endsOrnamentIcon}
-              alt={SEARCH_STRINGS.SEARCH_PARTS_TOOLTIP}
-              className="character__ornament"
-            />
-            <p className="character__description-text">
-              {SEARCH_STRINGS.SEARCH_DESCRIPTION}
-            </p>
-            <img
-              src={endsOrnamentIcon}
-              alt={SEARCH_STRINGS.SEARCH_PARTS_TOOLTIP}
-              className="character__ornament character__ornament--mirrored"
-            />
-          </div>
+
+        {/* Изображение персонажа */}
+        <div className="character-card__image">
           <img
-            src={lineOrnamentIcon}
-            alt={SEARCH_STRINGS.SEARCH_LINE_TOOLTIP}
-            className="character-ornament"
+            src={character.image || ANONYMOUS_IMAGE}
+            onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
+            alt={character.name}
           />
-          <div className="character-details">
-            {hasDetails ? (
-              <>
-                {house && (
-                  <p className="character-details-text">
-                    <strong>{SEARCH_STRINGS.CARD_HOUSE_LABEL}:</strong> {house}
-                  </p>
-                )}
-                {species && (
-                  <p className="character-details-text">
-                    <strong>{SEARCH_STRINGS.CARD_SPECIES_LABEL}:</strong>{' '}
-                    {species}
-                  </p>
-                )}
-                {gender && (
-                  <p className="character-details-text">
-                    <strong>{SEARCH_STRINGS.CARD_GENDER_LABEL}:</strong>{' '}
-                    {gender}
-                  </p>
-                )}
-              </>
-            ) : (
-              <p className="character-details-text character-details-text--empty">
-                {UI_MESSAGES.NO_DETAILS}
-              </p>
-            )}
+        </div>
+
+        {/* Информация */}
+        <div className="character-card__info">
+          <div className="character-card__name magic-title-light">
+            {character.name}
           </div>
-          <ActionButton onClick={handleViewDetails}>View Details</ActionButton>
+          <div className="character-card__traits">
+            {/* Иконка и название факультета */}
+            <div className="trait-item">
+              <img src={houseIcon} alt={houseName} className="trait-icon" />
+              <span className="trait-name">{houseName}</span>
+            </div>
+
+            {/* Иконка и название вида */}
+            <div className="trait-item">
+              <img src={speciesIcon} alt={speciesName} className="trait-icon" />
+              <span className="trait-name">{speciesName}</span>
+            </div>
+
+            {/* Иконка и название пола */}
+            <div className="trait-item">
+              <img src={genderIcon} alt={genderName} className="trait-icon" />
+              <span className="trait-name">{genderName}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </OrnateFrame>
+    </RoundedFrame>
   );
 }

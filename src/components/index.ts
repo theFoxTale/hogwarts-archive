@@ -1,5 +1,7 @@
 export { AppHeader } from './AppHeader/AppHeader';
+
 export { AboutFlag } from './AboutFlag/AboutFlag';
+export { ThemeFlag } from './ThemeFlag/ThemeFlag';
 
 export { GoldCheckbox } from './GoldCheckbox/GoldCheckbox';
 

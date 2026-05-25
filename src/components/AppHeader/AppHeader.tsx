@@ -1,4 +1,4 @@
-import { AboutFlag } from '../../components';
+import { AboutFlag, ThemeFlag } from '../../components';
 import { APP_STRINGS } from '../../constants';
 
 import './AppHeader.css';
@@ -30,6 +30,7 @@ export function AppHeader() {
           className="app-header__ornament app-header__ornament--mirrored"
         />
       </div>
+      <ThemeFlag />
     </div>
   );
 }

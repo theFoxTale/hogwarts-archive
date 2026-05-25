@@ -1,5 +1,5 @@
 import { type ChangeEvent, type KeyboardEvent } from 'react';
-import { UI_MESSAGES } from '../../constants';
+import { UI_MESSAGES, SEARCH_STRINGS } from '../../constants';
 import { RoundedFrame } from '../RoundedFrame/RoundedFrame';
 
 import './SearchSection.css';
@@ -51,6 +51,7 @@ export function SearchSection({
               value={value}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
+              aria-label={SEARCH_STRINGS.SEARCH_DESCRIPTION}
             />
           </RoundedFrame>
 
@@ -58,7 +59,8 @@ export function SearchSection({
             <button
               className="clear-button"
               onClick={handleClear}
-              aria-label="Clear search"
+              aria-label={SEARCH_STRINGS.CLEAR_BUTTON_LABEL}
+              title={SEARCH_STRINGS.CLEAR_BUTTON_LABEL}
               type="button"
             >
               ✖
@@ -68,7 +70,7 @@ export function SearchSection({
 
         <RoundedFrame className="search-button-frame variant-gold">
           <button className="search-button" onClick={handleSearch}>
-            <img src={wandIcon} alt="" />
+            <img src={wandIcon} alt="" aria-hidden="true" />
             {UI_MESSAGES.SEARCH_BUTTON_TEXT}
           </button>
         </RoundedFrame>

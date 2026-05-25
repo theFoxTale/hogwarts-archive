@@ -4,6 +4,7 @@ import type { Character } from '../../api';
 
 import { getGenderIcon, getHouseIcon, getSpeciesIcon } from '../../utils';
 import { useAppDispatch, useAppSelector } from '../../store';
+import { CHARACTER_CARD_STRINGS } from '../../constants';
 import {
   selectIsSelected,
   toggleSelect,
@@ -61,14 +62,16 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
               className="trait-icon"
             />
             <span className="trait__name">
-              {character.species || 'Unknown'}
+              {character.species || CHARACTER_CARD_STRINGS.UNKNOWN}
             </span>
             <img
               src={getGenderIcon(character.gender)}
               alt={character.gender || 'gender'}
               className="trait-icon"
             />
-            <span className="trait__name">{character.gender || 'Unknown'}</span>
+            <span className="trait__name">
+              {character.gender || CHARACTER_CARD_STRINGS.UNKNOWN}
+            </span>
           </div>
         </div>
       </div>

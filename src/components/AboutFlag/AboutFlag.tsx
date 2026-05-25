@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { ABOUT_STRINGS } from '../../constants';
 
 import './AboutFlag.css';
 import flagTop from '../../assets/images/flag/flag-top.png';
@@ -19,7 +20,7 @@ export function AboutFlag() {
         style={{ backgroundImage: `url(${flagMiddle})` }}
       >
         <img src={aboutIcon} alt="" className="flag-icon" />
-        <span className="flag-text magic-title">ABOUT</span>
+        <span className="flag-text magic-title">{ABOUT_STRINGS.TEXT}</span>
       </div>
       <div className="flag-bottom">
         <img src={flagBottom} alt="" />

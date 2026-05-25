@@ -42,7 +42,7 @@ describe('Flyout tests', () => {
     const store = createStoreWithItems();
     renderWithStore(store);
     expect(
-      screen.queryByText(`${FLYOUT_STRINGS.SELECTED_LABEL}: 1`)
+      screen.queryByText(`${FLYOUT_STRINGS.SELECTED_LABEL} 1`)
     ).not.toBeInTheDocument();
   });
 
@@ -50,7 +50,7 @@ describe('Flyout tests', () => {
     const store = createStoreWithItems([mockHarryCharacter]);
     renderWithStore(store);
     expect(
-      screen.getByText(`${FLYOUT_STRINGS.SELECTED_LABEL}: 1`)
+      screen.getByText(`${FLYOUT_STRINGS.SELECTED_LABEL} 1`)
     ).toBeInTheDocument();
   });
 
@@ -58,7 +58,7 @@ describe('Flyout tests', () => {
     const store = createStoreWithItems(mockCharacters);
     renderWithStore(store);
     expect(
-      screen.getByText(`${FLYOUT_STRINGS.SELECTED_LABEL}: 2`)
+      screen.getByText(`${FLYOUT_STRINGS.SELECTED_LABEL} 2`)
     ).toBeInTheDocument();
   });
 

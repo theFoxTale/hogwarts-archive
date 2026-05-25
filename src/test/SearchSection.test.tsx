@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { vi } from 'vitest';
 
 import { SearchSection } from '../components';
-import { UI_MESSAGES } from '../constants';
+import { SEARCH_STRINGS, UI_MESSAGES } from '../constants';
 
 describe('SearchSection tests', () => {
   const mockOnSearch = vi.fn();
@@ -36,7 +36,9 @@ describe('SearchSection tests', () => {
 
   test('does not show clear button when input is empty', () => {
     render(<Wrapper />);
-    expect(screen.queryByLabelText(/clear search/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(SEARCH_STRINGS.CLEAR_BUTTON_LABEL)
+    ).not.toBeInTheDocument();
   });
 
   test('updates input value on user typing', async () => {
@@ -73,7 +75,9 @@ describe('SearchSection tests', () => {
     await userEvent.type(input, 'Harry');
     expect(input).toHaveValue('Harry');
 
-    const clearButton = screen.getByLabelText(/clear search/i);
+    const clearButton = screen.getByLabelText(
+      SEARCH_STRINGS.CLEAR_BUTTON_LABEL
+    );
     await userEvent.click(clearButton);
 
     expect(input).toHaveValue('');

@@ -1,6 +1,13 @@
-/* Основной фон — библиотека с затемнением */
+:root {
+  --bg-image: url('../assets/images/hogwarts-library-light.png');
+}
+
+[data-theme='dark'] {
+  --bg-image: url('../assets/images/hogwarts-library-dark.png');
+}
+
 body {
-  background: url('../assets/images/hogwarts-library.png');
+  background-image: var(--bg-image);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

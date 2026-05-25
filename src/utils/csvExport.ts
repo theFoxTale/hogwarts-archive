@@ -39,7 +39,9 @@ export function exportToCSV(characters: Character[]): void {
 
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', CSV_EXPORT.FILE_NAME);
+
+  const fileName = `${characters.length}${CSV_EXPORT.FILE_NAME}.csv`;
+  link.setAttribute('download', fileName);
 
   document.body.appendChild(link);
   link.click();

@@ -48,7 +48,7 @@ describe('csvExport tests', () => {
 
     expect(setAttributeSpy).toHaveBeenCalledWith(
       'download',
-      CSV_EXPORT.FILE_NAME
+      `1${CSV_EXPORT.FILE_NAME}.csv`
     );
 
     expect(clickSpy).toHaveBeenCalledTimes(1);

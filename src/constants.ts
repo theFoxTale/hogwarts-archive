@@ -66,7 +66,7 @@ export const FLYOUT_STRINGS = {
 } as const;
 
 export const CSV_EXPORT = {
-  FILE_NAME: 'potter_api_characters.csv',
+  FILE_NAME: '_items',
 } as const;
 
 export const PAGINATION_STRINGS = {

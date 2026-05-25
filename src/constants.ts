@@ -62,3 +62,7 @@ export const FLYOUT_STRINGS = {
   UNSELECT_ALL: 'Unselect all',
   DOWNLOAD_CSV: 'Download CSV',
 } as const;
+
+export const CSV_EXPORT = {
+  FILE_NAME: 'potter_api_characters.csv',
+} as const;

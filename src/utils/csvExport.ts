@@ -1,4 +1,5 @@
 import type { Character } from '../api';
+import { CSV_EXPORT } from '../constants';
 
 function escapeCSV(value: string | null | undefined): string {
   if (value == null) return '';
@@ -20,13 +21,13 @@ export function exportToCSV(characters: Character[]): void {
 
   const headers = ['Name', 'House', 'Species', 'Gender', 'Details URL'];
 
-  const rows = characters.map((char) => {
-    const detailsUrl = `${window.location.origin}/details/${char.id}`;
+  const rows = characters.map((myCharacter) => {
+    const detailsUrl = `${window.location.origin}/details/${myCharacter.id}`;
     return [
-      escapeCSV(char.name),
-      escapeCSV(char.house),
-      escapeCSV(char.species),
-      escapeCSV(char.gender),
+      escapeCSV(myCharacter.name),
+      escapeCSV(myCharacter.house),
+      escapeCSV(myCharacter.species),
+      escapeCSV(myCharacter.gender),
       escapeCSV(detailsUrl),
     ].join(';');
   });
@@ -38,7 +39,7 @@ export function exportToCSV(characters: Character[]): void {
 
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', 'potter_api_characters.csv');
+  link.setAttribute('download', CSV_EXPORT.FILE_NAME);
 
   document.body.appendChild(link);
   link.click();

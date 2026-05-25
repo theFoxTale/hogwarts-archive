@@ -1,6 +1,7 @@
 import { type ChangeEvent, type KeyboardEvent } from 'react';
 import { UI_MESSAGES, SEARCH_STRINGS } from '../../constants';
 import { RoundedFrame } from '../RoundedFrame/RoundedFrame';
+import { useTheme } from '../../contexts';
 
 import './SearchSection.css';
 import wandIcon from '../../assets/images/wand-accio.png';
@@ -16,6 +17,9 @@ export function SearchSection({
   onChange,
   onSearch,
 }: SearchSectionProps) {
+  const { theme } = useTheme();
+  const variant = theme === 'light' ? 'variant-gold' : 'variant-dark';
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
@@ -68,7 +72,7 @@ export function SearchSection({
           )}
         </div>
 
-        <RoundedFrame className="search-button-frame variant-gold">
+        <RoundedFrame className={`search-button-frame ${variant}`}>
           <button className="search-button" onClick={handleSearch}>
             <img src={wandIcon} alt="" aria-hidden="true" />
             {UI_MESSAGES.SEARCH_BUTTON_TEXT}

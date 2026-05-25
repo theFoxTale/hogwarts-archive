@@ -224,17 +224,52 @@
 .rounded-frame.variant-gold {
   --frame-bg: linear-gradient(
     to bottom,
-    rgba(58, 40, 21, 0.96),
-    rgba(26, 16, 10, 0.98)
+    #f6e2b3 0%,
+    #ddb56a 18%,
+    #b98333 48%,
+    #8b5a22 78%,
+    #5c3813 100%
   );
 
-  --frame-hover-shadow-1: 0 0 4px rgba(212, 175, 55, 0.18);
-  --frame-hover-shadow-2: 0 2px 4px rgba(0, 0, 0, 0.65);
+  --frame-inner-highlight:
+    inset 0 1px 0 rgba(255, 245, 210, 0.7),
+    inset 0 2px 4px rgba(255, 230, 160, 0.22),
+    inset 0 -3px 6px rgba(70, 40, 10, 0.45);
 
-  --frame-border-glow: brightness(1.2)
-    drop-shadow(0 0 6px rgba(255, 210, 120, 0.35));
+  --frame-hover-shadow-1: 0 0 12px rgba(214, 170, 90, 0.22);
 
-  --frame-hover-scale: 1.05;
+  --frame-hover-shadow-2: 0 6px 16px rgba(0, 0, 0, 0.22);
+
+  --frame-border-glow: brightness(1.06)
+    drop-shadow(0 0 4px rgba(255, 220, 150, 0.18));
+
+  --frame-hover-scale: 1.015;
+}
+
+.rounded-frame.variant-gold::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background-image: url('/src/assets/textures/noise.jpg');
+
+  background-size: cover;
+
+  opacity: 0.5;
+
+  mix-blend-mode: overlay;
+
+  clip-path: var(--frame-shape);
+
+  pointer-events: none;
+
+  z-index: 1;
+}
+
+.rounded-frame.variant-gold:hover:not(.disabled)::after {
+  background-image: url('/src/assets/textures/second-noise.jpg');
+  opacity: 0.4;
 }
 
 /* =========================================

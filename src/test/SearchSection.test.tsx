@@ -6,7 +6,7 @@ import { vi } from 'vitest';
 import { SearchSection } from '../components';
 import { SEARCH_STRINGS, UI_MESSAGES } from '../constants';
 
-describe('SearchSection tests', () => {
+describe('SearchSection', () => {
   const mockOnSearch = vi.fn();
 
   function Wrapper() {

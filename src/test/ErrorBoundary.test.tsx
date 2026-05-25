@@ -11,7 +11,7 @@ const ProblemChild = () => {
   throw new Error(MY_TEST_ERROR);
 };
 
-describe('ErrorBoundary tests', () => {
+describe('ErrorBoundary', () => {
   /*
    В моём коде когда ErrorBoundary ловит ошибку, он вызывает componentDidCatch,
    который логирует ошибку в консоль через console.error.

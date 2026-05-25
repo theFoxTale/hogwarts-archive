@@ -52,7 +52,7 @@ const renderWithRouter = (initialEntries = ['/']) => {
   );
 };
 
-describe('HomePage Integration tests', () => {
+describe('HomePage Integration', () => {
   beforeEach(() => {
     vi.mocked(searchCharacters).mockClear();
     localStorage.clear();

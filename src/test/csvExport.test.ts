@@ -2,7 +2,7 @@ import { exportToCSV } from '../utils';
 import { CSV_EXPORT } from '../constants';
 import { mockHarryCharacter } from './mocks/api.ts';
 
-describe('csvExport tests', () => {
+describe('csvExport', () => {
   let createObjectURLSpy: ReturnType<typeof vi.spyOn>;
   let revokeObjectURLSpy: ReturnType<typeof vi.spyOn>;
   let setAttributeSpy: ReturnType<typeof vi.fn>;

@@ -12,7 +12,7 @@ const TestComponent = () => {
   );
 };
 
-describe('ThemeContext tests', () => {
+describe('ThemeContext', () => {
   beforeEach(() => {
     localStorage.clear();
     document.documentElement.removeAttribute('data-theme');

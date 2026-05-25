@@ -24,7 +24,7 @@ const mockSecondCharacter: Character = {
   image: null,
 };
 
-describe('selectedItemsSlice tests', () => {
+describe('selectedItemsSlice', () => {
   test('should add item on toggleSelect if not present', () => {
     const initialState = {};
     const newState = selectedItemsReducer(

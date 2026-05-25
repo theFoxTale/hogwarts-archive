@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ErrorButton } from '../components';
 
-describe('ErrorButton tests', () => {
+describe('ErrorButton', () => {
   test('renders button and calls onSimulateError on click', async () => {
     const mockSimulate = vi.fn();
     render(<ErrorButton onSimulateError={mockSimulate} />);

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { Pagination } from '../components';
 
-describe('Pagination tests', () => {
+describe('Pagination', () => {
   const mockOnPrev = vi.fn();
   const mockOnNext = vi.fn();
 

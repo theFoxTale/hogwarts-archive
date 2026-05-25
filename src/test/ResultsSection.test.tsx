@@ -15,7 +15,7 @@ const createEmptyStore = () =>
     preloadedState: { selectedItems: {} },
   });
 
-describe('ResultsSection tests', () => {
+describe('ResultsSection', () => {
   test('shows loading indicator when isLoading is true', () => {
     render(
       <MemoryRouter>

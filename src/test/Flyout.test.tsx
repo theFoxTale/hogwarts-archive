@@ -37,7 +37,7 @@ const renderWithStore = (store: ReturnType<typeof createStoreWithItems>) => {
   );
 };
 
-describe('Flyout tests', () => {
+describe('Flyout', () => {
   test('does not render when no items selected', () => {
     const store = createStoreWithItems();
     renderWithStore(store);

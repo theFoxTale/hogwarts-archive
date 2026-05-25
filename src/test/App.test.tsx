@@ -15,7 +15,7 @@ const createStore = () =>
     preloadedState: { selectedItems: {} },
   });
 
-describe('App tests', () => {
+describe('App', () => {
   test('renders without crashing and shows header content', () => {
     render(
       <Provider store={createStore()}>

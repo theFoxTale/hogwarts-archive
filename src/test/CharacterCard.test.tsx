@@ -50,7 +50,7 @@ const renderWithStore = (ui: React.ReactElement, store = createTestStore()) => {
   );
 };
 
-describe('CharacterCard tests', () => {
+describe('CharacterCard', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
   });

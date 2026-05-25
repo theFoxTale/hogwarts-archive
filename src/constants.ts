@@ -40,7 +40,7 @@ export const UI_MESSAGES = {
   NO_DETAILS: 'No records in the magical archives',
 } as const;
 
-export const ANONYMOUS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.jpg`;
+export const ANONYMOUS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.png`;
 
 export const LOADING_DELAY = {
   IS_SIMULATED: true,

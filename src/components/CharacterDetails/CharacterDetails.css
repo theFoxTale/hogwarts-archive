@@ -20,7 +20,7 @@
 }
 
 .details-image {
-  width: 150px;
+  width: auto;
   height: 150px;
   object-fit: cover;
   border-radius: 8px;

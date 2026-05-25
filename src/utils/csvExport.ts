@@ -1,7 +1,7 @@
 import type { Character } from '../api';
 import { CSV_EXPORT } from '../constants';
 
-function escapeCSV(value: string | null | undefined): string {
+export function escapeCSV(value: string | null | undefined): string {
   if (value == null) return '';
 
   const stringValue = String(value);

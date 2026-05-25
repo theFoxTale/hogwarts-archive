@@ -1,4 +1,4 @@
-import { exportToCSV } from '../utils';
+import { escapeCSV, exportToCSV } from '../utils';
 import { CSV_EXPORT } from '../constants';
 import { mockHarryCharacter } from './mocks/api.ts';
 
@@ -66,5 +66,21 @@ describe('csvExport', () => {
     expect(document.createElement).not.toHaveBeenCalled();
     expect(appendChildSpy).not.toHaveBeenCalled();
     expect(removeChildSpy).not.toHaveBeenCalled();
+  });
+
+  describe('escapeCSV', () => {
+    test('returns empty string for null/undefined', () => {
+      expect(escapeCSV(null)).toBe('');
+      expect(escapeCSV(undefined)).toBe('');
+    });
+
+    test('returns string as-is if no special characters', () => {
+      expect(escapeCSV('simple')).toBe('simple');
+    });
+
+    test('escapes commas, quotes, and newlines', () => {
+      expect(escapeCSV('Hello, "world"')).toBe('"Hello, ""world"""');
+      expect(escapeCSV('Line1\nLine2')).toBe('"Line1\nLine2"');
+    });
   });
 });

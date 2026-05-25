@@ -1,7 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { vi } from 'vitest';
+
+import { Provider } from 'react-redux';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { configureStore } from '@reduxjs/toolkit';
 
 import {
   mockCharacters,
@@ -9,9 +12,12 @@ import {
   mockSearchSecondResponse,
 } from './mocks/api';
 
+import selectedItemsReducer from '../features/selectedItemsSlice';
 import { LOCAL_STORAGE_KEYS, UI_MESSAGES } from '../constants';
 import { searchCharacters } from '../api';
+
 import { HomePage } from '../pages';
+import { ThemeProvider } from '../contexts';
 
 vi.mock('../api/service', () => ({
   searchCharacters: vi.fn(),
@@ -26,14 +32,23 @@ vi.mock('../constants', async () => {
   };
 });
 
-// Обёртка с правильными маршрутами для поддержки useParams
+const createEmptyStore = () =>
+  configureStore({
+    reducer: { selectedItems: selectedItemsReducer },
+    preloadedState: { selectedItems: {} },
+  });
+
 const renderWithRouter = (initialEntries = ['/']) => {
   return render(
-    <MemoryRouter initialEntries={initialEntries}>
-      <Routes>
-        <Route path="/:page?" element={<HomePage />} />
-      </Routes>
-    </MemoryRouter>
+    <Provider store={createEmptyStore()}>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={initialEntries}>
+          <Routes>
+            <Route path="/:page?" element={<HomePage />} />
+          </Routes>
+        </MemoryRouter>
+      </ThemeProvider>
+    </Provider>
   );
 };
 
@@ -250,7 +265,9 @@ describe('HomePage Integration tests', () => {
     const errorButton = screen.getByLabelText(/simulate error/i);
     await userEvent.click(errorButton);
 
-    expect(screen.getByText(UI_MESSAGES.FALLBACK_TITLE)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(UI_MESSAGES.FALLBACK_TITLE)).toBeInTheDocument();
+    });
     expect(screen.getByText(UI_MESSAGES.TRY_AGAIN)).toBeInTheDocument();
 
     const tryAgainButton = screen.getByRole('button', {

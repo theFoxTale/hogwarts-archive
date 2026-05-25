@@ -1,12 +1,17 @@
+import { vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { vi } from 'vitest';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 
 import { mockSearchResponse } from './mocks/api';
 
+import selectedItemsReducer from '../features/selectedItemsSlice';
 import { UI_MESSAGES } from '../constants';
 import { searchCharacters } from '../api';
+
 import { HomePage } from '../pages';
+import { ThemeProvider } from '../contexts';
 
 vi.mock('../api/service', () => ({
   searchCharacters: vi.fn(),
@@ -20,6 +25,12 @@ vi.mock('../constants', async () => {
   };
 });
 
+const createEmptyStore = () =>
+  configureStore({
+    reducer: { selectedItems: selectedItemsReducer },
+    preloadedState: { selectedItems: {} },
+  });
+
 describe('HomePage with simulated loading delay', () => {
   beforeEach(() => {
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
@@ -31,10 +42,15 @@ describe('HomePage with simulated loading delay', () => {
 
   test('shows loading indicator during simulated delay and hides after', async () => {
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={createEmptyStore()}>
+        <ThemeProvider>
+          <MemoryRouter>
+            <HomePage />
+          </MemoryRouter>
+        </ThemeProvider>
+      </Provider>
     );
+
     expect(screen.getByText(UI_MESSAGES.LOADING)).toBeInTheDocument();
 
     await waitFor(() => {

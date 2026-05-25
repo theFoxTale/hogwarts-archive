@@ -5,6 +5,7 @@ import {
   selectSelectedItemsArray,
 } from '../../features/selectedItemsSlice';
 import { ActionButton, RoundedFrame } from '../../components';
+import { FLYOUT_STRINGS } from '../../constants';
 import { exportToCSV } from '../../utils';
 
 import './Flyout.css';
@@ -30,11 +31,15 @@ export function Flyout() {
     <RoundedFrame className="flyout__frame variant-container">
       <div className="flyout__content">
         <span className="flyout__count magic-subtitle">
-          Selected: {selectedCount}
+          {FLYOUT_STRINGS.SELECTED_LABEL}: {selectedCount}
         </span>
         <div className="flyout__actions">
-          <ActionButton onClick={handleUnselectAll}>Unselect all</ActionButton>
-          <ActionButton onClick={handleDownload}>Download CSV</ActionButton>
+          <ActionButton onClick={handleUnselectAll}>
+            {FLYOUT_STRINGS.UNSELECT_ALL}
+          </ActionButton>
+          <ActionButton onClick={handleDownload}>
+            {FLYOUT_STRINGS.DOWNLOAD_CSV}
+          </ActionButton>
         </div>
       </div>
     </RoundedFrame>

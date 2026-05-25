@@ -40,7 +40,6 @@ export const UI_MESSAGES = {
   NO_DETAILS: 'No records in the magical archives',
 } as const;
 
-// constants.ts
 export const ANONYMOUS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.jpg`;
 
 export const LOADING_DELAY = {
@@ -56,4 +55,10 @@ export const SEARCH_STRINGS = {
   CARD_HOUSE_LABEL: 'House',
   CARD_SPECIES_LABEL: 'Species',
   CARD_GENDER_LABEL: 'Gender',
+} as const;
+
+export const FLYOUT_STRINGS = {
+  SELECTED_LABEL: 'Selected',
+  UNSELECT_ALL: 'Unselect all',
+  DOWNLOAD_CSV: 'Download CSV',
 } as const;

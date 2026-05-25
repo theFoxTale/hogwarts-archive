@@ -1,10 +1,17 @@
+import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { Pagination } from '../components';
 
 describe('Pagination tests', () => {
   const mockOnPrev = vi.fn();
   const mockOnNext = vi.fn();
+
+  beforeEach(() => {
+    mockOnPrev.mockClear();
+    mockOnNext.mockClear();
+  });
 
   test('displays current page and total pages', () => {
     render(
@@ -33,6 +40,21 @@ describe('Pagination tests', () => {
     );
     const prevButton = screen.getByRole('button', { name: /previous/i });
     expect(prevButton).toBeDisabled();
+  });
+
+  test('disables "Next" button when isNextAvailable is false', () => {
+    render(
+      <Pagination
+        currentPage={10}
+        totalPages={10}
+        isPrevAvailable={true}
+        isNextAvailable={false}
+        onPrev={mockOnPrev}
+        onNext={mockOnNext}
+      />
+    );
+    const nextButton = screen.getByRole('button', { name: /next/i });
+    expect(nextButton).toBeDisabled();
   });
 
   test('calls onPrev when "Previous" button clicked and enabled', async () => {

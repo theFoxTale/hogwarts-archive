@@ -134,7 +134,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 
-  color: #f4d28c;
+  color: var(--button-text);
 
   background: transparent;
   border: none;

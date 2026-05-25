@@ -1,3 +1,27 @@
+:root {
+  --magic-subtitle-gradient: linear-gradient(
+    to bottom,
+    #5b3412 0%,
+    #8c5a24 18%,
+    #c89b52 42%,
+    #9d6728 64%,
+    #4a2a0d 100%
+  );
+
+  --magic-title-shadow: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+}
+
+[data-theme='light'] {
+  --magic-subtitle-gradient: linear-gradient(
+    to bottom,
+    #4e2d10 0%,
+    #7e5421 32%,
+    #331d09 100%
+  );
+
+  --magic-title-shadow: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+}
+
 .magic-title {
   letter-spacing: 0.12em;
 
@@ -29,19 +53,12 @@
   position: relative;
   user-select: none;
 
-  background: linear-gradient(
-    to bottom,
-    #ffe8a3 0%,
-    #e0b85c 18%,
-    #b7792b 42%,
-    #7a4a14 72%,
-    #4b2d0b 100%
-  );
+  background: var(--magic-subtitle-gradient);
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+  filter: var(--magic-title-shadow);
 }
 
 .magic-title-light {
@@ -62,12 +79,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  /* главное изменение */
   text-shadow:
-        /* верхний тёплый блик */
     0 1px 0 rgba(90, 55, 20, 0.1),
-    /* внутренний объём */ 0 2px 2px rgba(90, 55, 20, 0.22),
-    /* нижняя глубина */ 0 3px 6px rgba(35, 18, 5, 0.28);
+    0 2px 2px rgba(90, 55, 20, 0.22),
+    0 3px 6px rgba(35, 18, 5, 0.28);
 
   filter: saturate(0.92) contrast(1.08);
 }

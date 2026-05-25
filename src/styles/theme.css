@@ -15,6 +15,7 @@
   --text-muted: #a7824d;
   --dark-text: #2e251e;
   --placeholder-color: rgba(241, 231, 204, 0.45);
+  --button-text: #f4d28c;
 
   /* Рамки и тени */
   --border-gold: rgba(170, 110, 45, 0.65);
@@ -42,4 +43,6 @@
 
 [data-theme='light'] {
   --placeholder-color: rgba(90, 55, 30, 0.8);
+  --text-secondary: #2e251e;
+  --button-text: #2e251e;
 }

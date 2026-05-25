@@ -63,7 +63,7 @@ export async function searchCharacters(
   const total = filtered.length;
 
   if (total === 0) {
-    throw new Error(ERROR_MESSAGES.NOT_FOUND);
+    return { items: [], pages: null };
   }
 
   const pagedItems = paginateItems(filtered, page, itemsPerPage);

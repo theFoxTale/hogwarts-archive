@@ -166,6 +166,14 @@ describe('HomePage Integration tests', () => {
     });
   });
 
+  test('shows no results message when search returns empty list', async () => {
+    vi.mocked(searchCharacters).mockResolvedValue({ items: [], pages: null });
+    renderWithRouter(['/']);
+    await waitFor(() => {
+      expect(screen.getByText(UI_MESSAGES.NO_RESULTS)).toBeInTheDocument();
+    });
+  });
+
   test('pagination: next page loads and saves page', async () => {
     vi.mocked(searchCharacters)
       .mockResolvedValueOnce(mockSearchResponse)

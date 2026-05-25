@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { vi } from 'vitest';
 
+import { ThemeProvider } from '../contexts';
 import { SearchSection } from '../components';
 import { SEARCH_STRINGS, UI_MESSAGES } from '../constants';
 
@@ -12,11 +13,13 @@ describe('SearchSection', () => {
   function Wrapper() {
     const [value, setValue] = useState('');
     return (
-      <SearchSection
-        value={value}
-        onChange={setValue}
-        onSearch={mockOnSearch}
-      />
+      <ThemeProvider>
+        <SearchSection
+          value={value}
+          onChange={setValue}
+          onSearch={mockOnSearch}
+        />
+      </ThemeProvider>
     );
   }
 

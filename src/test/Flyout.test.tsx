@@ -5,6 +5,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import selectedItemsReducer, { clearAll } from '../features/selectedItemsSlice';
 import * as csvExport from '../utils/csvExport';
 import { FLYOUT_STRINGS } from '../constants';
+
+import { ThemeProvider } from '../contexts';
 import { Flyout } from '../components';
 
 import type { Character } from '../api';
@@ -32,7 +34,9 @@ const createStoreWithItems = (items: Character[] = []) => {
 const renderWithStore = (store: ReturnType<typeof createStoreWithItems>) => {
   return render(
     <Provider store={store}>
-      <Flyout />
+      <ThemeProvider>
+        <Flyout />
+      </ThemeProvider>
     </Provider>
   );
 };

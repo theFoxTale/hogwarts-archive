@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
+import { vi } from 'vitest';
 
 import { SearchSection } from '../components';
 import { UI_MESSAGES } from '../constants';

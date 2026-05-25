@@ -18,6 +18,15 @@ export const mockHermioneCharacter: Character = {
   image: null,
 };
 
+export const mockLunaCharacter: Character = {
+  id: 'luna-1',
+  name: 'Luna Lovegood',
+  house: 'Ravenclaw',
+  species: 'Human',
+  gender: 'Female',
+  image: null,
+};
+
 export const mockCharacters: Character[] = [
   mockHarryCharacter,
   mockHermioneCharacter,

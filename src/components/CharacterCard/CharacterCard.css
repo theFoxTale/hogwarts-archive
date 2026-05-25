@@ -17,17 +17,21 @@
   cursor: pointer;
 }
 
-/* Иконка факультета */
-.character-card__house-icon {
+.character-card__image {
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.character-card__house-icon img {
+.character-card__image img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  display: block;
 }
 
 /* Информация о персонаже */
@@ -43,10 +47,18 @@
   margin-bottom: 6px;
 }
 
+/* Строка характеристик */
 .character-card__traits {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.trait-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .trait-icon {
@@ -56,9 +68,22 @@
   opacity: 0.8;
 }
 
-.trait__name {
+.trait-name {
   font-family: var(--font-body), serif;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: bold;
   color: var(--dark-text);
+}
+
+@media (max-width: 480px) {
+  .character-card__traits {
+    gap: 8px;
+  }
+  .trait-name {
+    font-size: 0.7rem;
+  }
+  .character-card__image {
+    width: 48px;
+    height: 48px;
+  }
 }

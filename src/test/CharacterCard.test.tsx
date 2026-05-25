@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 import { CharacterCard } from '../components';
 import selectedItemsReducer, {
@@ -55,14 +55,14 @@ describe('CharacterCard', () => {
     mockNavigate.mockClear();
   });
 
-  test('renders character name and fields', () => {
+  test('renders character name, species, gender, and house text', () => {
     renderWithStore(
       <CharacterCard character={mockLunaCharacter} currentPage={1} />
     );
     expect(screen.getByText('Luna Lovegood')).toBeInTheDocument();
     expect(screen.getByText('Human')).toBeInTheDocument();
     expect(screen.getByText('Female')).toBeInTheDocument();
-    expect(screen.getByAltText('Ravenclaw')).toBeInTheDocument();
+    expect(screen.getByText('Ravenclaw')).toBeInTheDocument(); // название факультета
   });
 
   test('displays fallback for missing fields', () => {
@@ -81,8 +81,10 @@ describe('CharacterCard', () => {
 
     expect(screen.getByText('Dobby')).toBeInTheDocument();
     expect(screen.getByText('Elf')).toBeInTheDocument();
-    expect(screen.getByText('Unknown')).toBeInTheDocument();
-    expect(screen.getByAltText('house')).toBeInTheDocument();
+
+    // первый - для gender, второй - для факультета
+    const unknownElements = screen.getAllByText('Unknown');
+    expect(unknownElements).toHaveLength(2);
   });
 
   test('checkbox reflects selection state from Redux', () => {
@@ -91,6 +93,7 @@ describe('CharacterCard', () => {
       <CharacterCard character={mockLunaCharacter} currentPage={1} />,
       store
     );
+
     const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
     expect(checkbox.checked).toBe(true);
   });
@@ -98,12 +101,15 @@ describe('CharacterCard', () => {
   test('clicking checkbox toggles selection and does not navigate', () => {
     const store = createTestStore();
     const dispatchSpy = vi.spyOn(store, 'dispatch');
+
     renderWithStore(
       <CharacterCard character={mockLunaCharacter} currentPage={1} />,
       store
     );
+
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
+
     expect(dispatchSpy).toHaveBeenCalledWith(toggleSelect(mockLunaCharacter));
     expect(mockNavigate).not.toHaveBeenCalled();
   });
@@ -112,8 +118,10 @@ describe('CharacterCard', () => {
     renderWithStore(
       <CharacterCard character={mockLunaCharacter} currentPage={3} />
     );
+
     const clickableArea = document.querySelector('.character-card');
     expect(clickableArea).toBeInTheDocument();
+
     fireEvent.click(clickableArea!);
     expect(mockNavigate).toHaveBeenCalledWith('/3/luna-1');
   });
@@ -122,35 +130,62 @@ describe('CharacterCard', () => {
     renderWithStore(
       <CharacterCard character={mockLunaCharacter} currentPage={1} />
     );
+
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
+
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
-  //TODO: return image in character card
-  test.skip('uses anonymous image when image is null', () => {
-    // renderWithRouter(
-    //   <CharacterCard character={mockCharacter} currentPage={1} />
-    // );
-    // const img: HTMLImageElement = screen.getByAltText('Luna Lovegood');
-    // expect(img.src).toContain(ANONYMOUS_IMAGE);
+  test('displays character image (avatar) and handles missing image', async () => {
+    const characterWithoutImage: Character = {
+      ...mockLunaCharacter,
+      image: null,
+    };
+
+    renderWithStore(
+      <CharacterCard character={characterWithoutImage} currentPage={1} />
+    );
+
+    const img = screen.getByRole('img', { name: 'Luna Lovegood' });
+    expect(img).toHaveAttribute('src', ANONYMOUS_IMAGE);
   });
 
-  test.skip('uses provided image when available', () => {
-    // const withImage = {
-    //   ...mockCharacter,
-    //   image: 'https://example.com/luna.jpg',
-    // };
-    // renderWithRouter(<CharacterCard character={withImage} currentPage={1} />);
-    // const img: HTMLImageElement = screen.getByAltText('Luna Lovegood');
-    // expect(img.src).toBe('https://example.com/luna.jpg');
+  test('displays provided image when available', () => {
+    const characterWithImage: Character = {
+      ...mockLunaCharacter,
+      image: 'https://example.com/luna.jpg',
+    };
+
+    renderWithStore(
+      <CharacterCard character={characterWithImage} currentPage={1} />
+    );
+
+    const img = screen.getByRole('img', { name: 'Luna Lovegood' });
+    expect(img).toHaveAttribute('src', 'https://example.com/luna.jpg');
   });
 
-  test.skip('uses anonymous image when image loading fails', () => {
+  test('falls back to anonymous image on load error', async () => {
     renderWithStore(
       <CharacterCard character={mockLunaCharacter} currentPage={1} />
     );
-    const img = screen.getByAltText('Luna Lovegood') as HTMLImageElement;
-    expect(img.src).toContain(ANONYMOUS_IMAGE);
+
+    const img = screen.getByRole('img', { name: 'Luna Lovegood' });
+    fireEvent.error(img);
+
+    await waitFor(() => {
+      expect(img).toHaveAttribute('src', ANONYMOUS_IMAGE);
+    });
+  });
+
+  test('renders house icon (img with alt text of house name)', () => {
+    renderWithStore(
+      <CharacterCard character={mockLunaCharacter} currentPage={1} />
+    );
+
+    const houseIcon = screen.getByAltText('Ravenclaw');
+
+    expect(houseIcon).toBeInTheDocument();
+    expect(houseIcon.closest('.trait-item')).toBeInTheDocument();
   });
 });

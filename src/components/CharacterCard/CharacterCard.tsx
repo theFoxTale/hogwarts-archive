@@ -4,7 +4,7 @@ import type { Character } from '../../api';
 
 import { getGenderIcon, getHouseIcon, getSpeciesIcon } from '../../utils';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { CHARACTER_CARD_STRINGS } from '../../constants';
+import { CHARACTER_CARD_STRINGS, ANONYMOUS_IMAGE } from '../../constants';
 import {
   selectIsSelected,
   toggleSelect,
@@ -30,6 +30,13 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
     navigate(`/${currentPage}/${character.id}`);
   };
 
+  const houseIcon = getHouseIcon(character.house);
+  const houseName = character.house || CHARACTER_CARD_STRINGS.UNKNOWN;
+  const speciesIcon = getSpeciesIcon(character.species);
+  const speciesName = character.species || CHARACTER_CARD_STRINGS.UNKNOWN;
+  const genderIcon = getGenderIcon(character.gender);
+  const genderName = character.gender || CHARACTER_CARD_STRINGS.UNKNOWN;
+
   return (
     <RoundedFrame className="variant-paper">
       <div className="character-card" onClick={handleCardClick}>
@@ -42,11 +49,12 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
           />
         </div>
 
-        {/* Иконка факультета */}
-        <div className="character-card__house-icon">
+        {/* Изображение персонажа */}
+        <div className="character-card__image">
           <img
-            src={getHouseIcon(character.house)}
-            alt={character.house || 'house'}
+            src={character.image || ANONYMOUS_IMAGE}
+            onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
+            alt={character.name}
           />
         </div>
 
@@ -56,22 +64,23 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
             {character.name}
           </div>
           <div className="character-card__traits">
-            <img
-              src={getSpeciesIcon(character.species)}
-              alt={character.species || 'species'}
-              className="trait-icon"
-            />
-            <span className="trait__name">
-              {character.species || CHARACTER_CARD_STRINGS.UNKNOWN}
-            </span>
-            <img
-              src={getGenderIcon(character.gender)}
-              alt={character.gender || 'gender'}
-              className="trait-icon"
-            />
-            <span className="trait__name">
-              {character.gender || CHARACTER_CARD_STRINGS.UNKNOWN}
-            </span>
+            {/* Иконка и название факультета */}
+            <div className="trait-item">
+              <img src={houseIcon} alt={houseName} className="trait-icon" />
+              <span className="trait-name">{houseName}</span>
+            </div>
+
+            {/* Иконка и название вида */}
+            <div className="trait-item">
+              <img src={speciesIcon} alt={speciesName} className="trait-icon" />
+              <span className="trait-name">{speciesName}</span>
+            </div>
+
+            {/* Иконка и название пола */}
+            <div className="trait-item">
+              <img src={genderIcon} alt={genderName} className="trait-icon" />
+              <span className="trait-name">{genderName}</span>
+            </div>
           </div>
         </div>
       </div>

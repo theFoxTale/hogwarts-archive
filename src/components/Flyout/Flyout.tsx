@@ -5,6 +5,7 @@ import {
   selectSelectedItemsArray,
 } from '../../features/selectedItemsSlice';
 import { ActionButton, RoundedFrame } from '../../components';
+import { exportToCSV } from '../../utils';
 
 import './Flyout.css';
 
@@ -22,7 +23,7 @@ export function Flyout() {
   };
 
   const handleDownload = () => {
-    console.log('CLICK DOWNLOAD with selectedItems: ', selectedItems);
+    exportToCSV(selectedItems);
   };
 
   return (

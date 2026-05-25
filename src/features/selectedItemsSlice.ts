@@ -1,4 +1,8 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSelector,
+  createSlice,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
 import type { Character } from '../api';
 
 export interface SelectedItemsState {
@@ -33,9 +37,10 @@ export const selectSelectedItems = (state: {
   selectedItems: SelectedItemsState;
 }) => state.selectedItems;
 
-export const selectSelectedItemsArray = (state: {
-  selectedItems: SelectedItemsState;
-}) => Object.values(state.selectedItems);
+export const selectSelectedItemsArray = createSelector(
+  [selectSelectedItems],
+  (selectedItems) => Object.values(selectedItems)
+);
 
 export const selectSelectedCount = (state: {
   selectedItems: SelectedItemsState;
@@ -44,4 +49,3 @@ export const selectSelectedCount = (state: {
 export const selectIsSelected =
   (id: string) => (state: { selectedItems: SelectedItemsState }) =>
     !!state.selectedItems[id];
-export class selectedItemsReducer {}

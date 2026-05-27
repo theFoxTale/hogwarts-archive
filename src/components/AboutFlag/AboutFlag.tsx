@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../contexts';
 import { ABOUT_STRINGS } from '../../constants';
 
 import './AboutFlag.css';
@@ -12,14 +13,13 @@ import flagMiddleLight from '../../assets/images/flag/light/flag-middle.png';
 import flagBottomLight from '../../assets/images/flag/light/flag-bottom.png';
 
 import aboutIcon from '../../assets/images/flag/about-icon.png';
-import { useTheme } from '../../contexts';
 
 export function AboutFlag() {
   const navigate = useNavigate();
   const { theme } = useTheme();
 
   return (
-    <div className="about-flag" onClick={() => navigate('/about')}>
+    <div className="flag about-flag" onClick={() => navigate('/about')}>
       <div className="flag-top">
         <img src={theme === 'light' ? flagTopLight : flagTopDark} alt="" />
       </div>

@@ -41,9 +41,7 @@ export function SearchSection({
 
   return (
     <div className="search-section">
-      <p className="search-section-title magic-subtitle">
-        {UI_MESSAGES.SEARCH_HEADER}
-      </p>
+      <p className="magic-subtitle">{UI_MESSAGES.SEARCH_HEADER}</p>
 
       <div className="search-section-container">
         <div className="search-input-wrapper">

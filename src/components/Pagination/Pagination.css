@@ -17,18 +17,6 @@
 }
 
 /* =========================================
-   Page Info
-========================================= */
-
-.page-info-title {
-  font-family: var(--font-body), serif;
-  font-size: 0.7rem;
-  font-weight: bold;
-
-  color: var(--text-secondary);
-}
-
-/* =========================================
    Pagination Outer Frame
 ========================================= */
 

@@ -21,9 +21,7 @@ export function AppHeader() {
           alt={APP_STRINGS.APP_EMBLEM_TOOLTIP}
           className="app-header__ornament"
         />
-        <p className="app-header__description-text magic-subtitle">
-          {APP_STRINGS.APP_DESCRIPTION}
-        </p>
+        <p className="magic-subtitle">{APP_STRINGS.APP_DESCRIPTION}</p>
         <img
           src={ornamentIcon}
           alt={APP_STRINGS.APP_EMBLEM_TOOLTIP}

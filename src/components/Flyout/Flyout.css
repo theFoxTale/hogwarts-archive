@@ -17,14 +17,6 @@
   flex-wrap: wrap;
 }
 
-.flyout__count {
-  font-family: var(--font-body), serif;
-  font-size: 0.7rem;
-  font-weight: bold;
-
-  color: var(--text-secondary);
-}
-
 .flyout__actions {
   display: flex;
   gap: 12px;

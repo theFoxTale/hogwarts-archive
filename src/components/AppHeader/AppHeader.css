@@ -26,12 +26,6 @@
   gap: 8px;
 }
 
-.app-header__description-text {
-  font-family: var(--font-body), serif;
-  font-size: 0.8rem;
-  font-weight: bold;
-}
-
 .app-header__ornament {
   height: 15px;
   display: block;

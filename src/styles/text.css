@@ -48,6 +48,9 @@
 }
 
 .magic-subtitle {
+  font-family: var(--font-body), serif;
+  font-size: 0.9rem;
+  font-weight: bold;
   letter-spacing: 0.12em;
 
   position: relative;

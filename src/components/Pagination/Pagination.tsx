@@ -26,7 +26,7 @@ export function Pagination({
         <ActionButton onClick={onPrev} disabled={!isPrevAvailable}>
           {PAGINATION_STRINGS.PREVIOUS}
         </ActionButton>
-        <span className="page-info-title magic-subtitle">
+        <span className="magic-subtitle">
           {PAGINATION_STRINGS.PAGE_OF(currentPage, totalPages)}
         </span>
         <ActionButton onClick={onNext} disabled={!isNextAvailable}>

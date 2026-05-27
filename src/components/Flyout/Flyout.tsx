@@ -30,7 +30,7 @@ export function Flyout() {
   return (
     <RoundedFrame className="flyout__frame variant-container">
       <div className="flyout__content">
-        <span className="flyout__count magic-subtitle">
+        <span className="magic-subtitle">
           {FLYOUT_STRINGS.SELECTED_LABEL} {selectedCount}
         </span>
         <div className="flyout__actions">

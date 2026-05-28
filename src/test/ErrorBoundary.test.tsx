@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 
-import { UI_MESSAGES } from '../constants';
-import { ErrorBoundary } from '../components';
+import { UI_MESSAGES } from '@constants';
+import { ErrorBoundary } from '@layout';
 
 const MY_TEST_ERROR = 'Test error';
 

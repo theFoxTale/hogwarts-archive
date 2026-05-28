@@ -1,6 +1,6 @@
-import { escapeCSV, exportToCSV } from '../utils';
-import { CSV_EXPORT } from '../constants';
-import { mockHarryCharacter } from './mocks/api.ts';
+import { escapeCSV, exportToCSV } from '@utils';
+import { CSV_EXPORT } from '@constants';
+import { mockHarryCharacter } from './mocks/api';
 
 describe('csvExport', () => {
   let createObjectURLSpy: ReturnType<typeof vi.spyOn>;

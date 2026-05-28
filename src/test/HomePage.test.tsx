@@ -12,12 +12,12 @@ import {
   mockSearchSecondResponse,
 } from './mocks/api';
 
-import selectedItemsReducer from '../features/selectedItemsSlice';
-import { LOCAL_STORAGE_KEYS, UI_MESSAGES } from '../constants';
-import { searchCharacters } from '../api';
+import { selectedItemsReducer } from '@store/slices';
+import { LOCAL_STORAGE_KEYS, UI_MESSAGES } from '@constants';
+import { searchCharacters } from '@api';
 
-import { HomePage } from '../pages';
-import { ThemeProvider } from '../contexts';
+import { HomePage } from '@pages';
+import { ThemeProvider } from '@contexts';
 
 vi.mock('../api/service', () => ({
   searchCharacters: vi.fn(),

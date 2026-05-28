@@ -19,7 +19,22 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Alias */
+    "paths": {
+      "@ui": ["./src/components/ui/index.ts"],
+      "@layout": ["./src/components/layout/index.ts"],
+      "@features": ["./src/components/features/index.ts"],
+      "@pages": ["./src/pages/index.ts"],
+      "@hooks": ["./src/hooks/index.ts"],
+      "@utils": ["./src/utils/index.ts"],
+      "@api": ["./src/api/index.ts"],
+      "@store/*": ["./src/store/*"],
+      "@store": ["./src/store/index.ts"],
+      "@contexts": ["./src/contexts/index.ts"],
+      "@constants": ["./src/constants.ts"]
+    }
   },
   "include": ["src"]
 }

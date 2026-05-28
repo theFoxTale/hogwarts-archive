@@ -1,5 +1,5 @@
-import type { Character } from '../api';
-import { CSV_EXPORT } from '../constants';
+import type { Character } from '@api';
+import { CSV_EXPORT } from '@constants';
 
 export function escapeCSV(value: string | null | undefined): string {
   if (value == null) return '';

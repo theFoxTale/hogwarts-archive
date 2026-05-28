@@ -2,20 +2,20 @@ import { useState, useEffect, useCallback } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 
 import {
-  SearchSection,
-  ResultsSection,
-  Pagination,
-  ErrorBoundary,
   AppHeader,
-  ErrorButton,
-  OrnateFrame,
+  ErrorBoundary,
   Flyout,
-} from '../../components';
+  Pagination,
+  ResultsSection,
+  SearchSection,
+} from '@layout';
+import { OrnateFrame } from '@ui';
+import { ErrorButton } from '@features';
 
-import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from '../../constants';
-import { searchCharacters } from '../../api';
-import type { Character, PaginationInfo } from '../../api';
-import { useLocalStorage } from '../../hooks';
+import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from '@constants';
+import { searchCharacters } from '@api';
+import type { Character, PaginationInfo } from '@api';
+import { useLocalStorage } from '@hooks';
 
 import './HomePage.css';
 

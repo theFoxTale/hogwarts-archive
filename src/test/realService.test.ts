@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { searchCharacters, getCharacterById } from '../api/realService';
-import { API_CONFIG, ERROR_MESSAGES } from '../constants';
+import { ERROR_MESSAGES } from '@constants';
 
 const mockFetch = vi.fn();
 globalThis.fetch = mockFetch;
@@ -14,34 +13,39 @@ describe('realService', () => {
     vi.clearAllMocks();
   });
 
+  // ------------------------------
+  // searchCharacters
+  // ------------------------------
+
   describe('searchCharacters', () => {
-    it('builds URL with name filter when search term provided', async () => {
+    test('builds URL with name filter when search term provided', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ data: [], meta: {}, links: {} }),
+        json: async () => ({ data: [], meta: {} }),
       });
 
       await searchCharacters('Harry');
 
       const url = mockFetch.mock.calls[0][0];
       expect(url).toContain('filter%5Bname_cont%5D=Harry');
-      expect(url).toContain(`page%5Bnumber%5D=1`);
-      expect(url).toContain(`page%5Bsize%5D=${API_CONFIG.ITEMS_PER_PAGE}`);
+      expect(url).toContain('page%5Bnumber%5D=1');
+      expect(url).toContain('page%5Bsize%5D=3');
     });
 
-    it('does not add name filter when search term is empty', async () => {
+    test('does not add name filter when search term is empty', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ data: [], meta: {}, links: {} }),
+        json: async () => ({ data: [], meta: {} }),
       });
 
       await searchCharacters('');
 
       const url = mockFetch.mock.calls[0][0];
       expect(url).not.toContain('filter%5Bname_cont%5D');
+      expect(url).toContain('page%5Bnumber%5D=1');
     });
 
-    it('returns parsed items and pagination from API response', async () => {
+    test('returns parsed items and pagination from API response', async () => {
       const mockResponse = {
         data: [
           {
@@ -58,10 +62,17 @@ describe('realService', () => {
           },
         ],
         meta: {
-          pagination: { current: 1, next: 2, last: 5, records: 10 },
+          pagination: {
+            current: 1,
+            prev: null,
+            next: null,
+            last: 1,
+            records: 1,
+          },
         },
         links: { self: '', next: '' },
       };
+
       mockFetch.mockResolvedValue({
         ok: true,
         json: async () => mockResponse,
@@ -84,10 +95,10 @@ describe('realService', () => {
       });
     });
 
-    it('handles response with no data (null)', async () => {
+    test('handles response with no data (null)', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ data: null, meta: {}, links: {} }),
+        json: async () => ({ data: null, meta: {} }),
       });
 
       const result = await searchCharacters('Harry');
@@ -95,10 +106,10 @@ describe('realService', () => {
       expect(result.pages).toBeNull();
     });
 
-    it('handles response with empty data array', async () => {
+    test('handles response with empty data array', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ data: [], meta: {}, links: {} }),
+        json: async () => ({ data: [], meta: {} }),
       });
 
       const result = await searchCharacters('Harry');
@@ -106,10 +117,10 @@ describe('realService', () => {
       expect(result.pages).toBeNull();
     });
 
-    it('handles response with missing pagination', async () => {
+    test('handles response with missing pagination', async () => {
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => ({ data: [], links: {} }),
+        json: async () => ({ data: [], meta: {} }),
       });
 
       const result = await searchCharacters('Harry');
@@ -117,7 +128,7 @@ describe('realService', () => {
       expect(result.pages).toBeNull();
     });
 
-    it('throws NOT_FOUND error on 404 status', async () => {
+    test('throws NOT_FOUND error on 404 status', async () => {
       mockFetch.mockResolvedValue({ ok: false, status: 404 });
 
       await expect(searchCharacters('Harry')).rejects.toThrow(
@@ -125,7 +136,7 @@ describe('realService', () => {
       );
     });
 
-    it('throws SERVER error on 500+ status', async () => {
+    test('throws SERVER error on 500+ status', async () => {
       mockFetch.mockResolvedValue({ ok: false, status: 500 });
 
       await expect(searchCharacters('Harry')).rejects.toThrow(
@@ -133,7 +144,7 @@ describe('realService', () => {
       );
     });
 
-    it('throws HTTP error on other 4xx status', async () => {
+    test('throws HTTP error on other 4xx status', async () => {
       mockFetch.mockResolvedValue({ ok: false, status: 429 });
 
       await expect(searchCharacters('Harry')).rejects.toThrow(
@@ -141,7 +152,7 @@ describe('realService', () => {
       );
     });
 
-    it('throws generic error when response is not ok and status not handled', async () => {
+    test('throws generic error when response is not ok and status not handled', async () => {
       mockFetch.mockResolvedValue({ ok: false, status: 418 });
 
       await expect(searchCharacters('Harry')).rejects.toThrow(
@@ -150,12 +161,15 @@ describe('realService', () => {
     });
   });
 
+  // ------------------------------
+  // getCharacterById
+  // ------------------------------
+
   describe('getCharacterById', () => {
-    it('returns full character details for valid id', async () => {
-      const mockApiResponse = {
+    test('returns full character details for valid id', async () => {
+      const mockResponse = {
         data: {
           id: '1',
-          type: 'character',
           attributes: {
             name: 'Harry Potter',
             house: 'Gryffindor',
@@ -173,24 +187,33 @@ describe('realService', () => {
           },
         },
       };
+
       mockFetch.mockResolvedValue({
         ok: true,
-        json: async () => mockApiResponse,
+        json: async () => mockResponse,
       });
 
       const result = await getCharacterById('1');
       expect(result.id).toBe('1');
       expect(result.name).toBe('Harry Potter');
+      expect(result.house).toBe('Gryffindor');
+      expect(result.species).toBe('Human');
+      expect(result.gender).toBe('Male');
+      expect(result.image).toBe('https://example.com/harry.jpg');
       expect(result.born).toBe('31 July 1980');
-      expect(result.wands).toHaveLength(1);
-      expect(result.alias_names).toContain('The Boy Who Lived');
+      expect(result.died).toBeNull();
+      expect(result.blood_status).toBe('Half-blood');
+      expect(result.nationality).toBe('British');
+      expect(result.patronus).toBe('Stag');
+      expect(result.wands).toEqual(['Holly, 11", Phoenix feather']);
+      expect(result.jobs).toEqual(['Head of Auror Office']);
+      expect(result.alias_names).toEqual(['The Boy Who Lived']);
     });
 
-    it('handles missing optional fields', async () => {
+    test('handles missing optional fields', async () => {
       const mockApiResponse = {
         data: {
           id: '2',
-          type: 'character',
           attributes: {
             name: 'Dobby',
             house: null,
@@ -207,7 +230,10 @@ describe('realService', () => {
 
       const result = await getCharacterById('2');
       expect(result.name).toBe('Dobby');
-
+      expect(result.house).toBeNull();
+      expect(result.species).toBe('Elf');
+      expect(result.gender).toBeNull();
+      expect(result.image).toBeNull();
       expect(result.born).toBeNull();
       expect(result.died).toBeNull();
       expect(result.blood_status).toBeNull();
@@ -215,11 +241,10 @@ describe('realService', () => {
       expect(result.patronus).toBeNull();
       expect(result.wands).toBeNull();
       expect(result.jobs).toBeNull();
-
       expect(result.alias_names).toBeUndefined();
     });
 
-    it('throws NOT_FOUND error on 404', async () => {
+    test('throws NOT_FOUND error on 404', async () => {
       mockFetch.mockResolvedValue({ ok: false, status: 404 });
 
       await expect(getCharacterById('999')).rejects.toThrow(
@@ -227,7 +252,7 @@ describe('realService', () => {
       );
     });
 
-    it('throws HTTP error on other status', async () => {
+    test('throws HTTP error on other status', async () => {
       mockFetch.mockResolvedValue({ ok: false, status: 500 });
 
       await expect(getCharacterById('1')).rejects.toThrow(ERROR_MESSAGES.HTTP);

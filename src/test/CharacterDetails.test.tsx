@@ -4,9 +4,9 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { CharacterDetails } from '../components';
-import { getCharacterById } from '../api';
-import { ANONYMOUS_IMAGE, UI_MESSAGES } from '../constants';
+import { CharacterDetails } from '@features';
+import { getCharacterById } from '@api';
+import { ANONYMOUS_IMAGE, UI_MESSAGES } from '@constants';
 
 vi.mock('../api', () => ({
   getCharacterById: vi.fn(),

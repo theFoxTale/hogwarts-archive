@@ -5,7 +5,7 @@ import type {
   PaginationInfo,
   SearchResponse,
 } from './types.ts';
-import { API_CONFIG, ERROR_MESSAGES } from '../constants';
+import { API_CONFIG, ERROR_MESSAGES } from '@constants';
 
 export async function searchCharacters(
   characterName: string,

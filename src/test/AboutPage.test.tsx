@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { ThemeProvider } from '../contexts';
-import { AboutPage } from '../pages';
+import { ThemeProvider } from '@contexts';
+import { AboutPage } from '@pages';
 
 describe('AboutPage', () => {
   test('About Page renders without crashing and displays content', () => {

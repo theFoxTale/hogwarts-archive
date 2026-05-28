@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { searchCharacters, getCharacterById } from '../api/mockService';
 import { mockCharacters } from '../api/mockData';
 
-import { API_CONFIG } from '../constants';
+import { API_CONFIG } from '@constants';
 
 describe('mockService', () => {
   describe('searchCharacters', () => {

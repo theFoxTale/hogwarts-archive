@@ -4,10 +4,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { ERROR_MESSAGES, UI_MESSAGES } from '../constants';
-import { ResultsSection } from '../components';
+import { selectedItemsReducer } from '@store/slices';
+import { ERROR_MESSAGES, UI_MESSAGES } from '@constants';
+import { ResultsSection } from '@layout';
+
 import { mockCharacters } from './mocks/api';
-import selectedItemsReducer from '../features/selectedItemsSlice';
 
 const createEmptyStore = () =>
   configureStore({

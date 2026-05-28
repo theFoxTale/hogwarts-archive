@@ -1,11 +1,12 @@
-import selectedItemsReducer, {
+import {
   toggleSelect,
   clearAll,
   selectSelectedItems,
   selectSelectedCount,
   selectIsSelected,
-} from '../features/selectedItemsSlice';
-import type { Character } from '../api';
+  selectedItemsReducer,
+} from '@store/slices';
+import type { Character } from '@api';
 
 const mockFirstCharacter: Character = {
   id: '1',

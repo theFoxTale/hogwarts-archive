@@ -2,8 +2,8 @@ import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { Pagination } from '../components';
-import { ThemeProvider } from '../contexts';
+import { Pagination } from '@layout';
+import { ThemeProvider } from '@contexts';
 
 describe('Pagination', () => {
   const mockOnPrev = vi.fn();

@@ -3,13 +3,13 @@ import { MemoryRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
-import { CharacterCard } from '../components';
+import { CharacterCard } from '@features';
 import selectedItemsReducer, {
   toggleSelect,
-} from '../features/selectedItemsSlice';
-import { ANONYMOUS_IMAGE } from '../constants';
+} from '../store/slices/selectedItemsSlice';
+import { ANONYMOUS_IMAGE } from '@constants';
 
-import type { Character } from '../api';
+import type { Character } from '@api';
 import { mockLunaCharacter } from './mocks/api';
 
 const mockNavigate = vi.fn();

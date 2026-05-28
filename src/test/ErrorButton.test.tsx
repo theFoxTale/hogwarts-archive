@@ -1,7 +1,8 @@
 import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ErrorButton } from '../components';
+
+import { ErrorButton } from '@features';
 
 describe('ErrorButton', () => {
   test('renders button and calls onSimulateError on click', async () => {

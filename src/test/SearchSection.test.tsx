@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { vi } from 'vitest';
 
-import { ThemeProvider } from '../contexts';
-import { SearchSection } from '../components';
-import { SEARCH_STRINGS, UI_MESSAGES } from '../constants';
+import { ThemeProvider } from '@contexts';
+import { SearchSection } from '@layout';
+import { SEARCH_STRINGS, UI_MESSAGES } from '@constants';
 
 describe('SearchSection', () => {
   const mockOnSearch = vi.fn();

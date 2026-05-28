@@ -1,6 +1,6 @@
 import type { Character, PaginationInfo, SearchResponse } from './types';
 import { mockCharacters } from './mockData';
-import { API_CONFIG, ERROR_MESSAGES } from '../constants';
+import { API_CONFIG, ERROR_MESSAGES } from '@constants';
 
 function filterByName(characters: Character[], nameQuery: string): Character[] {
   const trimmed = nameQuery.trim();

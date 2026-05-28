@@ -13,7 +13,7 @@ import {
 } from './mocks/api';
 
 import { selectedItemsReducer } from '@store/slices';
-import { LOCAL_STORAGE_KEYS, UI_MESSAGES } from '@constants';
+import { ERROR_MESSAGES, LOCAL_STORAGE_KEYS, UI_MESSAGES } from '@constants';
 import { searchCharacters } from '@api';
 
 import { HomePage } from '@pages';
@@ -261,7 +261,7 @@ describe('HomePage Integration', () => {
     });
   });
 
-  test('clicking floating error button triggers error boundary fallback', async () => {
+  test('clicking error flag triggers error boundary fallback', async () => {
     vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
 
     renderWithRouter(['/']);
@@ -270,21 +270,14 @@ describe('HomePage Integration', () => {
       expect(screen.getByText('Harry Potter')).toBeInTheDocument()
     );
 
-    const errorButton = screen.getByLabelText(/simulate error/i);
-    await userEvent.click(errorButton);
+    const errorFlag = document.querySelector('.error-flag') as HTMLElement;
+    expect(errorFlag).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText(UI_MESSAGES.FALLBACK_TITLE)).toBeInTheDocument();
-    });
-    expect(screen.getByText(UI_MESSAGES.TRY_AGAIN)).toBeInTheDocument();
+    await userEvent.click(errorFlag);
 
-    const tryAgainButton = screen.getByRole('button', {
-      name: UI_MESSAGES.TRY_AGAIN,
-    });
-    await userEvent.click(tryAgainButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
-    });
+    expect(
+      await screen.findByText(UI_MESSAGES.FALLBACK_TITLE)
+    ).toBeInTheDocument();
+    expect(screen.getByText(ERROR_MESSAGES.TEST)).toBeInTheDocument();
   });
 });

@@ -105,6 +105,11 @@ export const THEME_STRINGS = {
   ALT_DARK: 'Dark theme',
 } as const;
 
+export const ERROR_STRINGS = {
+  TEXT: 'ERROR',
+  ALT_TEXT: 'Simulate Error',
+};
+
 export const CHARACTER_CARD_STRINGS = {
   UNKNOWN: 'Unknown',
 } as const;

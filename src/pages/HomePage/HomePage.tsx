@@ -10,7 +10,6 @@ import {
   SearchSection,
 } from '@layout';
 import { OrnateFrame } from '@ui';
-import { ErrorButton } from '@features';
 
 import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from '@constants';
 import { searchCharacters } from '@api';
@@ -113,7 +112,7 @@ export function HomePage() {
 
   return (
     <div className="app-container">
-      <AppHeader />
+      <AppHeader onSimulateError={simulateError} />
 
       <OrnateFrame className="variant-container">
         <SearchSection
@@ -153,8 +152,6 @@ export function HomePage() {
           />
         )}
       </div>
-
-      <ErrorButton onSimulateError={simulateError} />
     </div>
   );
 }

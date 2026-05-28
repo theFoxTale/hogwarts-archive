@@ -1,11 +1,15 @@
-import { AboutFlag, ThemeFlag } from '@features';
+import { AboutFlag, ErrorFlag, ThemeFlag } from '@features';
 import { APP_STRINGS } from '@constants';
 
 import './AppHeader.css';
 import emblemIcon from '../../../assets/images/hogwarts-emblem.png';
 import ornamentIcon from '../../../assets/images/hogwarts-ornaments.png';
 
-export function AppHeader() {
+interface AppHeaderProps {
+  onSimulateError?: () => void;
+}
+
+export function AppHeader({ onSimulateError }: AppHeaderProps) {
   return (
     <div className="app-header">
       <AboutFlag />
@@ -28,6 +32,7 @@ export function AppHeader() {
           className="app-header__ornament app-header__ornament--mirrored"
         />
       </div>
+      {onSimulateError && <ErrorFlag onSimulateError={onSimulateError} />}
       <ThemeFlag />
     </div>
   );

@@ -17,10 +17,15 @@ import { searchCharacters } from '@api';
 import type { Character, PaginationInfo } from '@api';
 import { useLocalStorage } from '@hooks';
 
+import { useAppDispatch } from '@store';
+import { clearAll } from '@store/slices';
+
 import './HomePage.css';
 
 export function HomePage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const { page = '1', characterId } = useParams<{
     page?: string;
     characterId?: string;
@@ -76,6 +81,8 @@ export function HomePage() {
 
   const handleSearch = (searchText: string) => {
     if (searchText === searchQuery) return;
+
+    dispatch(clearAll());
 
     setSearchQuery(searchText);
     setInputValue(searchText);

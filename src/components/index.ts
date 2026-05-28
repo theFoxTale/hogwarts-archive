@@ -1,5 +1,6 @@
 export { AppHeader } from './AppHeader/AppHeader';
 
+export { Flag } from './Flag/Flag';
 export { AboutFlag } from './AboutFlag/AboutFlag';
 export { ThemeFlag } from './ThemeFlag/ThemeFlag';
 

@@ -1,7 +1,8 @@
 import { Component, type ReactNode } from 'react';
-import { ERROR_MESSAGES, UI_MESSAGES } from '@constants';
+import { ERROR_BOUNDARY_STRINGS } from './constants';
 
 import './ErrorBoundary.css';
+import * as React from 'react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -27,7 +28,7 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error(ERROR_MESSAGES.BOUNDARY, error, errorInfo);
+    console.error(ERROR_BOUNDARY_STRINGS.BOUNDARY, error, errorInfo);
   }
 
   handleReset = () => {
@@ -41,9 +42,11 @@ export class ErrorBoundary extends Component<
     if (this.state.hasError) {
       return (
         <div className="error-fallback">
-          <h2>{UI_MESSAGES.FALLBACK_TITLE}</h2>
-          <p>{this.state.errorMessage || ERROR_MESSAGES.UNKNOWN}</p>
-          <button onClick={this.handleReset}>{UI_MESSAGES.TRY_AGAIN}</button>
+          <h2>{ERROR_BOUNDARY_STRINGS.FALLBACK_TITLE}</h2>
+          <p>{this.state.errorMessage || ERROR_BOUNDARY_STRINGS.UNKNOWN}</p>
+          <button onClick={this.handleReset}>
+            {ERROR_BOUNDARY_STRINGS.TRY_AGAIN}
+          </button>
         </div>
       );
     }

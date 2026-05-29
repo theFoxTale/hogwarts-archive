@@ -4,7 +4,7 @@ import { GoldCheckbox, RoundedFrame } from '@ui';
 import type { Character } from '@api';
 
 import { getGenderIcon, getHouseIcon, getSpeciesIcon } from '@utils';
-import { CHARACTER_CARD_STRINGS, ANONYMOUS_IMAGE } from '@constants';
+import { CHARACTER_CARD_STRINGS, ANONYMOUS_CARD_IMAGE } from './constants';
 
 import { useAppDispatch, useAppSelector } from '@store';
 import { selectIsSelected, toggleSelect } from '@store/slices';
@@ -51,8 +51,8 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
         {/* Изображение персонажа */}
         <div className="character-card__image">
           <img
-            src={character.image || ANONYMOUS_IMAGE}
-            onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
+            src={character.image || ANONYMOUS_CARD_IMAGE}
+            onError={(e) => (e.currentTarget.src = ANONYMOUS_CARD_IMAGE)}
             alt={character.name}
           />
         </div>

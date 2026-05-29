@@ -4,9 +4,11 @@ import {
   selectSelectedCount,
   selectSelectedItemsArray,
 } from '@store/slices';
+
 import { FrameButton, RoundedFrame } from '@ui';
-import { FLYOUT_STRINGS } from '@constants';
 import { exportToCSV } from '@utils';
+
+import { FLYOUT_STRINGS } from './constants';
 
 import './Flyout.css';
 

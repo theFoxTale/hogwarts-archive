@@ -1,4 +1,4 @@
-import { API_CONFIG } from '@constants';
+import { API_CONFIG } from './constants';
 import * as realService from './realService';
 import * as mockService from './mockService';
 

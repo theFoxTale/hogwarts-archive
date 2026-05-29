@@ -7,11 +7,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { mockSearchResponse } from './mocks/api';
 
 import { selectedItemsReducer } from '@store/slices';
-import { UI_MESSAGES } from '@constants';
 import { searchCharacters } from '@api';
 
 import { HomePage } from '@pages';
 import { ThemeProvider } from '@contexts';
+import { RESULTS_STRING } from '@layout';
 
 vi.mock('../api/service', () => ({
   searchCharacters: vi.fn(),
@@ -51,12 +51,12 @@ describe('HomePage with simulated loading delay', () => {
       </Provider>
     );
 
-    expect(screen.getByText(UI_MESSAGES.LOADING)).toBeInTheDocument();
+    expect(screen.getByText(RESULTS_STRING.LOADING)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText('Harry Potter')).toBeInTheDocument();
     });
 
-    expect(screen.queryByText(UI_MESSAGES.LOADING)).not.toBeInTheDocument();
+    expect(screen.queryByText(RESULTS_STRING.LOADING)).not.toBeInTheDocument();
   });
 });

@@ -4,10 +4,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import { clearAll, selectedItemsReducer } from '@store/slices';
 import * as csvExport from '@utils';
-import { FLYOUT_STRINGS } from '@constants';
 
 import { ThemeProvider } from '@contexts';
-import { Flyout } from '@layout';
+import { Flyout, FLYOUT_STRINGS } from '@layout';
 
 import type { Character } from '@api';
 import { mockCharacters, mockHarryCharacter } from './mocks/api';

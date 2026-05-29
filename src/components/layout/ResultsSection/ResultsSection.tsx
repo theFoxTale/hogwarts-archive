@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import type { Character } from '@api';
 import { CharacterCard } from '@features';
-import { UI_MESSAGES, ERROR_MESSAGES } from '@constants';
+
+import { RESULTS_STRING } from './constants';
 
 import './ResultsSection.css';
 
@@ -24,13 +25,13 @@ export function ResultsSection({
 
   useEffect(() => {
     if (!isLoading && shouldThrowError && !prevShouldThrowErrorRef.current) {
-      throw new Error(ERROR_MESSAGES.TEST);
+      throw new Error(RESULTS_STRING.TEST_BUTTON);
     }
     prevShouldThrowErrorRef.current = shouldThrowError;
   }, [isLoading, shouldThrowError]);
 
   if (isLoading) {
-    return <div className="loading-indicator">{UI_MESSAGES.LOADING}</div>;
+    return <div className="loading-indicator">{RESULTS_STRING.LOADING}</div>;
   }
 
   if (error) {
@@ -38,7 +39,7 @@ export function ResultsSection({
   }
 
   if (results.length === 0) {
-    return <div className="no-results">{UI_MESSAGES.NO_RESULTS}</div>;
+    return <div className="no-results">{RESULTS_STRING.NO_RESULTS}</div>;
   }
 
   return (

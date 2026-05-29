@@ -32,8 +32,7 @@
       "@api": ["./src/api/index.ts"],
       "@store/*": ["./src/store/*"],
       "@store": ["./src/store/index.ts"],
-      "@contexts": ["./src/contexts/index.ts"],
-      "@constants": ["./src/constants.ts"]
+      "@contexts": ["./src/contexts/index.ts"]
     }
   },
   "include": ["src"]

@@ -1,5 +1,4 @@
-import { escapeCSV, exportToCSV } from '@utils';
-import { CSV_EXPORT } from '@constants';
+import { escapeCSV, exportToCSV, CSV_EXPORT } from '@utils';
 import { mockHarryCharacter } from './mocks/api';
 
 describe('csvExport', () => {

@@ -2,7 +2,7 @@ import { type ChangeEvent, type KeyboardEvent } from 'react';
 
 import { RoundedFrame } from '@ui';
 import { useTheme } from '@contexts';
-import { UI_MESSAGES, SEARCH_STRINGS } from '@constants';
+import { SEARCH_STRINGS } from './constants';
 
 import './SearchSection.css';
 import wandIcon from '../../../assets/images/wand-accio.png';
@@ -42,14 +42,14 @@ export function SearchSection({
 
   return (
     <div className="search-section">
-      <p className="magic-subtitle">{UI_MESSAGES.SEARCH_HEADER}</p>
+      <p className="magic-subtitle">{SEARCH_STRINGS.SEARCH_HEADER}</p>
 
       <div className="search-section-container">
         <div className="search-input-wrapper">
           <RoundedFrame className="search-input-frame variant-input">
             <input
               type="text"
-              placeholder={UI_MESSAGES.SEARCH_PLACEHOLDER}
+              placeholder={SEARCH_STRINGS.SEARCH_PLACEHOLDER}
               className="search-input"
               value={value}
               onChange={handleInputChange}
@@ -74,7 +74,7 @@ export function SearchSection({
         <RoundedFrame className={`search-button-frame ${variant}`}>
           <button className="search-button" onClick={handleSearch}>
             <img src={wandIcon} alt="" aria-hidden="true" />
-            {UI_MESSAGES.SEARCH_BUTTON_TEXT}
+            {SEARCH_STRINGS.SEARCH_BUTTON_TEXT}
           </button>
         </RoundedFrame>
       </div>

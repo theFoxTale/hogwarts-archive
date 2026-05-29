@@ -1,5 +1,5 @@
 import { FrameButton, RoundedFrame } from '@ui';
-import { PAGINATION_STRINGS } from '@constants';
+import { PAGINATION_STRINGS } from './constants';
 
 import './Pagination.css';
 

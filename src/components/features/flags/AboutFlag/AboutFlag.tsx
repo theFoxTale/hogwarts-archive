@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { ABOUT_STRINGS } from '@constants';
+import { ABOUT_STRINGS } from './constants';
 import { Flag } from '@ui';
 
 import './AboutFlag.css';
@@ -28,7 +28,7 @@ export function AboutFlag() {
       bottomImage={{ light: flagBottomLight, dark: flagBottomDark }}
       icon={{ light: aboutIcon, dark: aboutIcon }}
       text={ABOUT_STRINGS.TEXT}
-      alt="About"
+      alt={ABOUT_STRINGS.ALT_TEXT}
       className="about-flag"
     />
   );

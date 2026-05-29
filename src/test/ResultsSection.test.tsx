@@ -5,8 +5,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
 import { selectedItemsReducer } from '@store/slices';
-import { ERROR_MESSAGES, UI_MESSAGES } from '@constants';
-import { ResultsSection } from '@layout';
+import { RESULTS_STRING, ResultsSection } from '@layout';
 
 import { mockCharacters } from './mocks/api';
 
@@ -29,7 +28,7 @@ describe('ResultsSection', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(UI_MESSAGES.LOADING)).toBeInTheDocument();
+    expect(screen.getByText(RESULTS_STRING.LOADING)).toBeInTheDocument();
   });
 
   test('shows error message when error prop is provided', () => {
@@ -59,9 +58,11 @@ describe('ResultsSection', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(UI_MESSAGES.LOADING)).toBeInTheDocument();
+    expect(screen.getByText(RESULTS_STRING.LOADING)).toBeInTheDocument();
     expect(screen.queryByText('Some error')).not.toBeInTheDocument();
-    expect(screen.queryByText(UI_MESSAGES.NO_RESULTS)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(RESULTS_STRING.NO_RESULTS)
+    ).not.toBeInTheDocument();
   });
 
   test('shows no results message when results array is empty', () => {
@@ -76,7 +77,7 @@ describe('ResultsSection', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(UI_MESSAGES.NO_RESULTS)).toBeInTheDocument();
+    expect(screen.getByText(RESULTS_STRING.NO_RESULTS)).toBeInTheDocument();
   });
 
   test('renders list of characters when results are provided', () => {
@@ -149,7 +150,7 @@ describe('ResultsSection', () => {
             />
           </MemoryRouter>
         );
-      }).toThrow(ERROR_MESSAGES.TEST);
+      }).toThrow(RESULTS_STRING.TEST_BUTTON);
     });
 
     test('does not throw again if shouldThrowError remains true after rerender', () => {

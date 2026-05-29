@@ -5,9 +5,9 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { selectedItemsReducer } from '@store/slices';
 import { ThemeProvider } from '@contexts';
-import { APP_STRINGS } from '@constants';
 
 import { App } from '../App';
+import { APP_STRINGS } from '@layout';
 
 const createStore = () =>
   configureStore({

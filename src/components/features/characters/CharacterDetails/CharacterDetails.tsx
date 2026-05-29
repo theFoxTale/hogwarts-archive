@@ -5,7 +5,11 @@ import { OrnateFrame } from '@ui';
 import { getCharacterById } from '@api';
 import type { Character } from '@api';
 
-import { ANONYMOUS_IMAGE, UI_MESSAGES, DETAILS_STRINGS } from '@constants';
+import {
+  ANONYMOUS_DETAILS_IMAGE,
+  DETAILS_STRINGS,
+  LOADING_DETAILS,
+} from './constants';
 
 import './CharacterDetails.css';
 
@@ -36,9 +40,10 @@ export function CharacterDetails() {
     navigate(`/${page}`);
   };
 
-  if (loading)
-    return <div className="details-loading">{UI_MESSAGES.LOADING}</div>;
+  if (loading) return <div className="details-loading">{LOADING_DETAILS}</div>;
+
   if (error) return <div className="details-error">{error}</div>;
+
   if (!character)
     return <div className="details-empty">Select a character</div>;
 
@@ -49,8 +54,8 @@ export function CharacterDetails() {
           {DETAILS_STRINGS.CLOSE}
         </button>
         <img
-          src={character.image || ANONYMOUS_IMAGE}
-          onError={(e) => (e.currentTarget.src = ANONYMOUS_IMAGE)}
+          src={character.image || ANONYMOUS_DETAILS_IMAGE}
+          onError={(e) => (e.currentTarget.src = ANONYMOUS_DETAILS_IMAGE)}
           alt={character.name}
           className="details-image"
         />

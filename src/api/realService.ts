@@ -5,7 +5,7 @@ import type {
   PaginationInfo,
   SearchResponse,
 } from './types.ts';
-import { API_CONFIG, ERROR_MESSAGES } from '@constants';
+import { API_CONFIG, API_ERROR_MESSAGES } from './constants';
 
 export async function searchCharacters(
   characterName: string,
@@ -27,14 +27,14 @@ export async function searchCharacters(
 
   if (!response.ok) {
     if (response.status === 404) {
-      throw new Error(ERROR_MESSAGES.NOT_FOUND);
+      throw new Error(API_ERROR_MESSAGES.NOT_FOUND);
     } else if (response.status >= 500) {
       throw new Error(
-        `${ERROR_MESSAGES.SERVER}, server status ${response.status}`
+        `${API_ERROR_MESSAGES.SERVER}, server status ${response.status}`
       );
     } else {
       throw new Error(
-        `${ERROR_MESSAGES.HTTP}, server status ${response.status}`
+        `${API_ERROR_MESSAGES.HTTP}, server status ${response.status}`
       );
     }
   }
@@ -78,7 +78,9 @@ export async function getCharacterById(id: string): Promise<Character> {
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(
-      response.status === 404 ? ERROR_MESSAGES.NOT_FOUND : ERROR_MESSAGES.HTTP
+      response.status === 404
+        ? API_ERROR_MESSAGES.NOT_FOUND
+        : API_ERROR_MESSAGES.HTTP
     );
   }
 

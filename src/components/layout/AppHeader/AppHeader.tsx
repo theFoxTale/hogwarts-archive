@@ -1,5 +1,5 @@
 import { AboutFlag, ErrorFlag, ThemeFlag } from '@features';
-import { APP_STRINGS } from '@constants';
+import { APP_STRINGS } from './constants';
 
 import './AppHeader.css';
 import emblemIcon from '../../../assets/images/hogwarts-emblem.png';

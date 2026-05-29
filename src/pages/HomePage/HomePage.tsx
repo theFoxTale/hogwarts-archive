@@ -11,7 +11,8 @@ import {
 } from '@layout';
 import { OrnateFrame } from '@ui';
 
-import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from '@constants';
+import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from './constants';
+
 import { searchCharacters } from '@api';
 import type { Character, PaginationInfo } from '@api';
 import { useLocalStorage } from '@hooks';

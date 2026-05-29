@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { vi } from 'vitest';
 
 import { ThemeProvider } from '@contexts';
-import { SearchSection } from '@layout';
-import { SEARCH_STRINGS, UI_MESSAGES } from '@constants';
+import { SEARCH_STRINGS, SearchSection } from '@layout';
 
 describe('SearchSection', () => {
   const mockOnSearch = vi.fn();
@@ -30,10 +29,10 @@ describe('SearchSection', () => {
   test('renders input and button', () => {
     render(<Wrapper />);
     expect(
-      screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER)
+      screen.getByPlaceholderText(SEARCH_STRINGS.SEARCH_PLACEHOLDER)
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: UI_MESSAGES.SEARCH_BUTTON_TEXT })
+      screen.getByRole('button', { name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT })
     ).toBeInTheDocument();
   });
 
@@ -46,19 +45,23 @@ describe('SearchSection', () => {
 
   test('updates input value on user typing', async () => {
     render(<Wrapper />);
-    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
+    const input = screen.getByPlaceholderText(
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
+    );
     await userEvent.type(input, 'Hermione');
     expect(input).toHaveValue('Hermione');
   });
 
   test('calls onSearch with trimmed value on button click', async () => {
     render(<Wrapper />);
-    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
+    const input = screen.getByPlaceholderText(
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
+    );
     await userEvent.type(input, '  Hermione  ');
     expect(input).toHaveValue('  Hermione  ');
 
     const searchButton = screen.getByRole('button', {
-      name: UI_MESSAGES.SEARCH_BUTTON_TEXT,
+      name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT,
     });
     await userEvent.click(searchButton);
 
@@ -67,14 +70,18 @@ describe('SearchSection', () => {
 
   test('calls onSearch with trimmed value on Enter key', async () => {
     render(<Wrapper />);
-    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
+    const input = screen.getByPlaceholderText(
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
+    );
     await userEvent.type(input, '  Draco  {enter}');
     expect(mockOnSearch).toHaveBeenCalledWith('Draco');
   });
 
   test('clears input and calls onSearch with empty string when clear button clicked', async () => {
     render(<Wrapper />);
-    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
+    const input = screen.getByPlaceholderText(
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
+    );
     await userEvent.type(input, 'Harry');
     expect(input).toHaveValue('Harry');
 
@@ -89,17 +96,21 @@ describe('SearchSection', () => {
 
   test('calls onSearch with empty string when input contains only spaces and Enter pressed', async () => {
     render(<Wrapper />);
-    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
+    const input = screen.getByPlaceholderText(
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
+    );
     await userEvent.type(input, '     {enter}');
     expect(mockOnSearch).toHaveBeenCalledWith('');
   });
 
   test('calls onSearch with empty string when input contains only spaces and button clicked', async () => {
     render(<Wrapper />);
-    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
+    const input = screen.getByPlaceholderText(
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
+    );
     await userEvent.type(input, '     ');
     const button = screen.getByRole('button', {
-      name: UI_MESSAGES.SEARCH_BUTTON_TEXT,
+      name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT,
     });
     await userEvent.click(button);
     expect(mockOnSearch).toHaveBeenCalledWith('');

@@ -1,6 +1,6 @@
-import { useTheme } from '@contexts';
-import { THEME_STRINGS } from '@constants';
 import { Flag } from '@ui';
+import { useTheme } from '@contexts';
+import { THEME_STRINGS } from './constants';
 
 import './ThemeFlag.css';
 

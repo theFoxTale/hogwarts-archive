@@ -1,5 +1,5 @@
-import { ERROR_STRINGS } from '@constants';
 import { Flag } from '@ui';
+import { ERROR_STRINGS } from './constants';
 
 import './ErrorFlag.css';
 

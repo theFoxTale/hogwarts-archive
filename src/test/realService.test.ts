@@ -1,5 +1,5 @@
 import { searchCharacters, getCharacterById } from '../api/realService';
-import { ERROR_MESSAGES } from '@constants';
+import { API_ERROR_MESSAGES } from '@api';
 
 const mockFetch = vi.fn();
 globalThis.fetch = mockFetch;
@@ -132,7 +132,7 @@ describe('realService', () => {
       mockFetch.mockResolvedValue({ ok: false, status: 404 });
 
       await expect(searchCharacters('Harry')).rejects.toThrow(
-        ERROR_MESSAGES.NOT_FOUND
+        API_ERROR_MESSAGES.NOT_FOUND
       );
     });
 
@@ -140,7 +140,7 @@ describe('realService', () => {
       mockFetch.mockResolvedValue({ ok: false, status: 500 });
 
       await expect(searchCharacters('Harry')).rejects.toThrow(
-        new RegExp(ERROR_MESSAGES.SERVER)
+        new RegExp(API_ERROR_MESSAGES.SERVER)
       );
     });
 
@@ -148,7 +148,7 @@ describe('realService', () => {
       mockFetch.mockResolvedValue({ ok: false, status: 429 });
 
       await expect(searchCharacters('Harry')).rejects.toThrow(
-        new RegExp(ERROR_MESSAGES.HTTP)
+        new RegExp(API_ERROR_MESSAGES.HTTP)
       );
     });
 
@@ -156,7 +156,7 @@ describe('realService', () => {
       mockFetch.mockResolvedValue({ ok: false, status: 418 });
 
       await expect(searchCharacters('Harry')).rejects.toThrow(
-        new RegExp(ERROR_MESSAGES.HTTP)
+        new RegExp(API_ERROR_MESSAGES.HTTP)
       );
     });
   });
@@ -248,14 +248,16 @@ describe('realService', () => {
       mockFetch.mockResolvedValue({ ok: false, status: 404 });
 
       await expect(getCharacterById('999')).rejects.toThrow(
-        ERROR_MESSAGES.NOT_FOUND
+        API_ERROR_MESSAGES.NOT_FOUND
       );
     });
 
     test('throws HTTP error on other status', async () => {
       mockFetch.mockResolvedValue({ ok: false, status: 500 });
 
-      await expect(getCharacterById('1')).rejects.toThrow(ERROR_MESSAGES.HTTP);
+      await expect(getCharacterById('1')).rejects.toThrow(
+        API_ERROR_MESSAGES.HTTP
+      );
     });
   });
 });

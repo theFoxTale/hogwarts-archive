@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { emptySearchResult } from './mocks/api';
 
 // Принудительное отключение mock-режима для тестов
-vi.mock('../constants', async () => {
+vi.mock('../api/index.ts', async () => {
   const actual =
-    await vi.importActual<typeof import('../constants')>('../constants');
+    await vi.importActual<typeof import('../api/index.ts')>('../api/index.ts');
   return {
     ...actual,
     API_CONFIG: {
@@ -16,8 +16,7 @@ vi.mock('../constants', async () => {
   };
 });
 
-import { API_CONFIG, ERROR_MESSAGES } from '../constants';
-import { searchCharacters } from '../api';
+import { API_CONFIG, API_ERROR_MESSAGES, searchCharacters } from '@api';
 
 describe('searchCharacters', () => {
   const mockFetch = vi.fn();
@@ -125,7 +124,7 @@ describe('searchCharacters', () => {
     });
 
     await expect(searchCharacters('Voldemort')).rejects.toThrow(
-      ERROR_MESSAGES.NOT_FOUND
+      API_ERROR_MESSAGES.NOT_FOUND
     );
   });
 
@@ -136,7 +135,7 @@ describe('searchCharacters', () => {
     });
 
     await expect(searchCharacters('Harry')).rejects.toThrow(
-      new RegExp(ERROR_MESSAGES.SERVER)
+      new RegExp(API_ERROR_MESSAGES.SERVER)
     );
   });
 
@@ -147,7 +146,7 @@ describe('searchCharacters', () => {
     });
 
     await expect(searchCharacters('Harry')).rejects.toThrow(
-      new RegExp(ERROR_MESSAGES.HTTP)
+      new RegExp(API_ERROR_MESSAGES.HTTP)
     );
   });
 });

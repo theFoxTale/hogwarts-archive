@@ -1,3 +1,4 @@
+/* Components */
 export { Flag } from './Flag/Flag';
 
 export { GoldCheckbox } from './GoldCheckbox/GoldCheckbox';

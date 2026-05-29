@@ -2,8 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 
-import { UI_MESSAGES } from '@constants';
-import { ErrorBoundary } from '@layout';
+import { ErrorBoundary, ERROR_BOUNDARY_STRINGS } from '@layout';
 
 const MY_TEST_ERROR = 'Test error';
 
@@ -33,10 +32,12 @@ describe('ErrorBoundary', () => {
         <ProblemChild />
       </ErrorBoundary>
     );
-    expect(screen.getByText(UI_MESSAGES.FALLBACK_TITLE)).toBeInTheDocument();
+    expect(
+      screen.getByText(ERROR_BOUNDARY_STRINGS.FALLBACK_TITLE)
+    ).toBeInTheDocument();
     expect(screen.getByText(MY_TEST_ERROR)).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: UI_MESSAGES.TRY_AGAIN })
+      screen.getByRole('button', { name: ERROR_BOUNDARY_STRINGS.TRY_AGAIN })
     ).toBeInTheDocument();
   });
 
@@ -48,7 +49,7 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
     await userEvent.click(
-      screen.getByRole('button', { name: UI_MESSAGES.TRY_AGAIN })
+      screen.getByRole('button', { name: ERROR_BOUNDARY_STRINGS.TRY_AGAIN })
     );
     expect(onResetMock).toHaveBeenCalledTimes(1);
   });

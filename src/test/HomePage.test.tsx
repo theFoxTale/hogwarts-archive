@@ -13,11 +13,15 @@ import {
 } from './mocks/api';
 
 import { selectedItemsReducer } from '@store/slices';
-import { ERROR_MESSAGES, LOCAL_STORAGE_KEYS, UI_MESSAGES } from '@constants';
 import { searchCharacters } from '@api';
 
-import { HomePage } from '@pages';
+import { HomePage, LOCAL_STORAGE_KEYS } from '@pages';
 import { ThemeProvider } from '@contexts';
+import {
+  ERROR_BOUNDARY_STRINGS,
+  RESULTS_STRING,
+  SEARCH_STRINGS,
+} from '@layout';
 
 vi.mock('../api/service', () => ({
   searchCharacters: vi.fn(),
@@ -91,7 +95,7 @@ describe('HomePage Integration', () => {
     });
 
     const input: HTMLInputElement = screen.getByPlaceholderText(
-      UI_MESSAGES.SEARCH_PLACEHOLDER
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
     );
     expect(input.value).toBe('Hermione');
   });
@@ -101,11 +105,13 @@ describe('HomePage Integration', () => {
 
     renderWithRouter(['/']);
 
-    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
+    const input = screen.getByPlaceholderText(
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
+    );
     await userEvent.type(input, 'Harry');
 
     const searchBtn = screen.getByRole('button', {
-      name: UI_MESSAGES.SEARCH_BUTTON_TEXT,
+      name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT,
     });
     await userEvent.click(searchBtn);
 
@@ -136,7 +142,7 @@ describe('HomePage Integration', () => {
     });
 
     const input: HTMLInputElement = screen.getByPlaceholderText(
-      UI_MESSAGES.SEARCH_PLACEHOLDER
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
     );
     expect(input.value).toBe('Hermione');
   });
@@ -147,7 +153,7 @@ describe('HomePage Integration', () => {
     renderWithRouter(['/']);
 
     const searchBtn = screen.getByRole('button', {
-      name: UI_MESSAGES.SEARCH_BUTTON_TEXT,
+      name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT,
     });
     await userEvent.click(searchBtn);
     expect(searchCharacters).toHaveBeenCalledTimes(1);
@@ -170,7 +176,7 @@ describe('HomePage Integration', () => {
     vi.mocked(searchCharacters).mockResolvedValue({ items: [], pages: null });
     renderWithRouter(['/']);
     await waitFor(() => {
-      expect(screen.getByText(UI_MESSAGES.NO_RESULTS)).toBeInTheDocument();
+      expect(screen.getByText(RESULTS_STRING.NO_RESULTS)).toBeInTheDocument();
     });
   });
 
@@ -240,11 +246,13 @@ describe('HomePage Integration', () => {
     await userEvent.click(nextButton);
     await waitFor(() => expect(screen.getByText('Ron')).toBeInTheDocument());
 
-    const input = screen.getByPlaceholderText(UI_MESSAGES.SEARCH_PLACEHOLDER);
+    const input = screen.getByPlaceholderText(
+      SEARCH_STRINGS.SEARCH_PLACEHOLDER
+    );
     await userEvent.clear(input);
     await userEvent.type(input, 'Harry');
     const searchBtn = screen.getByRole('button', {
-      name: UI_MESSAGES.SEARCH_BUTTON_TEXT,
+      name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT,
     });
     await userEvent.click(searchBtn);
 
@@ -276,8 +284,8 @@ describe('HomePage Integration', () => {
     await userEvent.click(errorFlag);
 
     expect(
-      await screen.findByText(UI_MESSAGES.FALLBACK_TITLE)
+      await screen.findByText(ERROR_BOUNDARY_STRINGS.FALLBACK_TITLE)
     ).toBeInTheDocument();
-    expect(screen.getByText(ERROR_MESSAGES.TEST)).toBeInTheDocument();
+    expect(screen.getByText(RESULTS_STRING.TEST_BUTTON)).toBeInTheDocument();
   });
 });

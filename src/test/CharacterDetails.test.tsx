@@ -4,9 +4,13 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { CharacterDetails } from '@features';
+import {
+  CharacterDetails,
+  ANONYMOUS_DETAILS_IMAGE,
+  LOADING_DETAILS,
+} from '@features';
+
 import { getCharacterById } from '@api';
-import { ANONYMOUS_IMAGE, UI_MESSAGES } from '@constants';
 
 vi.mock('../api', () => ({
   getCharacterById: vi.fn(),
@@ -57,7 +61,7 @@ describe('CharacterDetails', () => {
   test('shows loading indicator while fetching', () => {
     vi.mocked(getCharacterById).mockImplementation(() => new Promise(() => {}));
     renderWithParams('1');
-    expect(screen.getByText(UI_MESSAGES.LOADING)).toBeInTheDocument();
+    expect(screen.getByText(LOADING_DETAILS)).toBeInTheDocument();
   });
 
   test('displays error message when fetch fails', async () => {
@@ -107,7 +111,7 @@ describe('CharacterDetails', () => {
 
     await waitFor(() => {
       const img = screen.getByAltText('Harry Potter') as HTMLImageElement;
-      expect(img.src).toContain(ANONYMOUS_IMAGE);
+      expect(img.src).toContain(ANONYMOUS_DETAILS_IMAGE);
     });
   });
 
@@ -119,7 +123,7 @@ describe('CharacterDetails', () => {
 
     img.dispatchEvent(new Event('error'));
     await waitFor(() => {
-      expect(img).toHaveAttribute('src', ANONYMOUS_IMAGE);
+      expect(img).toHaveAttribute('src', ANONYMOUS_DETAILS_IMAGE);
     });
   });
 

@@ -1,6 +1,6 @@
 import type { Character, PaginationInfo, SearchResponse } from './types';
 import { mockCharacters } from './mockData';
-import { API_CONFIG, ERROR_MESSAGES } from '@constants';
+import { API_CONFIG, API_ERROR_MESSAGES } from './constants';
 
 function filterByName(characters: Character[], nameQuery: string): Character[] {
   const trimmed = nameQuery.trim();
@@ -81,7 +81,7 @@ export async function getCharacterById(id: string): Promise<Character> {
 
   const character = mockCharacters.find((c) => c.id === id);
   if (!character) {
-    throw new Error(ERROR_MESSAGES.NOT_FOUND);
+    throw new Error(API_ERROR_MESSAGES.NOT_FOUND);
   }
   return character;
 }

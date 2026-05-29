@@ -3,7 +3,7 @@ import { APP_STRINGS } from './constants';
 
 import './AppHeader.css';
 import emblemIcon from '../../../assets/images/hogwarts-emblem.png';
-import ornamentIcon from '../../../assets/images/hogwarts-ornaments.png';
+import ornamentIcon from '../../../assets/images/ornament/hogwarts-ornaments.png';
 
 interface AppHeaderProps {
   onSimulateError?: () => void;
@@ -22,13 +22,13 @@ export function AppHeader({ onSimulateError }: AppHeaderProps) {
       <div className="app-header__description">
         <img
           src={ornamentIcon}
-          alt={APP_STRINGS.APP_EMBLEM_TOOLTIP}
+          alt={APP_STRINGS.APP_ORNAMENT_TOOLTIP}
           className="app-header__ornament"
         />
         <p className="magic-subtitle">{APP_STRINGS.APP_DESCRIPTION}</p>
         <img
           src={ornamentIcon}
-          alt={APP_STRINGS.APP_EMBLEM_TOOLTIP}
+          alt={APP_STRINGS.APP_ORNAMENT_TOOLTIP}
           className="app-header__ornament app-header__ornament--mirrored"
         />
       </div>

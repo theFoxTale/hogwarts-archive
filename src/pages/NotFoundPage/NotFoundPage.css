@@ -1,8 +1,43 @@
 .not-found {
-  text-align: center;
-  padding: 80px 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
+
 .not-found h1 {
-  font-size: 72px;
-  margin-bottom: 20px;
+  font-size: 168px;
+  margin: 32px 0 4px 0;
+}
+
+.not-found h2 {
+  font-size: 38px;
+  text-transform: uppercase;
+}
+
+.not-found__subtitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.not-found__ornament {
+  height: 28px;
+  display: block;
+  opacity: 0.75;
+  user-select: none;
+  pointer-events: none;
+}
+
+.not-found__ornament--mirrored {
+  transform: scaleX(-1);
+}
+
+.not-found__button {
+  margin-top: 30px;
 }

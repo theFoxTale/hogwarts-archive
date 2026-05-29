@@ -13,10 +13,7 @@
 }
 
 .app-header__title {
-  font-family: var(--font-serif), serif;
   font-size: 1.4rem;
-  font-weight: 700;
-  text-transform: uppercase;
 }
 
 .app-header__description {

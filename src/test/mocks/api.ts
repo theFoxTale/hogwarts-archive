@@ -1,4 +1,4 @@
-import type { Character, PaginationInfo } from '../../api';
+import type { Character, PaginationInfo } from '@api';
 
 export const mockHarryCharacter: Character = {
   id: 'harry-1',

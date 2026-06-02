@@ -152,6 +152,10 @@ describe('HomePage Integration', () => {
 
     renderWithRouter(['/']);
 
+    await waitFor(() => {
+      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
+    });
+
     const searchBtn = screen.getByRole('button', {
       name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT,
     });

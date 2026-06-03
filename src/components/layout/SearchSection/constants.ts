@@ -10,6 +10,10 @@ export const SEARCH_STRINGS = {
   SEARCH_HEADER: 'Search witches, wizards, and magical beings',
   SEARCH_PLACEHOLDER: 'Find magical records...',
   SEARCH_BUTTON_TEXT: 'Accio',
+  SEARCH_BUTTON_LABEL: 'Search magical beings',
 
   CLEAR_BUTTON_LABEL: 'Clear search',
+
+  REFRESH_BUTTON_LABEL: 'Clear cache & refresh search results',
+  REFRESH_BUTTON_ALT: 'Clear cache',
 } as const;

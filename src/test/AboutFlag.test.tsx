@@ -1,6 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 
-import { renderWithProviders } from './test-utils';
+import { renderWithProviders } from './utils/test-utils.tsx';
 import { AboutFlag } from '@features';
 
 const mockNavigate = vi.fn();

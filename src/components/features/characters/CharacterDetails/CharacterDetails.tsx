@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { OrnateFrame } from '@ui';
-import { getCharacterById } from '@api';
-import type { Character } from '@api';
+import { useGetCharacterByIdQuery } from '@api';
 
 import {
   ANONYMOUS_DETAILS_IMAGE,
+  DETAILS_INFO,
   DETAILS_STRINGS,
-  LOADING_DETAILS,
 } from './constants';
 
 import './CharacterDetails.css';
@@ -20,32 +18,33 @@ export function CharacterDetails() {
   }>();
   const navigate = useNavigate();
 
-  const [character, setCharacter] = useState<Character | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!characterId) return;
-
-    queueMicrotask(() => {
-      setLoading(true);
-      getCharacterById(characterId)
-        .then(setCharacter)
-        .catch((err) => setError(err.message))
-        .finally(() => setLoading(false));
-    });
-  }, [characterId]);
+  const {
+    data: character,
+    isLoading,
+    isError,
+    error,
+  } = useGetCharacterByIdQuery(characterId!, {
+    skip: !characterId,
+  });
 
   const handleClose = () => {
     navigate(`/${page}`);
   };
 
-  if (loading) return <div className="details-loading">{LOADING_DETAILS}</div>;
+  if (isLoading) {
+    return <div className="details-loading">{DETAILS_INFO.LOADING}</div>;
+  }
 
-  if (error) return <div className="details-error">{error}</div>;
+  if (isError) {
+    return (
+      <div className="details-error">
+        {(error as Error)?.message || DETAILS_INFO.ERROR}
+      </div>
+    );
+  }
 
   if (!character)
-    return <div className="details-empty">Select a character</div>;
+    return <div className="details-empty">{DETAILS_INFO.NO_CHARACTER}</div>;
 
   return (
     <OrnateFrame noInnerPadding>

@@ -1,5 +1,13 @@
 /* Service */
-export { searchCharacters, getCharacterById } from './service';
+export {
+  charactersApi,
+  useSearchCharactersQuery,
+  useGetCharacterByIdQuery,
+} from './charactersApi';
+
+export { customBaseQuery } from './customBaseQuery';
+
+/* Types */
 export type { Character, PaginationInfo } from './types';
 
 /* Constants */

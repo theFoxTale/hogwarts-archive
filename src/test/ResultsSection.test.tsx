@@ -2,18 +2,11 @@ import { vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
 
-import { selectedItemsReducer } from '@store/slices';
 import { RESULTS_STRING, ResultsSection } from '@layout';
 
 import { mockCharacters } from './mocks/api';
-
-const createEmptyStore = () =>
-  configureStore({
-    reducer: { selectedItems: selectedItemsReducer },
-    preloadedState: { selectedItems: {} },
-  });
+import { createTestStore } from './utils/test-utils.tsx';
 
 describe('ResultsSection', () => {
   test('shows loading indicator when isLoading is true', () => {
@@ -82,7 +75,7 @@ describe('ResultsSection', () => {
 
   test('renders list of characters when results are provided', () => {
     render(
-      <Provider store={createEmptyStore()}>
+      <Provider store={createTestStore()}>
         <MemoryRouter>
           <ResultsSection
             results={mockCharacters}
@@ -115,7 +108,7 @@ describe('ResultsSection', () => {
           <MemoryRouter>
             <ResultsSection
               results={[]}
-              isLoading={false}
+              isLoading={true}
               error={null}
               shouldThrowError={true}
               currentPage={1}
@@ -151,34 +144,6 @@ describe('ResultsSection', () => {
           </MemoryRouter>
         );
       }).toThrow(RESULTS_STRING.TEST_BUTTON);
-    });
-
-    test('does not throw again if shouldThrowError remains true after rerender', () => {
-      const { rerender } = render(
-        <MemoryRouter>
-          <ResultsSection
-            results={[]}
-            isLoading={false}
-            error={null}
-            shouldThrowError={true}
-            currentPage={1}
-          />
-        </MemoryRouter>
-      );
-
-      expect(() => {
-        rerender(
-          <MemoryRouter>
-            <ResultsSection
-              results={[]}
-              isLoading={false}
-              error={null}
-              shouldThrowError={true}
-              currentPage={1}
-            />
-          </MemoryRouter>
-        );
-      }).not.toThrow();
     });
 
     test('does not throw error when isLoading is true even if shouldThrowError becomes true', () => {

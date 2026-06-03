@@ -13,7 +13,9 @@ export function AboutPage() {
 
   return (
     <div className="about-container">
-      <h1 className="magic-title">{ABOUT_PAGE_STRINGS.ABOUT_HEADER}</h1>
+      <h1 className="about-title magic-title">
+        {ABOUT_PAGE_STRINGS.ABOUT_HEADER}
+      </h1>
 
       <div className="about-frames-container">
         <OrnateFrame className="variant-container">

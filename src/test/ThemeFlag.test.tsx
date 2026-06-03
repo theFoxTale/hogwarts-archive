@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react';
 
 import { ThemeFlag } from '@features';
-import { renderWithProviders } from './test-utils';
+import { renderWithProviders } from './utils/test-utils.tsx';
 
 describe('ThemeFlag', () => {
   test('toggles theme on click', () => {

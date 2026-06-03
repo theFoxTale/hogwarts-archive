@@ -3,7 +3,7 @@ export const API_CONFIG = {
   ITEMS_PER_PAGE: 3,
   USE_MOCK_API: import.meta.env.VITE_USE_MOCK_API === 'true',
   MOCK_DELAY_MS: Number(import.meta.env.VITE_MOCK_DELAY_MS) || 0,
-} as const;
+};
 
 // Сообщения об ошибках (технические и пользовательские)
 export const API_ERROR_MESSAGES = {

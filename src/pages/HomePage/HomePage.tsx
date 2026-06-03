@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 
 import {
@@ -11,10 +11,9 @@ import {
 } from '@layout';
 import { OrnateFrame } from '@ui';
 
-import { LOADING_DELAY, LOCAL_STORAGE_KEYS } from './constants';
+import { LOCAL_STORAGE_KEYS } from './constants';
 
-import { searchCharacters } from '@api';
-import type { Character, PaginationInfo } from '@api';
+import { useSearchCharactersQuery } from '@api';
 import { useLocalStorage } from '@hooks';
 
 import { useAppDispatch } from '@store';
@@ -37,43 +36,16 @@ export function HomePage() {
     ''
   );
   const [inputValue, setInputValue] = useState(searchQuery);
-
-  const [results, setResults] = useState<Character[]>([]);
-  const [pages, setPages] = useState<PaginationInfo | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [shouldThrowError, setShouldThrowError] = useState(false);
 
-  const fetchCharacters = useCallback(
-    async (searchText: string, pageNumber: number) => {
-      setIsLoading(true);
-      setError(null);
-
-      if (LOADING_DELAY.IS_SIMULATED) {
-        await new Promise((resolve) =>
-          setTimeout(resolve, LOADING_DELAY.TIME_MS)
-        );
-      }
-
-      try {
-        const data = await searchCharacters(searchText, pageNumber);
-
-        setResults(data.items);
-        setPages(data.pages);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : String(err));
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
+  const { data, isLoading, isError, error, refetch } = useSearchCharactersQuery(
+    { name: searchQuery, page: currentPage },
+    { skip: false }
   );
 
-  useEffect(() => {
-    queueMicrotask(() => {
-      void fetchCharacters(searchQuery, currentPage);
-    });
-  }, [fetchCharacters, searchQuery, currentPage]);
+  const results = data?.items ?? [];
+  const pages = data?.pages ?? null;
+  const apiError = isError ? (error as Error)?.message : null;
 
   const handlePageChange = (newPage: number) => {
     navigate(`/${newPage}`);
@@ -90,6 +62,11 @@ export function HomePage() {
     navigate(`/1`);
   };
 
+  // Ручное обновление (инвалидация кэша)
+  const handleRefresh = () => {
+    refetch();
+  };
+
   const navigateToPrevPage = () => {
     const prevPage = pages?.pagination?.prev;
     if (prevPage) handlePageChange(prevPage);
@@ -104,7 +81,7 @@ export function HomePage() {
 
   const resetError = () => {
     setShouldThrowError(false);
-    void fetchCharacters(searchQuery, currentPage);
+    refetch();
   };
 
   const totalPages = pages?.pagination?.last ?? currentPage;
@@ -120,6 +97,7 @@ export function HomePage() {
           value={inputValue}
           onChange={setInputValue}
           onSearch={handleSearch}
+          onRefresh={handleRefresh}
         />
       </OrnateFrame>
 
@@ -129,7 +107,7 @@ export function HomePage() {
             <ResultsSection
               results={results}
               isLoading={isLoading}
-              error={error}
+              error={apiError}
               shouldThrowError={shouldThrowError}
               currentPage={currentPage}
             />
@@ -142,7 +120,7 @@ export function HomePage() {
 
       <div className="app-footer">
         <Flyout />
-        {totalPages > 1 && !shouldThrowError && (
+        {totalPages > 1 && !isError && (
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

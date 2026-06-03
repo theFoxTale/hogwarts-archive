@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+
 import type { Character } from '@api';
 import { CharacterCard } from '@features';
 
@@ -21,13 +22,10 @@ export function ResultsSection({
   shouldThrowError,
   currentPage,
 }: ResultsSectionProps) {
-  const prevShouldThrowErrorRef = useRef(shouldThrowError);
-
   useEffect(() => {
-    if (!isLoading && shouldThrowError && !prevShouldThrowErrorRef.current) {
+    if (!isLoading && shouldThrowError) {
       throw new Error(RESULTS_STRING.TEST_BUTTON);
     }
-    prevShouldThrowErrorRef.current = shouldThrowError;
   }, [isLoading, shouldThrowError]);
 
   if (isLoading) {

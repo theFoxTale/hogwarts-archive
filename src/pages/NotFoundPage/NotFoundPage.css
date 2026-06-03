@@ -18,6 +18,10 @@
   text-transform: uppercase;
 }
 
+.not-found__title {
+  font-size: 1.4rem;
+}
+
 .not-found__subtitle {
   display: flex;
   justify-content: center;

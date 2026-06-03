@@ -13,3 +13,7 @@
 .about-container a {
   color: var(--accent);
 }
+
+.about-title {
+  font-size: 1.4rem;
+}

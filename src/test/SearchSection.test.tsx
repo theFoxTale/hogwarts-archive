@@ -8,6 +8,7 @@ import { SEARCH_STRINGS, SearchSection } from '@layout';
 
 describe('SearchSection', () => {
   const mockOnSearch = vi.fn();
+  const mockOnRefresh = vi.fn();
 
   function Wrapper() {
     const [value, setValue] = useState('');
@@ -17,22 +18,28 @@ describe('SearchSection', () => {
           value={value}
           onChange={setValue}
           onSearch={mockOnSearch}
+          onRefresh={mockOnRefresh}
         />
       </ThemeProvider>
     );
   }
 
   beforeEach(() => {
-    mockOnSearch.mockClear();
+    vi.clearAllMocks();
   });
 
-  test('renders input and button', () => {
+  test('renders input, search button, and refresh button', () => {
     render(<Wrapper />);
     expect(
       screen.getByPlaceholderText(SEARCH_STRINGS.SEARCH_PLACEHOLDER)
     ).toBeInTheDocument();
+
     expect(
       screen.getByRole('button', { name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByTitle(SEARCH_STRINGS.REFRESH_BUTTON_LABEL)
     ).toBeInTheDocument();
   });
 
@@ -114,5 +121,12 @@ describe('SearchSection', () => {
     });
     await userEvent.click(button);
     expect(mockOnSearch).toHaveBeenCalledWith('');
+  });
+
+  test('calls onRefresh when refresh button is clicked', async () => {
+    render(<Wrapper />);
+    const refreshBtn = screen.getByTitle(SEARCH_STRINGS.REFRESH_BUTTON_LABEL);
+    await userEvent.click(refreshBtn);
+    expect(mockOnRefresh).toHaveBeenCalledTimes(1);
   });
 });

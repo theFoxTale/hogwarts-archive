@@ -155,3 +155,7 @@
 
   filter: drop-shadow(0 0 6px rgba(255, 210, 120, 0.3));
 }
+
+.refresh-button {
+  padding: 10px 12px;
+}

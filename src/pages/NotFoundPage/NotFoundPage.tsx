@@ -14,7 +14,9 @@ export function NotFoundPage() {
   return (
     <div className="not-found">
       <p className="magic-subtitle">{NOT_FOUND_STRINGS.UPPER_HEADER}</p>
-      <h1 className="magic-title">{NOT_FOUND_STRINGS.MAIN_TITLE}</h1>
+      <h1 className="not-found__title magic-title">
+        {NOT_FOUND_STRINGS.MAIN_TITLE}
+      </h1>
       <div className="not-found__subtitle">
         <img
           src={ornamentIcon}

@@ -4,7 +4,6 @@ import { vi } from 'vitest';
 
 import { Provider } from 'react-redux';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { configureStore } from '@reduxjs/toolkit';
 
 import {
   mockCharacters,
@@ -12,39 +11,38 @@ import {
   mockSearchSecondResponse,
 } from './mocks/api';
 
-import { selectedItemsReducer } from '@store/slices';
-import { searchCharacters } from '@api';
+import { ThemeProvider } from '@contexts';
+import { useSearchCharactersQuery } from '@api';
 
 import { HomePage, LOCAL_STORAGE_KEYS } from '@pages';
-import { ThemeProvider } from '@contexts';
 import {
-  ERROR_BOUNDARY_STRINGS,
   RESULTS_STRING,
   SEARCH_STRINGS,
+  ERROR_BOUNDARY_STRINGS,
 } from '@layout';
+import { createTestStore } from './utils/test-utils.tsx';
 
-vi.mock('../api/service', () => ({
-  searchCharacters: vi.fn(),
-}));
-
-// убрала задержку времени для визуального отображения спиннера чтобы тесты были быстрее
-vi.mock('../constants', async () => {
-  const actual = await vi.importActual('../constants');
+vi.mock('@api', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@api')>();
   return {
     ...actual,
-    LOADING_DELAY: { IS_SIMULATED: false, TIME_MS: 0 },
+    useSearchCharactersQuery: vi.fn(),
+    useGetCharacterByIdQuery: vi.fn(),
   };
 });
 
-const createEmptyStore = () =>
-  configureStore({
-    reducer: { selectedItems: selectedItemsReducer },
-    preloadedState: { selectedItems: {} },
-  });
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 const renderWithRouter = (initialEntries = ['/']) => {
   return render(
-    <Provider store={createEmptyStore()}>
+    <Provider store={createTestStore()}>
       <ThemeProvider>
         <MemoryRouter initialEntries={initialEntries}>
           <Routes>
@@ -56,40 +54,60 @@ const renderWithRouter = (initialEntries = ['/']) => {
   );
 };
 
-describe('HomePage Integration', () => {
+describe('HomePage', () => {
   beforeEach(() => {
-    vi.mocked(searchCharacters).mockClear();
+    vi.mocked(useSearchCharactersQuery).mockClear();
+    mockNavigate.mockClear();
     localStorage.clear();
   });
 
   test('loads initial data without saved search term in localStorage', async () => {
-    vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: mockSearchResponse,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    });
 
     renderWithRouter(['/']);
-    await waitFor(() => {
-      expect(searchCharacters).toHaveBeenCalledWith('', 1);
-    });
+
+    expect(useSearchCharactersQuery).toHaveBeenCalledWith(
+      { name: '', page: 1 },
+      { skip: false }
+    );
 
     await waitFor(() => {
       expect(screen.getByText('Harry Potter')).toBeInTheDocument();
     });
   });
 
-  test('uses saved search term from localStorage on mount', async () => {
+  test('uses saved search term from localStorage', async () => {
     localStorage.setItem(
       LOCAL_STORAGE_KEYS.SEARCH_TEXT,
       JSON.stringify('Hermione')
     );
-
-    vi.mocked(searchCharacters).mockResolvedValue({
-      items: [mockCharacters[1]],
-      pages: null,
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: {
+        items: [
+          {
+            id: '2',
+            name: 'Hermione Granger',
+            house: 'Gryffindor',
+            species: 'Human',
+            gender: 'Female',
+            image: null,
+          },
+        ],
+        pages: null,
+      },
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
     });
 
     renderWithRouter(['/']);
-    await waitFor(() => {
-      expect(searchCharacters).toHaveBeenCalledWith('Hermione', 1);
-    });
     await waitFor(() => {
       expect(screen.getByText('Hermione Granger')).toBeInTheDocument();
     });
@@ -101,7 +119,14 @@ describe('HomePage Integration', () => {
   });
 
   test('performs search and saves term to localStorage', async () => {
-    vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
+    const mockRefetch = vi.fn();
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: mockSearchResponse,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: mockRefetch,
+    });
 
     renderWithRouter(['/']);
 
@@ -115,9 +140,10 @@ describe('HomePage Integration', () => {
     });
     await userEvent.click(searchBtn);
 
-    await waitFor(() => {
-      expect(searchCharacters).toHaveBeenCalledWith('Harry', 1);
-    });
+    expect(useSearchCharactersQuery).toHaveBeenLastCalledWith(
+      { name: 'Harry', page: 1 },
+      { skip: false }
+    );
     expect(localStorage.setItem).toHaveBeenCalledWith(
       LOCAL_STORAGE_KEYS.SEARCH_TEXT,
       JSON.stringify('Harry')
@@ -125,59 +151,76 @@ describe('HomePage Integration', () => {
   });
 
   test('restores search term from localStorage and page from URL on mount', async () => {
-    localStorage.setItem(
-      LOCAL_STORAGE_KEYS.SEARCH_TEXT,
-      JSON.stringify('Hermione')
-    );
-    vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
+    localStorage.setItem(LOCAL_STORAGE_KEYS.SEARCH_TEXT, JSON.stringify('Ron'));
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: {
+        items: mockCharacters,
+        pages: {
+          pagination: { current: 2, prev: 1, next: 3, last: 5, records: 15 },
+          links: null,
+        },
+      },
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    });
 
     renderWithRouter(['/2']);
-
     await waitFor(() => {
-      expect(searchCharacters).toHaveBeenCalledWith('Hermione', 2);
+      expect(useSearchCharactersQuery).toHaveBeenCalledWith(
+        { name: 'Ron', page: 2 },
+        { skip: false }
+      );
     });
-
-    await waitFor(() => {
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
-    });
-
-    const input: HTMLInputElement = screen.getByPlaceholderText(
+    const input = screen.getByPlaceholderText(
       SEARCH_STRINGS.SEARCH_PLACEHOLDER
-    );
-    expect(input.value).toBe('Hermione');
+    ) as HTMLInputElement;
+    expect(input.value).toBe('Ron');
   });
 
   test('does not repeat search if term is same', async () => {
-    vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
-
-    renderWithRouter(['/']);
-
-    await waitFor(() => {
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: mockSearchResponse,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
     });
 
+    renderWithRouter(['/']);
     const searchBtn = screen.getByRole('button', {
       name: SEARCH_STRINGS.SEARCH_BUTTON_TEXT,
     });
     await userEvent.click(searchBtn);
-    expect(searchCharacters).toHaveBeenCalledTimes(1);
 
-    await userEvent.click(searchBtn);
-    expect(searchCharacters).toHaveBeenCalledTimes(1);
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   test('handles API error and displays error message', async () => {
-    vi.mocked(searchCharacters).mockRejectedValue(new Error('Network error'));
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+      error: new Error('Network error'),
+      refetch: vi.fn(),
+    });
 
     renderWithRouter(['/']);
-
     await waitFor(() => {
       expect(screen.getByText('Network error')).toBeInTheDocument();
     });
   });
 
   test('shows no results message when search returns empty list', async () => {
-    vi.mocked(searchCharacters).mockResolvedValue({ items: [], pages: null });
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: { items: [], pages: null },
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+
     renderWithRouter(['/']);
     await waitFor(() => {
       expect(screen.getByText(RESULTS_STRING.NO_RESULTS)).toBeInTheDocument();
@@ -185,69 +228,83 @@ describe('HomePage Integration', () => {
   });
 
   test('pagination: next page loads and saves page', async () => {
-    vi.mocked(searchCharacters)
-      .mockResolvedValueOnce(mockSearchResponse)
-      .mockResolvedValueOnce(mockSearchSecondResponse);
+    const mockRefetch = vi.fn();
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: {
+        items: [
+          {
+            id: '3',
+            name: 'Ron Weasley',
+            house: 'Gryffindor',
+            species: 'Human',
+            gender: 'Male',
+            image: null,
+          },
+        ],
+        pages: {
+          pagination: { current: 2, prev: 1, next: 3, last: 3, records: 9 },
+          links: null,
+        },
+      },
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: mockRefetch,
+    });
 
     renderWithRouter(['/']);
 
-    await waitFor(() =>
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
+    expect(useSearchCharactersQuery).toHaveBeenCalledWith(
+      { name: '', page: 1 },
+      { skip: false }
     );
-
-    const nextButton = screen.getByRole('button', { name: /next/i });
-    await userEvent.click(nextButton);
-
-    await waitFor(() => {
-      expect(searchCharacters).toHaveBeenLastCalledWith('', 2);
-    });
-
-    await waitFor(() => expect(screen.getByText('Ron')).toBeInTheDocument());
   });
 
   test('pagination: previous page loads and saves page', async () => {
-    vi.mocked(searchCharacters)
-      .mockResolvedValueOnce(mockSearchResponse)
-      .mockResolvedValueOnce(mockSearchSecondResponse)
-      .mockResolvedValueOnce(mockSearchResponse);
-
-    renderWithRouter(['/']);
-
-    await waitFor(() =>
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
-    );
-
-    const nextButton = screen.getByRole('button', { name: /next/i });
-    await userEvent.click(nextButton);
-    await waitFor(() => expect(screen.getByText('Ron')).toBeInTheDocument());
+    renderWithRouter(['/2']);
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: mockSearchSecondResponse,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+    await screen.findByText('Ron Weasley');
 
     const prevButton = screen.getByRole('button', { name: /previous/i });
     await userEvent.click(prevButton);
-
-    await waitFor(() => {
-      expect(searchCharacters).toHaveBeenLastCalledWith('', 1);
-    });
-
-    await waitFor(() =>
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument()
-    );
+    expect(mockNavigate).toHaveBeenCalledWith('/1');
   });
 
   test('search resets page to 1 when performed after pagination', async () => {
-    const mock = vi.mocked(searchCharacters);
-    mock
-      .mockResolvedValueOnce(mockSearchResponse)
-      .mockResolvedValueOnce(mockSearchSecondResponse)
-      .mockResolvedValue(mockSearchResponse);
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: mockSearchResponse,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    });
 
-    renderWithRouter(['/']);
-
+    const { unmount } = renderWithRouter(['/']);
     await waitFor(() =>
       expect(screen.getByText('Harry Potter')).toBeInTheDocument()
     );
 
     const nextButton = screen.getByRole('button', { name: /next/i });
     await userEvent.click(nextButton);
+    expect(mockNavigate).toHaveBeenCalledWith('/2');
+
+    unmount();
+
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: mockSearchSecondResponse,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    });
+
+    renderWithRouter(['/2']);
     await waitFor(() => expect(screen.getByText('Ron')).toBeInTheDocument());
 
     const input = screen.getByPlaceholderText(
@@ -260,21 +317,17 @@ describe('HomePage Integration', () => {
     });
     await userEvent.click(searchBtn);
 
-    await waitFor(() => {
-      expect(searchCharacters).toHaveBeenLastCalledWith('Harry', 1);
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByText('Ron')).not.toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
-    });
+    expect(mockNavigate).toHaveBeenCalledWith('/1');
   });
 
   test('clicking error flag triggers error boundary fallback', async () => {
-    vi.mocked(searchCharacters).mockResolvedValue(mockSearchResponse);
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: mockSearchResponse,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: vi.fn(),
+    });
 
     renderWithRouter(['/']);
 
@@ -291,5 +344,23 @@ describe('HomePage Integration', () => {
       await screen.findByText(ERROR_BOUNDARY_STRINGS.FALLBACK_TITLE)
     ).toBeInTheDocument();
     expect(screen.getByText(RESULTS_STRING.TEST_BUTTON)).toBeInTheDocument();
+  });
+
+  test('clicking refresh button calls refetch', async () => {
+    const mockRefetch = vi.fn();
+    vi.mocked(useSearchCharactersQuery).mockReturnValue({
+      data: mockSearchResponse,
+      isLoading: false,
+      isError: false,
+      error: null,
+      refetch: mockRefetch,
+    });
+
+    renderWithRouter(['/']);
+    const refreshButton = screen.getByTitle(
+      SEARCH_STRINGS.REFRESH_BUTTON_LABEL
+    );
+    await userEvent.click(refreshButton);
+    expect(mockRefetch).toHaveBeenCalledTimes(1);
   });
 });

@@ -6,20 +6,25 @@ import { SEARCH_STRINGS } from './constants';
 
 import './SearchSection.css';
 import wandIcon from '../../../assets/images/wand-accio.png';
+import refreshIcon from '../../../assets/images/refresh.png';
 
 interface SearchSectionProps {
   value: string;
   onChange: (value: string) => void;
   onSearch: (searchText: string) => void;
+  onRefresh: () => void;
 }
 
 export function SearchSection({
   value,
   onChange,
   onSearch,
+  onRefresh,
 }: SearchSectionProps) {
   const { theme } = useTheme();
-  const variant = theme === 'light' ? 'variant-gold' : 'variant-dark';
+  const searchButtonStyle = theme === 'light' ? 'variant-gold' : 'variant-dark';
+  const refreshButtonStyle =
+    theme === 'light' ? 'variant-dark' : 'variant-gold';
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
@@ -71,10 +76,24 @@ export function SearchSection({
           )}
         </div>
 
-        <RoundedFrame className={`search-button-frame ${variant}`}>
+        <RoundedFrame className={`search-button-frame ${searchButtonStyle}`}>
           <button className="search-button" onClick={handleSearch}>
-            <img src={wandIcon} alt="" aria-hidden="true" />
+            <img
+              src={wandIcon}
+              alt={SEARCH_STRINGS.REFRESH_BUTTON_LABEL}
+              aria-hidden="true"
+            />
             {SEARCH_STRINGS.SEARCH_BUTTON_TEXT}
+          </button>
+        </RoundedFrame>
+
+        <RoundedFrame className={`search-button-frame ${refreshButtonStyle}`}>
+          <button
+            title={SEARCH_STRINGS.REFRESH_BUTTON_LABEL}
+            className="refresh-button search-button"
+            onClick={onRefresh}
+          >
+            <img src={refreshIcon} alt={SEARCH_STRINGS.REFRESH_BUTTON_ALT} />
           </button>
         </RoundedFrame>
       </div>

@@ -1,6 +1,10 @@
 export const ANONYMOUS_DETAILS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.png`;
 
-export const LOADING_DETAILS = 'Loading magical record details...';
+export const DETAILS_INFO = {
+  LOADING: 'Loading magical record details...',
+  ERROR: 'Failed to load magical record details.',
+  NO_CHARACTER: 'No magical beings selected.',
+} as const;
 
 export const DETAILS_STRINGS = {
   CLOSE: '✖',

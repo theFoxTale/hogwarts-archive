@@ -1,7 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import { ThemeProvider, useTheme } from '../contexts';
+
+import { ThemeProvider, useTheme } from '@contexts';
 
 const TestComponent = () => {
   const { theme, toggleTheme } = useTheme();

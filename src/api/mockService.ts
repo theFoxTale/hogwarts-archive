@@ -1,6 +1,6 @@
 import type { Character, PaginationInfo, SearchResponse } from './types';
+import { API_CONFIG, API_ERROR_MESSAGES } from './constants';
 import { mockCharacters } from './mockData';
-import { API_CONFIG, ERROR_MESSAGES } from '../constants';
 
 function filterByName(characters: Character[], nameQuery: string): Character[] {
   const trimmed = nameQuery.trim();
@@ -48,7 +48,7 @@ function buildPaginationInfo(
   };
 }
 
-export async function searchCharacters(
+export async function mockSearchCharacters(
   characterName: string,
   page: number = 1,
   itemsPerPage: number = API_CONFIG.ITEMS_PER_PAGE
@@ -72,7 +72,7 @@ export async function searchCharacters(
   return { items: pagedItems, pages };
 }
 
-export async function getCharacterById(id: string): Promise<Character> {
+export async function mockGetCharacterById(id: string): Promise<Character> {
   if (API_CONFIG.USE_MOCK_API && API_CONFIG.MOCK_DELAY_MS > 0) {
     await new Promise((resolve) =>
       setTimeout(resolve, API_CONFIG.MOCK_DELAY_MS)
@@ -81,7 +81,7 @@ export async function getCharacterById(id: string): Promise<Character> {
 
   const character = mockCharacters.find((c) => c.id === id);
   if (!character) {
-    throw new Error(ERROR_MESSAGES.NOT_FOUND);
+    throw new Error(API_ERROR_MESSAGES.NOT_FOUND);
   }
   return character;
 }

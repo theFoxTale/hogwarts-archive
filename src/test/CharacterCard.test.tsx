@@ -1,15 +1,14 @@
+import * as React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
-import { CharacterCard } from '../components';
-import selectedItemsReducer, {
-  toggleSelect,
-} from '../features/selectedItemsSlice';
-import { ANONYMOUS_IMAGE } from '../constants';
+import { CharacterCard, ANONYMOUS_CARD_IMAGE } from '@features';
 
-import type { Character } from '../api';
+import { selectedItemsReducer, toggleSelect } from '@store/slices';
+
+import type { Character } from '@api';
 import { mockLunaCharacter } from './mocks/api';
 
 const mockNavigate = vi.fn();
@@ -148,7 +147,7 @@ describe('CharacterCard', () => {
     );
 
     const img = screen.getByRole('img', { name: 'Luna Lovegood' });
-    expect(img).toHaveAttribute('src', ANONYMOUS_IMAGE);
+    expect(img).toHaveAttribute('src', ANONYMOUS_CARD_IMAGE);
   });
 
   test('displays provided image when available', () => {
@@ -174,7 +173,7 @@ describe('CharacterCard', () => {
     fireEvent.error(img);
 
     await waitFor(() => {
-      expect(img).toHaveAttribute('src', ANONYMOUS_IMAGE);
+      expect(img).toHaveAttribute('src', ANONYMOUS_CARD_IMAGE);
     });
   });
 

@@ -1,16 +1,24 @@
 import { vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ErrorButton } from '../components';
 
-describe('ErrorButton', () => {
-  test('renders button and calls onSimulateError on click', async () => {
+import { ErrorFlag } from '@features';
+import { ThemeProvider } from '@contexts';
+
+describe('ErrorFlag', () => {
+  test('renders flag and calls onSimulateError on click', async () => {
     const mockSimulate = vi.fn();
-    render(<ErrorButton onSimulateError={mockSimulate} />);
 
-    const button = screen.getByRole('button');
-    await userEvent.click(button);
+    render(
+      <ThemeProvider>
+        <ErrorFlag onSimulateError={mockSimulate} />
+      </ThemeProvider>
+    );
 
+    const flagContainer = document.querySelector('.error-flag') as HTMLElement;
+    expect(flagContainer).toBeInTheDocument();
+
+    await userEvent.click(flagContainer);
     expect(mockSimulate).toHaveBeenCalledTimes(1);
   });
 });

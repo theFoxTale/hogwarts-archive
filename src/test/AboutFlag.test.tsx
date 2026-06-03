@@ -1,35 +1,21 @@
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { fireEvent } from '@testing-library/react';
 
-import { AboutFlag } from '../components';
+import { renderWithProviders } from './utils/test-utils.tsx';
+import { AboutFlag } from '@features';
 
 const mockNavigate = vi.fn();
-
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
+  return { ...actual, useNavigate: () => mockNavigate };
 });
 
 describe('AboutFlag', () => {
-  test('navigates to /about when clicked', async () => {
-    render(
-      <MemoryRouter>
-        <AboutFlag />
-      </MemoryRouter>
-    );
+  test('navigates to /about when clicked', () => {
+    renderWithProviders(<AboutFlag />);
 
-    const container = document.querySelector('.about-flag');
-    expect(container).toBeInTheDocument();
+    const flag = document.querySelector('.about-flag') as HTMLElement;
+    fireEvent.click(flag);
 
-    if (container) {
-      await userEvent.click(container);
-      expect(mockNavigate).toHaveBeenCalledWith('/about');
-    } else {
-      throw new Error('AboutFlag container not found');
-    }
+    expect(mockNavigate).toHaveBeenCalledWith('/about');
   });
 });

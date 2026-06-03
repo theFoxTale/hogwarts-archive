@@ -2,14 +2,13 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import selectedItemsReducer, { clearAll } from '../features/selectedItemsSlice';
-import * as csvExport from '../utils/csvExport';
-import { FLYOUT_STRINGS } from '../constants';
+import { clearAll, selectedItemsReducer } from '@store/slices';
+import * as csvExport from '@utils';
 
-import { ThemeProvider } from '../contexts';
-import { Flyout } from '../components';
+import { ThemeProvider } from '@contexts';
+import { Flyout, FLYOUT_STRINGS } from '@layout';
 
-import type { Character } from '../api';
+import type { Character } from '@api';
 import { mockCharacters, mockHarryCharacter } from './mocks/api';
 
 vi.mock('../utils/csvExport', () => ({

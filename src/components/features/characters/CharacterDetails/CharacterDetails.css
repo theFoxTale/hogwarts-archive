@@ -1,0 +1,56 @@
+.character-details {
+  padding: 20px;
+  position: relative;
+}
+
+.details-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-h);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.details-close:hover {
+  opacity: 1;
+}
+
+.details-image {
+  width: auto;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.details-title {
+  font-size: 1.2rem;
+}
+
+.details-section {
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.details-section h3 {
+  font-family: var(--font-body), serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+
+  color: var(--text-secondary);
+}
+
+.details-section p {
+  margin: 4px 0;
+}
+
+.details-section ul {
+  margin: 4px 0;
+  padding-left: 20px;
+}

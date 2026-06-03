@@ -1,5 +1,8 @@
-import type { Character } from '../api';
-import { CSV_EXPORT } from '../constants';
+import type { Character } from '@api';
+
+export const CSV_EXPORT = {
+  FILE_NAME: '_magical_beings',
+};
 
 export function escapeCSV(value: string | null | undefined): string {
   if (value == null) return '';

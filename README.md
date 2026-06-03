@@ -5,6 +5,7 @@
 - **React** (функциональные компоненты, хуки)
 - **TypeScript**
 - **Redux Toolkit** – управление состоянием выбранных элементов
+- **RTK Query** – кэширование и работа с API
 - **Context API** – тема (light/dark)
 - **React Router DOM** – маршрутизация
 - **Vite** – сборка и разработка
@@ -84,6 +85,12 @@ GET https://api.potterdb.com/v1/characters?filter[name_cont]=Harry&page[number]=
 - [English](./docs/04%20-%20State%20Management%20and%20Context%20API/state-management.md)
 - [Русский](./docs/04%20-%20State%20Management%20and%20Context%20API/state-management-ru.md)
 - [Результат выполнения](./docs/04%20-%20State%20Management%20and%20Context%20API/results.md)
+
+### 05 - React: API Querying (RTK Query / TanStack Query)
+
+- [English](./docs/05%20-%20API%20Querying/queries.md)
+- [Русский](./docs/05%20-%20API%20Querying/queries-ru.md)
+- [Результат выполнения](./docs/05%20-%20API%20Querying/results.md)
 
 ## Тестирование
 

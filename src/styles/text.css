@@ -23,7 +23,10 @@
 }
 
 .magic-title {
+  font-family: var(--font-serif), serif;
+  font-weight: 700;
   letter-spacing: 0.12em;
+  text-transform: uppercase;
 
   position: relative;
   user-select: none;
@@ -48,6 +51,9 @@
 }
 
 .magic-subtitle {
+  font-family: var(--font-body), serif;
+  font-size: 0.9rem;
+  font-weight: bold;
   letter-spacing: 0.12em;
 
   position: relative;

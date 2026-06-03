@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AboutPage, HomePage, NotFoundPage } from './pages';
-import { CharacterDetails } from './components';
+
+import { AboutPage, HomePage, NotFoundPage } from '@pages';
+import { CharacterDetails } from '@features';
 
 const basename = import.meta.env.BASE_URL;
 

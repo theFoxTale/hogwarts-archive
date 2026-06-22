@@ -92,6 +92,12 @@ GET https://api.potterdb.com/v1/characters?filter[name_cont]=Harry&page[number]=
 - [Русский](./docs/05%20-%20API%20Querying/queries-ru.md)
 - [Результат выполнения](./docs/05%20-%20API%20Querying/results.md)
 
+### 06 - Next.js. Server Side Rendering
+
+- [English](./docs/06%20-%20Server%20Side%20Rendering/nextjs-ssr-ssg.md)
+- [Русский](./docs/06%20-%20Server%20Side%20Rendering/nextjs-ssr-ssg-ru.md)
+- [Результат выполнения](./docs/06%20-%20Server%20Side%20Rendering/results.md)
+
 ## Тестирование
 
 Для запуска тестов и проверки покрытия используйте команды:

@@ -6,12 +6,23 @@ import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
-  globalIgnores(['dist', '.next', 'node_modules']),
+  globalIgnores([
+    'dist',
+    'docs',
+    'coverage',
+    '.husky',
+    '.vite',
+    '.next',
+    'node_modules',
+    '*.min.js',
+    '*.bundle.js',
+    'package-lock.json',
+  ]),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
-      tseslint.configs.recommended,
+      ...tseslint.configs.recommended,
       reactHooks.configs.flat.recommended,
       eslintConfigPrettier,
     ],

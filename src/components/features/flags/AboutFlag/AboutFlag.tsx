@@ -1,5 +1,5 @@
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useNavigate } from 'react-router-dom';
 
 import { Flag } from '@ui';
 
@@ -19,11 +19,12 @@ const aboutIcon = '/images/flag/about-icon.png';
 
 export function AboutFlag() {
   const lang = useTranslations('app');
-  const navigate = useNavigate();
+
+  const router = useRouter();
 
   return (
     <Flag
-      onClick={() => navigate('/about')}
+      onClick={() => router.push('/about')}
       topImage={{ light: flagTopLight, dark: flagTopDark }}
       middleBackground={{ light: flagMiddleLight, dark: flagMiddleDark }}
       bottomImage={{ light: flagBottomLight, dark: flagBottomDark }}

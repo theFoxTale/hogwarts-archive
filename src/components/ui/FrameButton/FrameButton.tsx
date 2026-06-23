@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactNode, MouseEventHandler } from 'react';
 
 import { RoundedFrame } from '@ui';
@@ -7,7 +9,7 @@ import './FrameButton.css';
 
 interface FrameButtonProps {
   children: ReactNode;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   className?: string;
 }

@@ -1,17 +1,19 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 import { FrameButton } from '@ui';
 
-import './NotFoundPage.css';
+import './not-found.css';
 const ornamentIcon = '/images/ornament/character-ends-ornament.png';
 
-export function NotFoundPage() {
+export default function NotFound() {
   const lang = useTranslations('notFound');
 
-  const navigate = useNavigate();
+  const router = useRouter();
   const navigateToHomePage = () => {
-    navigate('/');
+    router.push('/');
   };
 
   return (
@@ -32,7 +34,7 @@ export function NotFoundPage() {
         />
       </div>
       <p className="magic-subtitle">{lang('description1')}</p>
-      <p className="magic-subtitle">{lang('description2')}</p>
+      <p className="magic-subtitle">{lang('description2')}</p>\
       <FrameButton className="not-found__button" onClick={navigateToHomePage}>
         {lang('button')}
       </FrameButton>

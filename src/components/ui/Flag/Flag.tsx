@@ -1,3 +1,5 @@
+'use client';
+
 import { useThemeImages } from '@hooks';
 import type { FlagProps } from './types';
 

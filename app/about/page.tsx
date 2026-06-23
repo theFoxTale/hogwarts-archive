@@ -1,17 +1,12 @@
-import { useTranslations } from 'next-intl';
-import { useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
-import { FrameButton, OrnateFrame } from '@ui';
+import { OrnateFrame, FrameButton } from '@ui';
 
-import './AboutPage.css';
+import './about.css';
 
-export function AboutPage() {
-  const lang = useTranslations('about');
-
-  const navigate = useNavigate();
-  const navigateToHomePage = () => {
-    navigate('/');
-  };
+export default async function AboutPage() {
+  const lang = await getTranslations('about');
 
   return (
     <div className="about-container">
@@ -44,9 +39,12 @@ export function AboutPage() {
           </p>
         </OrnateFrame>
       </div>
-      <FrameButton className="not-found__button" onClick={navigateToHomePage}>
-        {lang('button')}
-      </FrameButton>
+
+      <Link href="/">
+        <FrameButton className="not-found__button">
+          {lang('button')}
+        </FrameButton>
+      </Link>
     </div>
   );
 }

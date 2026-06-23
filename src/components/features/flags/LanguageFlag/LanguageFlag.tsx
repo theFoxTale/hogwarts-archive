@@ -1,7 +1,7 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useLocaleContext } from '../../../../../app/providers';
 
 import { Flag } from '@ui';
 
@@ -20,22 +20,11 @@ const languageIcon = '/images/rounded-flag/error-icon.png';
 export function LanguageFlag() {
   const lang = useTranslations('app');
 
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
+  const { locale, setLocale } = useLocaleContext();
 
   const toggleLanguage = () => {
     const newLocale = locale === 'en' ? 'ru' : 'en';
-
-    const segments = pathname.split('/');
-    if (segments.length > 1 && ['en', 'ru'].includes(segments[1])) {
-      segments[1] = newLocale;
-    } else {
-      segments.splice(1, 0, newLocale);
-    }
-
-    const newPath = segments.join('/') || '/';
-    router.push(newPath);
+    setLocale(newLocale);
   };
 
   return (

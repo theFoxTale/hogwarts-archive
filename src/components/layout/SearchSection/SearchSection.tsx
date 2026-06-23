@@ -5,8 +5,8 @@ import { RoundedFrame } from '@ui';
 import { useTheme } from '@contexts';
 
 import './SearchSection.css';
-import wandIcon from '../../../assets/images/wand-accio.png';
-import refreshIcon from '../../../assets/images/refresh.png';
+const wandIcon = '/images/wand-accio.png';
+const refreshIcon = '/images/refresh.png';
 
 interface SearchSectionProps {
   value: string;

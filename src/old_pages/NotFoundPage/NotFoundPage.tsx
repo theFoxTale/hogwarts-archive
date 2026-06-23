@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FrameButton } from '@ui';
 
 import './NotFoundPage.css';
-import ornamentIcon from '../../assets/images/ornament/character-ends-ornament.png';
+const ornamentIcon = '/images/ornament/character-ends-ornament.png';
 
 export function NotFoundPage() {
   const lang = useTranslations('notFound');

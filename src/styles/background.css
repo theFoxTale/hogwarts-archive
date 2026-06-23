@@ -1,9 +1,9 @@
 :root {
-  --bg-image: url('../assets/images/hogwarts-library-light.png');
+  --bg-image: url('/images/hogwarts-library-light.png');
 }
 
 [data-theme='dark'] {
-  --bg-image: url('../assets/images/hogwarts-library-dark.png');
+  --bg-image: url('/images/hogwarts-library-dark.png');
 }
 
 body {

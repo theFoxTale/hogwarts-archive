@@ -7,15 +7,15 @@ import { Flag } from '@ui';
 
 import './LanguageFlag.css';
 
-import flagTopLight from '../../../../assets/images/rounded-flag/flag-top.png';
-import flagMiddleLight from '../../../../assets/images/rounded-flag/flag-middle.png';
-import flagBottomLight from '../../../../assets/images/rounded-flag/flag-bottom.png';
+const flagTopLight = '/images/rounded-flag/flag-top.png';
+const flagMiddleLight = '/images/rounded-flag/flag-middle.png';
+const flagBottomLight = '/images/rounded-flag/flag-bottom.png';
 
 const flagTopDark = flagTopLight;
 const flagMiddleDark = flagMiddleLight;
 const flagBottomDark = flagBottomLight;
 
-import languageIcon from '../../../../assets/images/rounded-flag/error-icon.png';
+const languageIcon = '/images/rounded-flag/error-icon.png';
 
 export function LanguageFlag() {
   const lang = useTranslations('app');

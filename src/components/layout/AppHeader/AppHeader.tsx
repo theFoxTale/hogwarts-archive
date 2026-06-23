@@ -4,8 +4,8 @@ import { useTranslations } from 'next-intl';
 import { AboutFlag, LanguageFlag, ThemeFlag } from '@features';
 
 import './AppHeader.css';
-import emblemIcon from '../../../assets/images/hogwarts-emblem.png';
-import ornamentIcon from '../../../assets/images/ornament/hogwarts-ornaments.png';
+const emblemIcon = '/images/hogwarts-emblem.png';
+const ornamentIcon = '/images/ornament/hogwarts-ornaments.png';
 
 export function AppHeader() {
   const lang = useTranslations('app');

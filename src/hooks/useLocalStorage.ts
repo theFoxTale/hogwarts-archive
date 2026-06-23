@@ -7,6 +7,10 @@ export function useLocalStorage<T>(
   initialValue: T
 ): [T, SetValue<T>] {
   const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
+
     try {
       const item = localStorage.getItem(key);
 
@@ -23,6 +27,8 @@ export function useLocalStorage<T>(
   });
 
   const setValue: SetValue<T> = (value) => {
+    if (typeof window === 'undefined') return;
+
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;

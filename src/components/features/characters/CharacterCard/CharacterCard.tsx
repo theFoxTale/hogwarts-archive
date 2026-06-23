@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,11 +53,14 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
         </div>
 
         {/* Изображение персонажа */}
-        <div className="character-card__image">
-          <img
+        <div className="character-card__image" style={{ position: 'relative' }}>
+          <Image
             src={character.image || ANONYMOUS_CARD_IMAGE}
             onError={(e) => (e.currentTarget.src = ANONYMOUS_CARD_IMAGE)}
             alt={character.name}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="60px"
           />
         </div>
 
@@ -68,19 +72,37 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
           <div className="character-card__traits">
             {/* Иконка и название факультета */}
             <div className="trait-item">
-              <img src={houseIcon} alt={houseName} className="trait-icon" />
+              <Image
+                src={houseIcon}
+                alt={houseName}
+                className="trait-icon"
+                width={20}
+                height={20}
+              />
               <span className="trait-name">{houseName}</span>
             </div>
 
             {/* Иконка и название вида */}
             <div className="trait-item">
-              <img src={speciesIcon} alt={speciesName} className="trait-icon" />
+              <Image
+                src={speciesIcon}
+                alt={speciesName}
+                className="trait-icon"
+                width={20}
+                height={20}
+              />
               <span className="trait-name">{speciesName}</span>
             </div>
 
             {/* Иконка и название пола */}
             <div className="trait-item">
-              <img src={genderIcon} alt={genderName} className="trait-icon" />
+              <Image
+                src={genderIcon}
+                alt={genderName}
+                className="trait-icon"
+                width={20}
+                height={20}
+              />
               <span className="trait-name">{genderName}</span>
             </div>
           </div>

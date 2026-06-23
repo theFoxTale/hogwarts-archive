@@ -31,11 +31,11 @@
 }
 
 .not-found__ornament {
-  height: 28px;
   display: block;
   opacity: 0.75;
   user-select: none;
   pointer-events: none;
+  filter: brightness(2);
 }
 
 .not-found__ornament--mirrored {

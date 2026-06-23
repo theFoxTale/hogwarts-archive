@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -50,12 +51,20 @@ export function CharacterDetails() {
         <button className="details-close" onClick={handleClose}>
           {lang('ui.close')}
         </button>
-        <img
-          src={character.image || ANONYMOUS_DETAILS_IMAGE}
-          onError={(e) => (e.currentTarget.src = ANONYMOUS_DETAILS_IMAGE)}
-          alt={character.name}
-          className="details-image"
-        />
+        <div
+          className="details-image-wrapper"
+          style={{ position: 'relative', width: '150px', height: '150px' }}
+        >
+          <Image
+            src={character.image || ANONYMOUS_DETAILS_IMAGE}
+            onError={(e) => (e.currentTarget.src = ANONYMOUS_DETAILS_IMAGE)}
+            alt={character.name}
+            className="details-image"
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="150px"
+          />
+        </div>
         <h2 className="details-title magic-title">{character.name}</h2>
 
         <div className="details-section">

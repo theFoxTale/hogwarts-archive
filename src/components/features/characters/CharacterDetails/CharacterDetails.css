@@ -19,13 +19,13 @@
   opacity: 1;
 }
 
-.details-image {
-  width: auto;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-  display: block;
+.details-image-wrapper {
   margin: 0 auto 20px;
+}
+
+.details-image {
+  border-radius: 24px;
+  display: block;
 }
 
 .details-title {

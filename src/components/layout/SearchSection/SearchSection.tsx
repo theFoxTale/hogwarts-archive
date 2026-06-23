@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { type ChangeEvent, type KeyboardEvent } from 'react';
 
@@ -80,7 +81,13 @@ export function SearchSection({
 
         <RoundedFrame className={`search-button-frame ${searchButtonStyle}`}>
           <button className="search-button" onClick={handleSearch}>
-            <img src={wandIcon} alt={lang('refresh')} aria-hidden="true" />
+            <Image
+              src={wandIcon}
+              alt={lang('refresh')}
+              aria-hidden="true"
+              width={20}
+              height={20}
+            />
             {lang('button')}
           </button>
         </RoundedFrame>
@@ -91,7 +98,12 @@ export function SearchSection({
             className="refresh-button search-button"
             onClick={onRefresh}
           >
-            <img src={refreshIcon} alt={lang('refreshAlt')} />
+            <Image
+              src={refreshIcon}
+              alt={lang('refreshAlt')}
+              width={20}
+              height={20}
+            />
           </button>
         </RoundedFrame>
       </div>

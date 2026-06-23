@@ -1,0 +1,16 @@
+dist
+docs
+build
+.vite
+node_modules
+coverage
+.husky
+.git
+*.log
+.env
+.env.*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+*.min.js
+*.bundle.js

@@ -1,0 +1,10 @@
+dist
+docs
+build
+.vite
+node_modules
+coverage
+.husky
+*.min.js
+*.bundle.js
+package-lock.json

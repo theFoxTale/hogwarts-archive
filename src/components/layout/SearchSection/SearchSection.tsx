@@ -1,8 +1,8 @@
+import { useTranslations } from 'next-intl';
 import { type ChangeEvent, type KeyboardEvent } from 'react';
 
 import { RoundedFrame } from '@ui';
 import { useTheme } from '@contexts';
-import { SEARCH_STRINGS } from './constants';
 
 import './SearchSection.css';
 import wandIcon from '../../../assets/images/wand-accio.png';
@@ -21,6 +21,8 @@ export function SearchSection({
   onSearch,
   onRefresh,
 }: SearchSectionProps) {
+  const lang = useTranslations('search');
+
   const { theme } = useTheme();
   const searchButtonStyle = theme === 'light' ? 'variant-gold' : 'variant-dark';
   const refreshButtonStyle =
@@ -47,19 +49,19 @@ export function SearchSection({
 
   return (
     <div className="search-section">
-      <p className="magic-subtitle">{SEARCH_STRINGS.SEARCH_HEADER}</p>
+      <p className="magic-subtitle">{lang('header')}</p>
 
       <div className="search-section-container">
         <div className="search-input-wrapper">
           <RoundedFrame className="search-input-frame variant-input">
             <input
               type="text"
-              placeholder={SEARCH_STRINGS.SEARCH_PLACEHOLDER}
+              placeholder={lang('placeholder')}
               className="search-input"
               value={value}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
-              aria-label={SEARCH_STRINGS.SEARCH_DESCRIPTION}
+              aria-label={lang('description')}
             />
           </RoundedFrame>
 
@@ -67,8 +69,8 @@ export function SearchSection({
             <button
               className="clear-button"
               onClick={handleClear}
-              aria-label={SEARCH_STRINGS.CLEAR_BUTTON_LABEL}
-              title={SEARCH_STRINGS.CLEAR_BUTTON_LABEL}
+              aria-label={lang('clear')}
+              title={lang('clear')}
               type="button"
             >
               ✖
@@ -78,22 +80,18 @@ export function SearchSection({
 
         <RoundedFrame className={`search-button-frame ${searchButtonStyle}`}>
           <button className="search-button" onClick={handleSearch}>
-            <img
-              src={wandIcon}
-              alt={SEARCH_STRINGS.REFRESH_BUTTON_LABEL}
-              aria-hidden="true"
-            />
-            {SEARCH_STRINGS.SEARCH_BUTTON_TEXT}
+            <img src={wandIcon} alt={lang('refresh')} aria-hidden="true" />
+            {lang('button')}
           </button>
         </RoundedFrame>
 
         <RoundedFrame className={`search-button-frame ${refreshButtonStyle}`}>
           <button
-            title={SEARCH_STRINGS.REFRESH_BUTTON_LABEL}
+            title={lang('refresh')}
             className="refresh-button search-button"
             onClick={onRefresh}
           >
-            <img src={refreshIcon} alt={SEARCH_STRINGS.REFRESH_BUTTON_ALT} />
+            <img src={refreshIcon} alt={lang('refreshAlt')} />
           </button>
         </RoundedFrame>
       </div>

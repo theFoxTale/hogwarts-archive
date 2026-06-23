@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 import { useAppDispatch, useAppSelector } from '@store';
 import {
   clearAll,
@@ -8,11 +10,11 @@ import {
 import { FrameButton, RoundedFrame } from '@ui';
 import { exportToCSV } from '@utils';
 
-import { FLYOUT_STRINGS } from './constants';
-
 import './Flyout.css';
 
 export function Flyout() {
+  const lang = useTranslations('flyout');
+
   const dispatch = useAppDispatch();
   const selectedCount = useAppSelector(selectSelectedCount);
   const selectedItems = useAppSelector(selectSelectedItemsArray);
@@ -33,14 +35,14 @@ export function Flyout() {
     <RoundedFrame className="flyout__frame variant-container">
       <div className="flyout__content">
         <span className="magic-subtitle">
-          {FLYOUT_STRINGS.SELECTED_LABEL} {selectedCount}
+          {lang('selected')} {selectedCount}
         </span>
         <div className="flyout__actions">
           <FrameButton onClick={handleUnselectAll}>
-            {FLYOUT_STRINGS.UNSELECT_ALL}
+            {lang('unselectAll')}
           </FrameButton>
           <FrameButton onClick={handleDownload}>
-            {FLYOUT_STRINGS.DOWNLOAD_CSV}
+            {lang('downloadCSV')}
           </FrameButton>
         </div>
       </div>

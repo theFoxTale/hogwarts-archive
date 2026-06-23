@@ -4,16 +4,25 @@ import type { Theme } from './types';
 
 const THEME_STORAGE_KEY = 'hogwarts-theme';
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const saved = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    if (saved === 'light' || saved === 'dark') return saved;
+// Функция для получения начальной темы (выполняется только на клиенте)
+function getInitialTheme(): Theme {
+  if (typeof window === 'undefined') {
+    return 'light';
+  }
 
-    const isDarkPreferred = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    ).matches;
-    return isDarkPreferred ? 'dark' : 'light';
-  });
+  const saved = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
+  if (saved === 'light' || saved === 'dark') {
+    return saved;
+  }
+
+  const isDarkPreferred = window.matchMedia(
+    '(prefers-color-scheme: dark)'
+  ).matches;
+  return isDarkPreferred ? 'dark' : 'light';
+}
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);

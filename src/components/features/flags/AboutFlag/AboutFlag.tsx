@@ -1,6 +1,6 @@
+import { useTranslations } from 'next-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { ABOUT_STRINGS } from './constants';
 import { Flag } from '@ui';
 
 import './AboutFlag.css';
@@ -18,6 +18,7 @@ import flagBottomDark from '../../../../assets/images/flag/dark/flag-bottom.png'
 import aboutIcon from '../../../../assets/images/flag/about-icon.png';
 
 export function AboutFlag() {
+  const lang = useTranslations('app');
   const navigate = useNavigate();
 
   return (
@@ -27,8 +28,8 @@ export function AboutFlag() {
       middleBackground={{ light: flagMiddleLight, dark: flagMiddleDark }}
       bottomImage={{ light: flagBottomLight, dark: flagBottomDark }}
       icon={{ light: aboutIcon, dark: aboutIcon }}
-      text={ABOUT_STRINGS.TEXT}
-      alt={ABOUT_STRINGS.ALT_TEXT}
+      text={lang('about')}
+      alt={lang('aboutAlt')}
       className="about-flag"
     />
   );

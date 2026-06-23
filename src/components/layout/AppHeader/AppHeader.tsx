@@ -1,38 +1,37 @@
-import { AboutFlag, ErrorFlag, ThemeFlag } from '@features';
-import { APP_STRINGS } from './constants';
+'use client';
+import { useTranslations } from 'next-intl';
+
+import { AboutFlag, LanguageFlag, ThemeFlag } from '@features';
 
 import './AppHeader.css';
 import emblemIcon from '../../../assets/images/hogwarts-emblem.png';
 import ornamentIcon from '../../../assets/images/ornament/hogwarts-ornaments.png';
 
-interface AppHeaderProps {
-  onSimulateError?: () => void;
-}
-
-export function AppHeader({ onSimulateError }: AppHeaderProps) {
+export function AppHeader() {
+  const lang = useTranslations('app');
   return (
     <div className="app-header">
       <AboutFlag />
       <img
         src={emblemIcon}
-        alt={APP_STRINGS.APP_EMBLEM_TOOLTIP}
+        alt={lang('emblemTooltip')}
         className="app-header__emblem"
       />
-      <p className="app-header__title magic-title">{APP_STRINGS.APP_NAME}</p>
+      <p className="app-header__title magic-title">{lang('title')}</p>
       <div className="app-header__description">
         <img
           src={ornamentIcon}
-          alt={APP_STRINGS.APP_ORNAMENT_TOOLTIP}
+          alt={lang('ornamentTooltip')}
           className="app-header__ornament"
         />
-        <p className="magic-subtitle">{APP_STRINGS.APP_DESCRIPTION}</p>
+        <p className="magic-subtitle">{lang('description')}</p>
         <img
           src={ornamentIcon}
-          alt={APP_STRINGS.APP_ORNAMENT_TOOLTIP}
+          alt={lang('ornamentTooltip')}
           className="app-header__ornament app-header__ornament--mirrored"
         />
       </div>
-      {onSimulateError && <ErrorFlag onSimulateError={onSimulateError} />}
+      <LanguageFlag />
       <ThemeFlag />
     </div>
   );

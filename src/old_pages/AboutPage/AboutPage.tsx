@@ -1,11 +1,13 @@
+import { useTranslations } from 'next-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { ABOUT_PAGE_STRINGS } from './constants';
 import { FrameButton, OrnateFrame } from '@ui';
 
 import './AboutPage.css';
 
 export function AboutPage() {
+  const lang = useTranslations('about');
+
   const navigate = useNavigate();
   const navigateToHomePage = () => {
     navigate('/');
@@ -13,39 +15,37 @@ export function AboutPage() {
 
   return (
     <div className="about-container">
-      <h1 className="about-title magic-title">
-        {ABOUT_PAGE_STRINGS.ABOUT_HEADER}
-      </h1>
+      <h1 className="about-title magic-title">{lang('header')}</h1>
 
       <div className="about-frames-container">
         <OrnateFrame className="variant-container">
-          <p>This application is a test page for HarryPotter API.</p>
+          <p>{lang('description')}</p>
           <p>
-            Course:{' '}
+            {lang('courseTitle')}:{' '}
             <a
               href="https://rs.school/react/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              RS School React
+              {lang('course')}
             </a>
           </p>
         </OrnateFrame>
         <OrnateFrame className="variant-container">
           <p>
-            Author:{' '}
+            {lang('authorTitle')}:{' '}
             <a
               href="https://github.com/theFoxTale"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Annie theFoxTale
+              {lang('author')}
             </a>
           </p>
         </OrnateFrame>
       </div>
       <FrameButton className="not-found__button" onClick={navigateToHomePage}>
-        {ABOUT_PAGE_STRINGS.BUTTON_TEXT}
+        {lang('button')}
       </FrameButton>
     </div>
   );

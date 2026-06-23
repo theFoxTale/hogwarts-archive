@@ -1,10 +1,11 @@
+import { useTranslations } from 'next-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { GoldCheckbox, RoundedFrame } from '@ui';
 import type { Character } from '@api';
 
 import { getGenderIcon, getHouseIcon, getSpeciesIcon } from '@utils';
-import { CHARACTER_CARD_STRINGS, ANONYMOUS_CARD_IMAGE } from './constants';
+import { ANONYMOUS_CARD_IMAGE } from './constants';
 
 import { useAppDispatch, useAppSelector } from '@store';
 import { selectIsSelected, toggleSelect } from '@store/slices';
@@ -17,6 +18,8 @@ interface CharacterCardProps {
 }
 
 export function CharacterCard({ character, currentPage }: CharacterCardProps) {
+  const lang = useTranslations('common');
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isSelected = useAppSelector(selectIsSelected(character.id));
@@ -30,11 +33,11 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
   };
 
   const houseIcon = getHouseIcon(character.house);
-  const houseName = character.house || CHARACTER_CARD_STRINGS.UNKNOWN;
+  const houseName = character.house || lang('unknown');
   const speciesIcon = getSpeciesIcon(character.species);
-  const speciesName = character.species || CHARACTER_CARD_STRINGS.UNKNOWN;
+  const speciesName = character.species || lang('unknown');
   const genderIcon = getGenderIcon(character.gender);
-  const genderName = character.gender || CHARACTER_CARD_STRINGS.UNKNOWN;
+  const genderName = character.gender || lang('unknown');
 
   return (
     <RoundedFrame className="variant-paper">

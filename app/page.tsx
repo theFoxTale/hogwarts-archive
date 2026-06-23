@@ -1,7 +1,5 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-import { App } from '../src/App';
-
-export default function Page() {
-  return <App />;
+export default function RootPage() {
+  redirect('/en');
 }

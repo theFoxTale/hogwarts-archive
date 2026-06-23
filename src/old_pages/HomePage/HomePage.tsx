@@ -3,7 +3,6 @@ import { Outlet, useParams, useNavigate } from 'react-router-dom';
 
 import {
   AppHeader,
-  ErrorBoundary,
   Flyout,
   Pagination,
   ResultsSection,
@@ -36,7 +35,6 @@ export function HomePage() {
     ''
   );
   const [inputValue, setInputValue] = useState(searchQuery);
-  const [shouldThrowError, setShouldThrowError] = useState(false);
 
   const { data, isLoading, isError, error, refetch } = useSearchCharactersQuery(
     { name: searchQuery, page: currentPage },
@@ -62,7 +60,6 @@ export function HomePage() {
     navigate(`/1`);
   };
 
-  // Ручное обновление (инвалидация кэша)
   const handleRefresh = () => {
     refetch();
   };
@@ -77,20 +74,13 @@ export function HomePage() {
     if (nextPage) handlePageChange(nextPage);
   };
 
-  const simulateError = () => setShouldThrowError(true);
-
-  const resetError = () => {
-    setShouldThrowError(false);
-    refetch();
-  };
-
   const totalPages = pages?.pagination?.last ?? currentPage;
   const isPrevAvailable = !!pages?.pagination?.prev;
   const isNextAvailable = !!pages?.pagination?.next;
 
   return (
     <div className="app-container">
-      <AppHeader onSimulateError={simulateError} />
+      <AppHeader />
 
       <OrnateFrame className="variant-container">
         <SearchSection
@@ -103,15 +93,12 @@ export function HomePage() {
 
       <div className={`homepage-layout ${characterId ? 'has-details' : ''}`}>
         <div className="results-panel">
-          <ErrorBoundary onReset={resetError}>
-            <ResultsSection
-              results={results}
-              isLoading={isLoading}
-              error={apiError}
-              shouldThrowError={shouldThrowError}
-              currentPage={currentPage}
-            />
-          </ErrorBoundary>
+          <ResultsSection
+            results={results}
+            isLoading={isLoading}
+            error={apiError}
+            currentPage={currentPage}
+          />
         </div>
         <div className="details-panel">
           <Outlet />

@@ -9,8 +9,4 @@ export { Pagination } from './Pagination/Pagination';
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 
 /* Constants */
-export { APP_STRINGS } from './AppHeader/constants';
 export { ERROR_BOUNDARY_STRINGS } from './ErrorBoundary/constants';
-export { FLYOUT_STRINGS } from './Flyout/constants';
-export { SEARCH_STRINGS } from './SearchSection/constants';
-export { RESULTS_STRING } from './ResultsSection/constants';

@@ -1,6 +1,7 @@
+import { useTranslations } from 'next-intl';
+
 import { Flag } from '@ui';
 import { useTheme } from '@contexts';
-import { THEME_STRINGS } from './constants';
 
 import './ThemeFlag.css';
 
@@ -18,6 +19,7 @@ import sunIcon from '../../../../assets/images/triangle-flag/sun-icon.png';
 import moonIcon from '../../../../assets/images/triangle-flag/moon-icon.png';
 
 export function ThemeFlag() {
+  const lang = useTranslations('app');
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -30,8 +32,8 @@ export function ThemeFlag() {
         light: sunIcon,
         dark: moonIcon,
       }}
-      text={THEME_STRINGS.TEXT}
-      alt={theme === 'light' ? THEME_STRINGS.ALT_LIGHT : THEME_STRINGS.ALT_DARK}
+      text={lang('theme')}
+      alt={theme === 'light' ? lang('themeAltLight') : lang('themeAltDark')}
       className="theme-flag"
     />
   );

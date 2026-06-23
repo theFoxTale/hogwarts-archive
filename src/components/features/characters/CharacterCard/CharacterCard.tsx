@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { useNavigate } from 'react-router-dom';
 
 import { GoldCheckbox, RoundedFrame } from '@ui';
 import type { Character } from '@api';
@@ -15,13 +14,12 @@ import './CharacterCard.css';
 
 interface CharacterCardProps {
   character: Character;
-  currentPage: number;
+  onSelect: (id: string) => void;
 }
 
-export function CharacterCard({ character, currentPage }: CharacterCardProps) {
+export function CharacterCard({ character, onSelect }: CharacterCardProps) {
   const lang = useTranslations('common');
 
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isSelected = useAppSelector(selectIsSelected(character.id));
 
@@ -30,7 +28,7 @@ export function CharacterCard({ character, currentPage }: CharacterCardProps) {
   };
 
   const handleCardClick = () => {
-    navigate(`/${currentPage}/${character.id}`);
+    onSelect(character.id);
   };
 
   const houseIcon = getHouseIcon(character.house);

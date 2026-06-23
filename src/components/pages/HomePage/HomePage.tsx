@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, useParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 import {
   AppHeader,
@@ -9,6 +9,7 @@ import {
   SearchSection,
 } from '@layout';
 import { OrnateFrame } from '@ui';
+import { CharacterDetails } from '@features';
 
 import { LOCAL_STORAGE_KEYS } from './constants';
 
@@ -21,14 +22,17 @@ import { clearAll } from '@store/slices';
 import './HomePage.css';
 
 export function HomePage() {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const { page = '1', characterId } = useParams<{
-    page?: string;
-    characterId?: string;
-  }>();
-  const currentPage = parseInt(page, 10);
+  // Читаем page и characterId из query-параметров
+  const pageParam = searchParams.get('page') || '1';
+  const characterIdParam = searchParams.get('characterId') || undefined;
+
+  const currentPage = parseInt(pageParam, 10);
+  const characterId = characterIdParam;
+
+  const dispatch = useAppDispatch();
 
   const [searchQuery, setSearchQuery] = useLocalStorage(
     LOCAL_STORAGE_KEYS.SEARCH_TEXT,
@@ -45,23 +49,38 @@ export function HomePage() {
   const pages = data?.pages ?? null;
   const apiError = isError ? (error as Error)?.message : null;
 
+  // Обновление URL при смене страницы
+  const updateUrl = (page: number, charId?: string) => {
+    const params = new URLSearchParams();
+    params.set('page', String(page));
+    if (charId) params.set('characterId', charId);
+    if (searchQuery) params.set('q', searchQuery); // можно добавить, если хотим сохранять поиск в URL
+    router.push(`/?${params.toString()}`);
+  };
+
   const handlePageChange = (newPage: number) => {
-    navigate(`/${newPage}`);
+    dispatch(clearAll());
+    updateUrl(newPage, characterId);
   };
 
   const handleSearch = (searchText: string) => {
     if (searchText === searchQuery) return;
-
     dispatch(clearAll());
-
     setSearchQuery(searchText);
     setInputValue(searchText);
-
-    navigate(`/1`);
+    updateUrl(1, undefined);
   };
 
   const handleRefresh = () => {
     refetch();
+  };
+
+  const handleCharacterSelect = (id: string) => {
+    updateUrl(currentPage, id);
+  };
+
+  const handleCloseDetails = () => {
+    updateUrl(currentPage, undefined);
   };
 
   const navigateToPrevPage = () => {
@@ -97,11 +116,16 @@ export function HomePage() {
             results={results}
             isLoading={isLoading}
             error={apiError}
-            currentPage={currentPage}
+            onSelectCharacter={handleCharacterSelect}
           />
         </div>
         <div className="details-panel">
-          <Outlet />
+          {characterId && (
+            <CharacterDetails
+              characterId={characterId}
+              onClose={handleCloseDetails}
+            />
+          )}
         </div>
       </div>
 

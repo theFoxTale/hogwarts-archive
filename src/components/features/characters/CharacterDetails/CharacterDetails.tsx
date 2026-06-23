@@ -1,33 +1,29 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { useParams, useNavigate } from 'react-router-dom';
 
 import { OrnateFrame } from '@ui';
 import { useGetCharacterByIdQuery } from '@api';
 
 import { ANONYMOUS_DETAILS_IMAGE } from './constants';
+
 import './CharacterDetails.css';
 
-export function CharacterDetails() {
-  const { page = '1', characterId } = useParams<{
-    page?: string;
-    characterId?: string;
-  }>();
-  const navigate = useNavigate();
-  const lang = useTranslations('details');
+interface CharacterDetailsProps {
+  characterId: string;
+  onClose: () => void;
+}
 
+export function CharacterDetails({
+  characterId,
+  onClose,
+}: CharacterDetailsProps) {
+  const lang = useTranslations('details');
   const {
     data: character,
     isLoading,
     isError,
     error,
-  } = useGetCharacterByIdQuery(characterId!, {
-    skip: !characterId,
-  });
-
-  const handleClose = () => {
-    navigate(`/${page}`);
-  };
+  } = useGetCharacterByIdQuery(characterId);
 
   if (isLoading) {
     return <div className="details-loading">{lang('ui.loading')}</div>;
@@ -48,7 +44,7 @@ export function CharacterDetails() {
   return (
     <OrnateFrame noInnerPadding>
       <div className="character-details">
-        <button className="details-close" onClick={handleClose}>
+        <button className="details-close" onClick={onClose}>
           {lang('ui.close')}
         </button>
         <div

@@ -23,7 +23,7 @@
       "@ui": ["./src/components/ui/index.ts"],
       "@layout": ["./src/components/layout/index.ts"],
       "@features": ["./src/components/features/index.ts"],
-      "@pages": ["./src/old_pages/index.ts"],
+      "@pages": ["./src/components/pages/index.ts"],
       "@hooks": ["./src/hooks/index.ts"],
       "@utils": ["./src/utils/index.ts"],
       "@api": ["./src/api/index.ts"],

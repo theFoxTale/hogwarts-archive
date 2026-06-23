@@ -10,14 +10,14 @@ interface ResultsSectionProps {
   isLoading: boolean;
   error: string | null;
   shouldThrowError?: boolean;
-  currentPage: number;
+  onSelectCharacter: (id: string) => void;
 }
 
 export function ResultsSection({
   results,
   isLoading,
   error,
-  currentPage,
+  onSelectCharacter,
 }: ResultsSectionProps) {
   const lang = useTranslations('results');
 
@@ -39,7 +39,7 @@ export function ResultsSection({
         <CharacterCard
           key={character.id}
           character={character}
-          currentPage={currentPage}
+          onSelect={onSelectCharacter}
         />
       ))}
     </div>

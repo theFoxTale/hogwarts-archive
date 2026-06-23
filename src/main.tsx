@@ -6,8 +6,6 @@ import { App } from './App';
 import { store } from '@store';
 import { ThemeProvider } from '@contexts';
 
-import './index.css';
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>

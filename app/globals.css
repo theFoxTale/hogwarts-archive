@@ -1,11 +1,11 @@
-@import './styles/fonts.css';
-@import './styles/theme.css';
-@import './styles/background.css';
+@import '../src/styles/fonts.css';
+@import '../src/styles/theme.css';
+@import '../src/styles/background.css';
 
-@import './styles/text.css';
+@import '../src/styles/text.css';
 
-@import './styles/animations/frame-glow.css';
-@import './styles/animations/flag-glow.css';
+@import '../src/styles/animations/frame-glow.css';
+@import '../src/styles/animations/flag-glow.css';
 
 *,
 *::before,

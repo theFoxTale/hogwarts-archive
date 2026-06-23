@@ -1,4 +1,4 @@
-export const ANONYMOUS_DETAILS_IMAGE = `${import.meta.env.BASE_URL}/placeholder.png`;
+export const ANONYMOUS_DETAILS_IMAGE = '/placeholder.png';
 
 export const DETAILS_INFO = {
   LOADING: 'Loading magical record details...',

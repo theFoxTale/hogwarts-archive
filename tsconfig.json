@@ -22,7 +22,7 @@
       "@ui": ["./src/components/ui/index.ts"],
       "@layout": ["./src/components/layout/index.ts"],
       "@features": ["./src/components/features/index.ts"],
-      "@pages": ["./src/pages/index.ts"],
+      "@pages": ["./src/old_pages/index.ts"],
       "@hooks": ["./src/hooks/index.ts"],
       "@utils": ["./src/utils/index.ts"],
       "@api": ["./src/api/index.ts"],
@@ -31,6 +31,12 @@
       "@contexts": ["./src/contexts/index.ts"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

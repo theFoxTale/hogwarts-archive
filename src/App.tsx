@@ -3,11 +3,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AboutPage, HomePage, NotFoundPage } from '@pages';
 import { CharacterDetails } from '@features';
 
-const basename = import.meta.env.BASE_URL;
-
 export function App() {
   return (
-    <BrowserRouter basename={basename}>
+    <BrowserRouter>
       <Routes>
         <Route path="/:page?" element={<HomePage />}>
           <Route path=":characterId?" element={<CharacterDetails />} />

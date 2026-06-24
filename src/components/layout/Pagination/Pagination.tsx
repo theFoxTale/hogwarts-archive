@@ -1,5 +1,5 @@
+import { useTranslations } from 'next-intl';
 import { FrameButton, RoundedFrame } from '@ui';
-import { PAGINATION_STRINGS } from './constants';
 
 import './Pagination.css';
 
@@ -20,17 +20,19 @@ export function Pagination({
   onPrev,
   onNext,
 }: PaginationProps) {
+  const lang = useTranslations('pagination');
+
   return (
     <RoundedFrame className="pagination-frame variant-container">
       <div className="pagination">
         <FrameButton onClick={onPrev} disabled={!isPrevAvailable}>
-          {PAGINATION_STRINGS.PREVIOUS}
+          {lang('previous')}
         </FrameButton>
         <span className="magic-subtitle">
-          {PAGINATION_STRINGS.PAGE_OF(currentPage, totalPages)}
+          {lang('pageOf', { current: currentPage, total: totalPages })}
         </span>
         <FrameButton onClick={onNext} disabled={!isNextAvailable}>
-          {PAGINATION_STRINGS.NEXT}
+          {lang('next')}
         </FrameButton>
       </div>
     </RoundedFrame>

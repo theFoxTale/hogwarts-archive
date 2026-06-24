@@ -1,38 +1,44 @@
-import { AboutFlag, ErrorFlag, ThemeFlag } from '@features';
-import { APP_STRINGS } from './constants';
+'use client';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+
+import { AboutFlag, LanguageFlag, ThemeFlag } from '@features';
 
 import './AppHeader.css';
-import emblemIcon from '../../../assets/images/hogwarts-emblem.png';
-import ornamentIcon from '../../../assets/images/ornament/hogwarts-ornaments.png';
+const emblemIcon = '/images/hogwarts-emblem.png';
+const ornamentIcon = '/images/ornament/hogwarts-ornaments.png';
 
-interface AppHeaderProps {
-  onSimulateError?: () => void;
-}
-
-export function AppHeader({ onSimulateError }: AppHeaderProps) {
+export function AppHeader() {
+  const lang = useTranslations('app');
   return (
     <div className="app-header">
       <AboutFlag />
-      <img
+      <Image
         src={emblemIcon}
-        alt={APP_STRINGS.APP_EMBLEM_TOOLTIP}
+        alt={lang('emblemTooltip')}
         className="app-header__emblem"
+        width={350}
+        height={80}
       />
-      <p className="app-header__title magic-title">{APP_STRINGS.APP_NAME}</p>
+      <p className="app-header__title magic-title">{lang('title')}</p>
       <div className="app-header__description">
-        <img
+        <Image
           src={ornamentIcon}
-          alt={APP_STRINGS.APP_ORNAMENT_TOOLTIP}
+          alt={lang('ornamentTooltip')}
           className="app-header__ornament"
+          width={55}
+          height={15}
         />
-        <p className="magic-subtitle">{APP_STRINGS.APP_DESCRIPTION}</p>
-        <img
+        <p className="magic-subtitle">{lang('description')}</p>
+        <Image
           src={ornamentIcon}
-          alt={APP_STRINGS.APP_ORNAMENT_TOOLTIP}
+          alt={lang('ornamentTooltip')}
           className="app-header__ornament app-header__ornament--mirrored"
+          width={55}
+          height={15}
         />
       </div>
-      {onSimulateError && <ErrorFlag onSimulateError={onSimulateError} />}
+      <LanguageFlag />
       <ThemeFlag />
     </div>
   );

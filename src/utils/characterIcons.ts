@@ -1,21 +1,21 @@
-import defaultFacultyIcon from '../assets/images/faculties/NoOne.png';
-import gryffindorFacultyIcon from '../assets/images/faculties/Gryffindor.png';
-import hufflepuffFacultyIcon from '../assets/images/faculties/Hufflepuff.png';
-import ravenclawFacultyIcon from '../assets/images/faculties/Ravenclaw.png';
-import slytherinFacultyIcon from '../assets/images/faculties/Slytherin.png';
+const defaultFacultyIcon = '/images/faculties/NoOne.png';
+const gryffindorFacultyIcon = '/images/faculties/Gryffindor.png';
+const hufflepuffFacultyIcon = '/images/faculties/Hufflepuff.png';
+const ravenclawFacultyIcon = '/images/faculties/Ravenclaw.png';
+const slytherinFacultyIcon = '/images/faculties/Slytherin.png';
 
-import defaultGenderIcon from '../assets/images/gender/Default.png';
-import maleGenderIcon from '../assets/images/gender/Male.png';
-import femaleGenderIcon from '../assets/images/gender/Female.png';
+const defaultGenderIcon = '/images/gender/Default.png';
+const maleGenderIcon = '/images/gender/Male.png';
+const femaleGenderIcon = '/images/gender/Female.png';
 
-import defaultSpeciesIcon from '../assets/images/species/Unknown.png';
-import humanSpeciesIcon from '../assets/images/species/Human.png';
-import catSpeciesIcon from '../assets/images/species/Cat.png';
-import dogSpeciesIcon from '../assets/images/species/Dog.png';
-import owlSpeciesIcon from '../assets/images/species/Owl.png';
-import phoenixSpeciesIcon from '../assets/images/species/Phoenix.png';
-import witchSpeciesIcon from '../assets/images/species/Witch.png';
-import wizardSpeciesIcon from '../assets/images/species/Wizard.png';
+const defaultSpeciesIcon = '/images/species/Unknown.png';
+const humanSpeciesIcon = '/images/species/Human.png';
+const catSpeciesIcon = '/images/species/Cat.png';
+const dogSpeciesIcon = '/images/species/Dog.png';
+const owlSpeciesIcon = '/images/species/Owl.png';
+const phoenixSpeciesIcon = '/images/species/Phoenix.png';
+const witchSpeciesIcon = '/images/species/Witch.png';
+const wizardSpeciesIcon = '/images/species/Wizard.png';
 
 export function getHouseIcon(house: string | null): string {
   if (!house) return defaultFacultyIcon;

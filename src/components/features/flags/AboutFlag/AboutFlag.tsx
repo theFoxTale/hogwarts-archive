@@ -1,34 +1,36 @@
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
-import { ABOUT_STRINGS } from './constants';
 import { Flag } from '@ui';
 
 import './AboutFlag.css';
 
 // изображения для светлой темы
-import flagTopLight from '../../../../assets/images/flag/light/flag-top.png';
-import flagMiddleLight from '../../../../assets/images/flag/light/flag-middle.png';
-import flagBottomLight from '../../../../assets/images/flag/light/flag-bottom.png';
+const flagTopLight = '/images/flag/light/flag-top.png';
+const flagMiddleLight = '/images/flag/light/flag-middle.png';
+const flagBottomLight = '/images/flag/light/flag-bottom.png';
 
 // изображения для тёмной темы
-import flagTopDark from '../../../../assets/images/flag/dark/flag-top.png';
-import flagMiddleDark from '../../../../assets/images/flag/dark/flag-middle.png';
-import flagBottomDark from '../../../../assets/images/flag/dark/flag-bottom.png';
+const flagTopDark = '/images/flag/dark/flag-top.png';
+const flagMiddleDark = '/images/flag/dark/flag-middle.png';
+const flagBottomDark = '/images/flag/dark/flag-bottom.png';
 
-import aboutIcon from '../../../../assets/images/flag/about-icon.png';
+const aboutIcon = '/images/flag/about-icon.png';
 
 export function AboutFlag() {
-  const navigate = useNavigate();
+  const lang = useTranslations('app');
+
+  const router = useRouter();
 
   return (
     <Flag
-      onClick={() => navigate('/about')}
+      onClick={() => router.push('/about')}
       topImage={{ light: flagTopLight, dark: flagTopDark }}
       middleBackground={{ light: flagMiddleLight, dark: flagMiddleDark }}
       bottomImage={{ light: flagBottomLight, dark: flagBottomDark }}
       icon={{ light: aboutIcon, dark: aboutIcon }}
-      text={ABOUT_STRINGS.TEXT}
-      alt={ABOUT_STRINGS.ALT_TEXT}
+      text={lang('about')}
+      alt={lang('aboutAlt')}
       className="about-flag"
     />
   );

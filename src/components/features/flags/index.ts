@@ -1,4 +1,4 @@
 /* Components */
 export { AboutFlag } from './AboutFlag/AboutFlag';
-export { ErrorFlag } from './ErrorFlag/ErrorFlag';
+export { LanguageFlag } from './LanguageFlag/LanguageFlag';
 export { ThemeFlag } from './ThemeFlag/ThemeFlag';

@@ -13,7 +13,7 @@ export const charactersApi = createApi({
   reducerPath: 'charactersApi',
   baseQuery: customBaseQuery,
   tagTypes: ['Characters', 'Character'],
-  keepUnusedDataFor: Number(import.meta.env.VITE_CACHE_TTL) || 60,
+  keepUnusedDataFor: Number(process.env.VITE_CACHE_TTL) || 60,
   endpoints: (builder) => ({
     searchCharacters: builder.query<
       SearchResponse,

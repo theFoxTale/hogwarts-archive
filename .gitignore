@@ -77,10 +77,14 @@ typings/
 
 # Next.js build output
 .next
+next-env.d.ts
 
 # Nuxt.js build / generate output
 .nuxt
 dist
+
+# Vite build output
+.vite
 
 # Gatsby files
 .cache/

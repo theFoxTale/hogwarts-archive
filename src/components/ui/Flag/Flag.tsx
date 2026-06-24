@@ -1,3 +1,6 @@
+'use client';
+
+import Image from 'next/image';
 import { useThemeImages } from '@hooks';
 import type { FlagProps } from './types';
 
@@ -21,17 +24,23 @@ export function Flag({
   return (
     <div className={`flag ${className}`} onClick={onClick}>
       <div className="flag-top">
-        <img src={topSrc} alt={alt} />
+        <Image src={topSrc} alt={alt} width={90} height={24} />
       </div>
       <div
         className="flag-middle"
         style={{ backgroundImage: `url(${middleSrc})` }}
       >
-        <img src={iconSrc} className="flag-icon" alt={alt} />
+        <Image
+          src={iconSrc}
+          className="flag-icon"
+          alt={alt}
+          width={36}
+          height={36}
+        />
         <span className="flag-text magic-title">{text}</span>
       </div>
       <div className="flag-bottom">
-        <img src={bottomSrc} alt={alt} />
+        <Image src={bottomSrc} alt={alt} width={90} height={24} />
       </div>
     </div>
   );

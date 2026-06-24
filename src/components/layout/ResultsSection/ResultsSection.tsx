@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 import type { Character } from '@api';
 import { CharacterCard } from '@features';
-
-import { RESULTS_STRING } from './constants';
 
 import './ResultsSection.css';
 
@@ -12,24 +10,19 @@ interface ResultsSectionProps {
   isLoading: boolean;
   error: string | null;
   shouldThrowError?: boolean;
-  currentPage: number;
+  onSelectCharacter: (id: string) => void;
 }
 
 export function ResultsSection({
   results,
   isLoading,
   error,
-  shouldThrowError,
-  currentPage,
+  onSelectCharacter,
 }: ResultsSectionProps) {
-  useEffect(() => {
-    if (!isLoading && shouldThrowError) {
-      throw new Error(RESULTS_STRING.TEST_BUTTON);
-    }
-  }, [isLoading, shouldThrowError]);
+  const lang = useTranslations('results');
 
   if (isLoading) {
-    return <div className="loading-indicator">{RESULTS_STRING.LOADING}</div>;
+    return <div className="loading-indicator">{lang('loading')}</div>;
   }
 
   if (error) {
@@ -37,7 +30,7 @@ export function ResultsSection({
   }
 
   if (results.length === 0) {
-    return <div className="no-results">{RESULTS_STRING.NO_RESULTS}</div>;
+    return <div className="no-results">{lang('noResults')}</div>;
   }
 
   return (
@@ -46,7 +39,7 @@ export function ResultsSection({
         <CharacterCard
           key={character.id}
           character={character}
-          currentPage={currentPage}
+          onSelect={onSelectCharacter}
         />
       ))}
     </div>

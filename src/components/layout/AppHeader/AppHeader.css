@@ -6,7 +6,6 @@
 }
 
 .app-header__emblem {
-  height: 80px;
   display: block;
   user-select: none;
   pointer-events: none;
@@ -24,7 +23,6 @@
 }
 
 .app-header__ornament {
-  height: 15px;
   display: block;
   opacity: 0.5;
   user-select: none;

@@ -109,11 +109,11 @@
 
   filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.18));
 
-  mask-image: url('/src/assets/svg/rounded-corner.svg');
+  mask-image: url('/svg/rounded-corner.svg');
   mask-size: contain;
   mask-repeat: no-repeat;
 
-  -webkit-mask-image: url('/src/assets/svg/rounded-corner.svg');
+  -webkit-mask-image: url('/svg/rounded-corner.svg');
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
 
@@ -252,7 +252,7 @@
   position: absolute;
   inset: 0;
 
-  background-image: url('/src/assets/textures/noise.jpg');
+  background-image: url('/textures/noise.jpg');
 
   background-size: cover;
 
@@ -268,7 +268,7 @@
 }
 
 .rounded-frame.variant-gold:hover:not(.disabled)::after {
-  background-image: url('/src/assets/textures/second-noise.jpg');
+  background-image: url('/textures/second-noise.jpg');
   opacity: 0.4;
 }
 
@@ -321,7 +321,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/src/assets/textures/paper.jpg');
+  background-image: url('/textures/paper.jpg');
   background-repeat: repeat;
   opacity: 0.3;
   pointer-events: none;

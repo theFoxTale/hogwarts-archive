@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import {
   AppHeader,
@@ -11,86 +13,124 @@ import {
 import { OrnateFrame } from '@ui';
 import { CharacterDetails } from '@features';
 
-import { LOCAL_STORAGE_KEYS } from './constants';
-
-import { useSearchCharactersQuery } from '@api';
-import { useLocalStorage } from '@hooks';
-
 import { useAppDispatch } from '@store';
 import { clearAll } from '@store/slices';
 
+import type { Character, PaginationInfo } from '@api';
+
 import './HomePage.css';
 
-export function HomePage() {
+interface HomePageProps {
+  initialResults: Character[];
+  initialPages: PaginationInfo | null;
+  initialPage: number;
+  initialCharacterId: string | null;
+  initialSearchQuery: string;
+}
+
+export function HomePage({
+  initialResults,
+  initialPages,
+  initialPage,
+  initialCharacterId,
+  initialSearchQuery,
+}: HomePageProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Читаем page и characterId из query-параметров
-  const pageParam = searchParams.get('page') || '1';
-  const characterIdParam = searchParams.get('characterId') || undefined;
-
-  const currentPage = parseInt(pageParam, 10);
-  const characterId = characterIdParam;
-
   const dispatch = useAppDispatch();
 
-  const [searchQuery, setSearchQuery] = useLocalStorage(
-    LOCAL_STORAGE_KEYS.SEARCH_TEXT,
-    ''
+  const [results, setResults] = useState(initialResults);
+  const [pages, setPages] = useState(initialPages);
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [characterId, setCharacterId] = useState<string | null>(
+    initialCharacterId
   );
-  const [inputValue, setInputValue] = useState(searchQuery);
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+  const [inputValue, setInputValue] = useState(initialSearchQuery);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { data, isLoading, isError, error, refetch } = useSearchCharactersQuery(
-    { name: searchQuery, page: currentPage },
-    { skip: false }
-  );
+  // Функция обновления данных через server action
+  const updateData = async (newPage: number, newSearchQuery: string) => {
+    setIsLoading(true);
+    setError(null);
 
-  const results = data?.items ?? [];
-  const pages = data?.pages ?? null;
-  const apiError = isError ? (error as Error)?.message : null;
+    try {
+      const { searchCharactersAction } =
+        await import('../../../../app/actions');
 
-  // Обновление URL при смене страницы
-  const updateUrl = (page: number, charId?: string) => {
-    const params = new URLSearchParams();
-    params.set('page', String(page));
-    if (charId) params.set('characterId', charId);
-    if (searchQuery) params.set('q', searchQuery); // можно добавить, если хотим сохранять поиск в URL
-    router.push(`/?${params.toString()}`);
+      const data = await searchCharactersAction(newSearchQuery, newPage);
+
+      setResults(data.items);
+      setPages(data.pages);
+      setCurrentPage(newPage);
+
+      // обновляем URL
+      const params = new URLSearchParams();
+      params.set('page', String(newPage));
+      if (newSearchQuery) params.set('q', newSearchQuery);
+      if (characterId) params.set('characterId', characterId);
+
+      router.push(`/?${params.toString()}`);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSearch = (text: string) => {
+    if (text === searchQuery) return;
+
+    dispatch(clearAll());
+
+    setSearchQuery(text);
+    setInputValue(text);
+    setCharacterId(null);
+
+    void updateData(1, text);
   };
 
   const handlePageChange = (newPage: number) => {
     dispatch(clearAll());
-    updateUrl(newPage, characterId);
-  };
-
-  const handleSearch = (searchText: string) => {
-    if (searchText === searchQuery) return;
-    dispatch(clearAll());
-    setSearchQuery(searchText);
-    setInputValue(searchText);
-    updateUrl(1, undefined);
+    setCharacterId(null);
+    void updateData(newPage, searchQuery);
   };
 
   const handleRefresh = () => {
-    refetch();
+    void updateData(currentPage, searchQuery);
   };
 
   const handleCharacterSelect = (id: string) => {
-    updateUrl(currentPage, id);
+    setCharacterId(id);
+
+    const params = new URLSearchParams();
+    params.set('page', String(currentPage));
+
+    if (searchQuery) params.set('q', searchQuery);
+    params.set('characterId', id);
+
+    router.push(`/?${params.toString()}`);
   };
 
   const handleCloseDetails = () => {
-    updateUrl(currentPage, undefined);
+    setCharacterId(null);
+
+    const params = new URLSearchParams();
+    params.set('page', String(currentPage));
+
+    if (searchQuery) params.set('q', searchQuery);
+
+    router.push(`/?${params.toString()}`);
   };
 
   const navigateToPrevPage = () => {
-    const prevPage = pages?.pagination?.prev;
-    if (prevPage) handlePageChange(prevPage);
+    const prev = pages?.pagination?.prev;
+    if (prev) handlePageChange(prev);
   };
 
   const navigateToNextPage = () => {
-    const nextPage = pages?.pagination?.next;
-    if (nextPage) handlePageChange(nextPage);
+    const next = pages?.pagination?.next;
+    if (next) handlePageChange(next);
   };
 
   const totalPages = pages?.pagination?.last ?? currentPage;
@@ -115,7 +155,7 @@ export function HomePage() {
           <ResultsSection
             results={results}
             isLoading={isLoading}
-            error={apiError}
+            error={error}
             onSelectCharacter={handleCharacterSelect}
           />
         </div>
@@ -131,7 +171,7 @@ export function HomePage() {
 
       <div className="app-footer">
         <Flyout />
-        {totalPages > 1 && !isError && (
+        {totalPages > 1 && !error && (
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

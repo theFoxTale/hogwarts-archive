@@ -2,11 +2,13 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
 import { OrnateFrame } from '@ui';
-import { useGetCharacterByIdQuery } from '@api';
+import { Character } from '@api';
 
 import { ANONYMOUS_DETAILS_IMAGE } from './constants';
 
 import './CharacterDetails.css';
+import { useEffect, useState } from 'react';
+import { getCharacterAction } from '../../../../../app/actions';
 
 interface CharacterDetailsProps {
   characterId: string;
@@ -18,23 +20,36 @@ export function CharacterDetails({
   onClose,
 }: CharacterDetailsProps) {
   const lang = useTranslations('details');
-  const {
-    data: character,
-    isLoading,
-    isError,
-    error,
-  } = useGetCharacterByIdQuery(characterId);
+
+  const [character, setCharacter] = useState<Character | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getCharacterAction(characterId)
+      .then((data) => {
+        if (!cancelled) setCharacter(data);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [characterId]);
 
   if (isLoading) {
     return <div className="details-loading">{lang('ui.loading')}</div>;
   }
 
-  if (isError) {
-    return (
-      <div className="details-error">
-        {(error as Error)?.message || lang('ui.error')}
-      </div>
-    );
+  if (error) {
+    return <div className="details-error">{error || lang('ui.error')}</div>;
   }
 
   if (!character) {

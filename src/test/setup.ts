@@ -1,8 +1,21 @@
 import '@testing-library/jest-dom';
+import { createElement } from 'react';
 import { cleanup } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';
 
 import './mocks/localStorage';
+
+vi.mock('next/image', () => ({
+  default: (props: Record<string, unknown>) => {
+    const imgProps = { ...props };
+    delete imgProps.fill;
+    delete imgProps.priority;
+    delete imgProps.sizes;
+    delete imgProps.loader;
+    delete imgProps.unoptimized;
+    return createElement('img', imgProps);
+  },
+}));
 
 afterEach(() => {
   cleanup();

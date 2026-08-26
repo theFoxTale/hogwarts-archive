@@ -1,24 +1,18 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { NextIntlClientProvider } from 'next-intl';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 import { CharacterCard, ANONYMOUS_CARD_IMAGE } from '@features';
-
+import { ThemeProvider } from '@contexts';
 import { selectedItemsReducer, toggleSelect } from '@store/slices';
+import { DEFAULT_TIMEZONE } from '@/i18n/config';
+import { LocaleProvider } from '@/providers';
 
 import type { Character } from '@api';
 import { mockLunaCharacter } from './mocks/api';
-
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
+import enMessages from '../../messages/en.json';
 
 const createTestStore = (initialSelectedIds: string[] = []) => {
   const initialState = initialSelectedIds.reduce(
@@ -44,24 +38,34 @@ const createTestStore = (initialSelectedIds: string[] = []) => {
 const renderWithStore = (ui: React.ReactElement, store = createTestStore()) => {
   return render(
     <Provider store={store}>
-      <MemoryRouter>{ui}</MemoryRouter>
+      <NextIntlClientProvider
+        locale="en"
+        messages={enMessages}
+        timeZone={DEFAULT_TIMEZONE}
+      >
+        <LocaleProvider>
+          <ThemeProvider>{ui}</ThemeProvider>
+        </LocaleProvider>
+      </NextIntlClientProvider>
     </Provider>
   );
 };
 
 describe('CharacterCard', () => {
+  const onSelect = vi.fn();
+
   beforeEach(() => {
-    mockNavigate.mockClear();
+    onSelect.mockClear();
   });
 
   test('renders character name, species, gender, and house text', () => {
     renderWithStore(
-      <CharacterCard character={mockLunaCharacter} currentPage={1} />
+      <CharacterCard character={mockLunaCharacter} onSelect={onSelect} />
     );
     expect(screen.getByText('Luna Lovegood')).toBeInTheDocument();
     expect(screen.getByText('Human')).toBeInTheDocument();
     expect(screen.getByText('Female')).toBeInTheDocument();
-    expect(screen.getByText('Ravenclaw')).toBeInTheDocument(); // название факультета
+    expect(screen.getByText('Ravenclaw')).toBeInTheDocument();
   });
 
   test('displays fallback for missing fields', () => {
@@ -75,13 +79,12 @@ describe('CharacterCard', () => {
     };
 
     renderWithStore(
-      <CharacterCard character={partialCharacter} currentPage={1} />
+      <CharacterCard character={partialCharacter} onSelect={onSelect} />
     );
 
     expect(screen.getByText('Dobby')).toBeInTheDocument();
     expect(screen.getByText('Elf')).toBeInTheDocument();
 
-    // первый - для gender, второй - для факультета
     const unknownElements = screen.getAllByText('Unknown');
     expect(unknownElements).toHaveLength(2);
   });
@@ -89,7 +92,7 @@ describe('CharacterCard', () => {
   test('checkbox reflects selection state from Redux', () => {
     const store = createTestStore(['luna-1']);
     renderWithStore(
-      <CharacterCard character={mockLunaCharacter} currentPage={1} />,
+      <CharacterCard character={mockLunaCharacter} onSelect={onSelect} />,
       store
     );
 
@@ -97,43 +100,31 @@ describe('CharacterCard', () => {
     expect(checkbox.checked).toBe(true);
   });
 
-  test('clicking checkbox toggles selection and does not navigate', () => {
+  test('clicking checkbox toggles selection and does not select the card', () => {
     const store = createTestStore();
     const dispatchSpy = vi.spyOn(store, 'dispatch');
 
     renderWithStore(
-      <CharacterCard character={mockLunaCharacter} currentPage={1} />,
+      <CharacterCard character={mockLunaCharacter} onSelect={onSelect} />,
       store
     );
 
-    const checkbox = screen.getByRole('checkbox');
-    fireEvent.click(checkbox);
+    fireEvent.click(screen.getByRole('checkbox'));
 
     expect(dispatchSpy).toHaveBeenCalledWith(toggleSelect(mockLunaCharacter));
-    expect(mockNavigate).not.toHaveBeenCalled();
+    expect(onSelect).not.toHaveBeenCalled();
   });
 
-  test('click on main card area navigates to details with page param', () => {
+  test('click on main card area selects the character', () => {
     renderWithStore(
-      <CharacterCard character={mockLunaCharacter} currentPage={3} />
+      <CharacterCard character={mockLunaCharacter} onSelect={onSelect} />
     );
 
     const clickableArea = document.querySelector('.character-card');
     expect(clickableArea).toBeInTheDocument();
 
     fireEvent.click(clickableArea!);
-    expect(mockNavigate).toHaveBeenCalledWith('/3/luna-1');
-  });
-
-  test('click on checkbox does not trigger navigation (stopPropagation)', () => {
-    renderWithStore(
-      <CharacterCard character={mockLunaCharacter} currentPage={1} />
-    );
-
-    const checkbox = screen.getByRole('checkbox');
-    fireEvent.click(checkbox);
-
-    expect(mockNavigate).not.toHaveBeenCalled();
+    expect(onSelect).toHaveBeenCalledWith('luna-1');
   });
 
   test('displays character image (avatar) and handles missing image', async () => {
@@ -143,7 +134,7 @@ describe('CharacterCard', () => {
     };
 
     renderWithStore(
-      <CharacterCard character={characterWithoutImage} currentPage={1} />
+      <CharacterCard character={characterWithoutImage} onSelect={onSelect} />
     );
 
     const img = screen.getByRole('img', { name: 'Luna Lovegood' });
@@ -157,7 +148,7 @@ describe('CharacterCard', () => {
     };
 
     renderWithStore(
-      <CharacterCard character={characterWithImage} currentPage={1} />
+      <CharacterCard character={characterWithImage} onSelect={onSelect} />
     );
 
     const img = screen.getByRole('img', { name: 'Luna Lovegood' });
@@ -166,7 +157,7 @@ describe('CharacterCard', () => {
 
   test('falls back to anonymous image on load error', async () => {
     renderWithStore(
-      <CharacterCard character={mockLunaCharacter} currentPage={1} />
+      <CharacterCard character={mockLunaCharacter} onSelect={onSelect} />
     );
 
     const img = screen.getByRole('img', { name: 'Luna Lovegood' });
@@ -179,7 +170,7 @@ describe('CharacterCard', () => {
 
   test('renders house icon (img with alt text of house name)', () => {
     renderWithStore(
-      <CharacterCard character={mockLunaCharacter} currentPage={1} />
+      <CharacterCard character={mockLunaCharacter} onSelect={onSelect} />
     );
 
     const houseIcon = screen.getByAltText('Ravenclaw');

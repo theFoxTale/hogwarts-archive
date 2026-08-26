@@ -1,39 +1,50 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { NextIntlClientProvider } from 'next-intl';
+import { configureStore } from '@reduxjs/toolkit';
 
 import { ThemeProvider } from '@contexts';
-
-import { configureStore } from '@reduxjs/toolkit';
 import { selectedItemsReducer } from '@store/slices';
-import { charactersApi } from '@api';
+import { DEFAULT_TIMEZONE } from '@/i18n/config';
+import { LocaleProvider } from '@/providers';
+
+import enMessages from '../../../messages/en.json';
 
 export const createTestStore = (preloadedState = {}) => {
   return configureStore({
     reducer: {
       selectedItems: selectedItemsReducer,
-      [charactersApi.reducerPath]: charactersApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(charactersApi.middleware),
     preloadedState,
   });
 };
 
-export function renderWithProviders(
-  ui: ReactElement,
-  { route = '/', store = createTestStore() } = {}
-) {
-  return render(
+function AppProviders({
+  children,
+  store = createTestStore(),
+}: {
+  children: ReactNode;
+  store?: ReturnType<typeof createTestStore>;
+}) {
+  return (
     <Provider store={store}>
-      <ThemeProvider>
-        <MemoryRouter initialEntries={[route]}>
-          <Routes>
-            <Route path="*" element={ui} />
-          </Routes>
-        </MemoryRouter>
-      </ThemeProvider>
+      <NextIntlClientProvider
+        locale="en"
+        messages={enMessages}
+        timeZone={DEFAULT_TIMEZONE}
+      >
+        <LocaleProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </LocaleProvider>
+      </NextIntlClientProvider>
     </Provider>
   );
+}
+
+export function renderWithProviders(
+  ui: ReactElement,
+  { store = createTestStore() } = {}
+) {
+  return render(<AppProviders store={store}>{ui}</AppProviders>);
 }

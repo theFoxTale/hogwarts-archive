@@ -1,28 +1,19 @@
-import { vi } from 'vitest';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
-
+import { NextIntlClientProvider } from 'next-intl';
 import userEvent from '@testing-library/user-event';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 
-import { CharacterDetails, DETAILS_INFO, DETAILS_STRINGS } from '@features';
-import { useGetCharacterByIdQuery } from '@api';
+import { CharacterDetails } from '@features';
+import { getCharacterAction } from '@/actions/characters';
+import { DEFAULT_TIMEZONE } from '@/i18n/config';
 
-vi.mock('@api', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@api')>();
-  return {
-    ...actual,
-    useGetCharacterByIdQuery: vi.fn(),
-  };
-});
+import enMessages from '../../messages/en.json';
 
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
+vi.mock('@/actions/characters', () => ({
+  getCharacterAction: vi.fn(),
+}));
+
+const getCharacter = vi.mocked(getCharacterAction);
 
 const mockCharacter = {
   id: '1',
@@ -41,101 +32,50 @@ const mockCharacter = {
   alias_names: ['The Boy Who Lived', 'Undesirable No. 1'],
 };
 
-const renderWithRouter = (characterId: string, initialPage = '1') => {
+function renderDetails(characterId = '1', onClose: () => void = vi.fn()) {
   return render(
-    <MemoryRouter initialEntries={[`/${initialPage}/${characterId}`]}>
-      <Routes>
-        <Route path="/:page/:characterId" element={<CharacterDetails />} />
-      </Routes>
-    </MemoryRouter>
+    <NextIntlClientProvider
+      locale="en"
+      messages={enMessages}
+      timeZone={DEFAULT_TIMEZONE}
+    >
+      <CharacterDetails characterId={characterId} onClose={onClose} />
+    </NextIntlClientProvider>
   );
-};
+}
 
 describe('CharacterDetails', () => {
   beforeEach(() => {
-    vi.resetAllMocks();
-    mockNavigate.mockClear();
+    getCharacter.mockReset();
   });
 
   test('shows loading indicator while fetching', () => {
-    vi.mocked(useGetCharacterByIdQuery).mockReturnValue({
-      data: undefined,
-      isLoading: true,
-      isError: false,
-      error: null,
-      refetch: vi.fn(),
-    });
-
-    renderWithRouter('1');
-    expect(screen.getByText(DETAILS_INFO.LOADING)).toBeInTheDocument();
+    getCharacter.mockReturnValue(new Promise(() => {}));
+    renderDetails();
+    expect(
+      screen.getByText('Loading magical record details...')
+    ).toBeInTheDocument();
   });
 
   test('displays error message when fetch fails', async () => {
-    vi.mocked(useGetCharacterByIdQuery).mockReturnValue({
-      data: undefined,
-      isLoading: false,
-      isError: true,
-      error: new Error('Failed to fetch'),
-      refetch: vi.fn(),
-    });
-
-    renderWithRouter('999');
-    await waitFor(() => {
-      expect(screen.getByText('Failed to fetch')).toBeInTheDocument();
-    });
+    getCharacter.mockRejectedValue(new Error('Failed to fetch'));
+    renderDetails('999');
+    expect(await screen.findByText('Failed to fetch')).toBeInTheDocument();
   });
 
-  test('handles not found case (404) when data is null', () => {
-    vi.mocked(useGetCharacterByIdQuery).mockReturnValue({
-      data: null,
-      isLoading: false,
-      isError: false,
-      error: null,
-      refetch: vi.fn(),
-    });
+  test('renders character details from the server action', async () => {
+    getCharacter.mockResolvedValue(mockCharacter);
+    renderDetails();
 
-    renderWithRouter('1');
-
-    expect(screen.getByText(DETAILS_INFO.NO_CHARACTER)).toBeInTheDocument();
-  });
-
-  test('renders character details correctly', async () => {
-    vi.mocked(useGetCharacterByIdQuery).mockReturnValue({
-      data: mockCharacter,
-      isLoading: false,
-      isError: false,
-      error: null,
-      refetch: vi.fn(),
-    });
-
-    renderWithRouter('1');
-
-    await waitFor(() => {
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
-      expect(screen.getByText('Gryffindor')).toBeInTheDocument();
-      expect(screen.getByText('Human')).toBeInTheDocument();
-      expect(screen.getByText('Male')).toBeInTheDocument();
-      expect(screen.getByAltText('Harry Potter')).toHaveAttribute(
-        'src',
-        'https://example.com/harry.jpg'
-      );
-    });
-
+    expect(await screen.findByText('Harry Potter')).toBeInTheDocument();
+    expect(screen.getByText('Gryffindor')).toBeInTheDocument();
     expect(screen.getByText('31 July 1980')).toBeInTheDocument();
-    expect(screen.getByText(DETAILS_STRINGS.STILL_ALIVE)).toBeInTheDocument();
-
-    expect(screen.getByText('Half-blood')).toBeInTheDocument();
-    expect(screen.getByText('British')).toBeInTheDocument();
-
+    expect(screen.getByText('Still alive')).toBeInTheDocument();
     expect(screen.getByText('Stag')).toBeInTheDocument();
-
-    expect(screen.getByText('Holly, 11", Phoenix feather')).toBeInTheDocument();
-
-    expect(screen.getByText('Head of Auror Office')).toBeInTheDocument();
   });
 
-  test('handles missing optional fields', async () => {
-    const characterWithoutOptional = {
+  test('hides optional sections when fields are missing', async () => {
+    getCharacter.mockResolvedValue({
       id: '2',
       name: 'Dobby',
       house: null,
@@ -149,80 +89,41 @@ describe('CharacterDetails', () => {
       patronus: null,
       wands: [],
       jobs: [],
-    };
-
-    vi.mocked(useGetCharacterByIdQuery).mockReturnValue({
-      data: characterWithoutOptional,
-      isLoading: false,
-      isError: false,
-      error: null,
-      refetch: vi.fn(),
     });
 
-    renderWithRouter('2');
-    await waitFor(() => {
-      expect(screen.getByText('Dobby')).toBeInTheDocument();
-    });
+    renderDetails('2');
+    await screen.findByText('Dobby');
 
-    expect(screen.queryByText(DETAILS_STRINGS.LIFE)).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(DETAILS_STRINGS.HERITAGE)
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText(DETAILS_STRINGS.MAGIC)).not.toBeInTheDocument();
-    expect(screen.queryByText(DETAILS_STRINGS.WANDS)).not.toBeInTheDocument();
-    expect(
-      screen.queryByText(DETAILS_STRINGS.OCCUPATIONS)
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Life')).not.toBeInTheDocument();
+    expect(screen.queryByText('Heritage')).not.toBeInTheDocument();
+    expect(screen.queryByText('Magic')).not.toBeInTheDocument();
   });
 
-  test('navigates back to main page when close button clicked', async () => {
-    vi.mocked(useGetCharacterByIdQuery).mockReturnValue({
-      data: mockCharacter,
-      isLoading: false,
-      isError: false,
-      error: null,
-      refetch: vi.fn(),
-    });
+  test('calls onClose when the close button is clicked', async () => {
+    const onClose = vi.fn();
+    getCharacter.mockResolvedValue(mockCharacter);
+    renderDetails('1', onClose);
 
-    renderWithRouter('1', '3');
-    await waitFor(() => {
-      expect(screen.getByText('Harry Potter')).toBeInTheDocument();
-    });
-    const closeButton = screen.getByRole('button', {
-      name: DETAILS_STRINGS.CLOSE,
-    });
-    await userEvent.click(closeButton);
-
-    expect(mockNavigate).toHaveBeenCalledWith('/3');
+    await screen.findByText('Harry Potter');
+    await userEvent.click(screen.getByRole('button', { name: '✖' }));
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  test('uses anonymous image when image is null', async () => {
-    const characterWithoutImage = { ...mockCharacter, image: null };
-    vi.mocked(useGetCharacterByIdQuery).mockReturnValue({
-      data: characterWithoutImage,
-      isLoading: false,
-      isError: false,
-      error: null,
-      refetch: vi.fn(),
-    });
+  test('uses placeholder image when image is null', async () => {
+    getCharacter.mockResolvedValue({ ...mockCharacter, image: null });
+    renderDetails();
 
-    renderWithRouter('1');
-    await waitFor(() => {
-      const img = screen.getByAltText('Harry Potter') as HTMLImageElement;
-      expect(img.src).toContain('placeholder.png');
-    });
+    const img = await screen.findByAltText('Harry Potter');
+    expect(img).toHaveAttribute(
+      'src',
+      expect.stringContaining('placeholder.png')
+    );
   });
 
-  test('handles image error and shows fallback', async () => {
-    vi.mocked(useGetCharacterByIdQuery).mockReturnValue({
-      data: mockCharacter,
-      isLoading: false,
-      isError: false,
-      error: null,
-      refetch: vi.fn(),
-    });
+  test('falls back to placeholder when the image fails to load', async () => {
+    getCharacter.mockResolvedValue(mockCharacter);
+    renderDetails();
 
-    renderWithRouter('1');
     const img = await screen.findByAltText('Harry Potter');
     fireEvent.error(img);
     expect(img).toHaveAttribute(

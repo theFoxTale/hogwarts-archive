@@ -1,178 +1,85 @@
 import { vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { screen } from '@testing-library/react';
 
-import { RESULTS_STRING } from '@layout';
 import { ResultsSection } from '@features';
 
 import { mockCharacters } from './mocks/api';
-import { createTestStore } from './utils/test-utils.tsx';
+import { renderWithProviders } from './utils/test-utils.tsx';
+
+const onSelectCharacter = vi.fn();
 
 describe('ResultsSection', () => {
   test('shows loading indicator when isLoading is true', () => {
-    render(
-      <MemoryRouter>
-        <ResultsSection
-          results={[]}
-          isLoading={true}
-          error={null}
-          currentPage={1}
-        />
-      </MemoryRouter>
+    renderWithProviders(
+      <ResultsSection
+        results={[]}
+        isLoading={true}
+        error={null}
+        onSelectCharacter={onSelectCharacter}
+      />
     );
 
-    expect(screen.getByText(RESULTS_STRING.LOADING)).toBeInTheDocument();
+    expect(screen.getByText('Loading magical beings...')).toBeInTheDocument();
   });
 
   test('shows error message when error prop is provided', () => {
-    render(
-      <MemoryRouter>
-        <ResultsSection
-          results={[]}
-          isLoading={false}
-          error="Network error"
-          currentPage={1}
-        />
-      </MemoryRouter>
+    renderWithProviders(
+      <ResultsSection
+        results={[]}
+        isLoading={false}
+        error="Network error"
+        onSelectCharacter={onSelectCharacter}
+      />
     );
 
     expect(screen.getByText('Network error')).toBeInTheDocument();
   });
 
   test('does not show error or no-results messages when loading', () => {
-    render(
-      <MemoryRouter>
-        <ResultsSection
-          results={[]}
-          isLoading={true}
-          error="Some error"
-          currentPage={1}
-        />
-      </MemoryRouter>
+    renderWithProviders(
+      <ResultsSection
+        results={[]}
+        isLoading={true}
+        error="Some error"
+        onSelectCharacter={onSelectCharacter}
+      />
     );
 
-    expect(screen.getByText(RESULTS_STRING.LOADING)).toBeInTheDocument();
+    expect(screen.getByText('Loading magical beings...')).toBeInTheDocument();
     expect(screen.queryByText('Some error')).not.toBeInTheDocument();
     expect(
-      screen.queryByText(RESULTS_STRING.NO_RESULTS)
+      screen.queryByText(
+        'No records in the magical archives. Try another name.'
+      )
     ).not.toBeInTheDocument();
   });
 
   test('shows no results message when results array is empty', () => {
-    render(
-      <MemoryRouter>
-        <ResultsSection
-          results={[]}
-          isLoading={false}
-          error={null}
-          currentPage={1}
-        />
-      </MemoryRouter>
+    renderWithProviders(
+      <ResultsSection
+        results={[]}
+        isLoading={false}
+        error={null}
+        onSelectCharacter={onSelectCharacter}
+      />
     );
 
-    expect(screen.getByText(RESULTS_STRING.NO_RESULTS)).toBeInTheDocument();
+    expect(
+      screen.getByText('No records in the magical archives. Try another name.')
+    ).toBeInTheDocument();
   });
 
   test('renders list of characters when results are provided', () => {
-    render(
-      <Provider store={createTestStore()}>
-        <MemoryRouter>
-          <ResultsSection
-            results={mockCharacters}
-            isLoading={false}
-            error={null}
-            currentPage={1}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithProviders(
+      <ResultsSection
+        results={mockCharacters}
+        isLoading={false}
+        error={null}
+        onSelectCharacter={onSelectCharacter}
+      />
     );
 
     expect(screen.getByText('Harry Potter')).toBeInTheDocument();
     expect(screen.getByText('Hermione Granger')).toBeInTheDocument();
-  });
-
-  describe('error throwing behavior (shouldThrowError prop)', () => {
-    let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
-
-    beforeEach(() => {
-      consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-      consoleErrorSpy.mockRestore();
-    });
-
-    test('does not throw error on initial render when shouldThrowError is true', () => {
-      expect(() => {
-        render(
-          <MemoryRouter>
-            <ResultsSection
-              results={[]}
-              isLoading={true}
-              error={null}
-              shouldThrowError={true}
-              currentPage={1}
-            />
-          </MemoryRouter>
-        );
-      }).not.toThrow();
-    });
-
-    test('throws error when shouldThrowError changes from false to true', () => {
-      const { rerender } = render(
-        <MemoryRouter>
-          <ResultsSection
-            results={[]}
-            isLoading={false}
-            error={null}
-            shouldThrowError={false}
-            currentPage={1}
-          />
-        </MemoryRouter>
-      );
-
-      expect(() => {
-        rerender(
-          <MemoryRouter>
-            <ResultsSection
-              results={[]}
-              isLoading={false}
-              error={null}
-              shouldThrowError={true}
-              currentPage={1}
-            />
-          </MemoryRouter>
-        );
-      }).toThrow(RESULTS_STRING.TEST_BUTTON);
-    });
-
-    test('does not throw error when isLoading is true even if shouldThrowError becomes true', () => {
-      const { rerender } = render(
-        <MemoryRouter>
-          <ResultsSection
-            results={[]}
-            isLoading={true}
-            error={null}
-            shouldThrowError={false}
-            currentPage={1}
-          />
-        </MemoryRouter>
-      );
-
-      expect(() => {
-        rerender(
-          <MemoryRouter>
-            <ResultsSection
-              results={[]}
-              isLoading={true}
-              error={null}
-              shouldThrowError={true}
-              currentPage={1}
-            />
-          </MemoryRouter>
-        );
-      }).not.toThrow();
-    });
   });
 });

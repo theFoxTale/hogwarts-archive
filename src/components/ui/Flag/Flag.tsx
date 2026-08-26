@@ -12,14 +12,16 @@ function ThemeImage({
   width,
   height,
   className,
+  style,
 }: {
   sources: ThemeImages;
   alt: string;
   width: number;
   height: number;
   className?: string;
+  style?: CSSProperties;
 }) {
-  const style = { height: 'auto' as const };
+  const imageStyle = { width: '100%', height: 'auto', ...style };
 
   if (sources.light === sources.dark) {
     return (
@@ -29,7 +31,7 @@ function ThemeImage({
         width={width}
         height={height}
         className={className}
-        style={style}
+        style={imageStyle}
       />
     );
   }
@@ -42,7 +44,7 @@ function ThemeImage({
         width={width}
         height={height}
         className={`theme-layer theme-layer--light ${className ?? ''}`.trim()}
-        style={style}
+        style={imageStyle}
       />
       <Image
         src={sources.dark}
@@ -50,7 +52,7 @@ function ThemeImage({
         width={width}
         height={height}
         className={`theme-layer theme-layer--dark ${className ?? ''}`.trim()}
-        style={style}
+        style={imageStyle}
         aria-hidden="true"
       />
     </>
@@ -84,6 +86,7 @@ export function Flag({
           width={36}
           height={36}
           className="flag-icon"
+          style={{ width: '50%' }}
         />
         <span className="flag-text magic-title">{text}</span>
       </div>

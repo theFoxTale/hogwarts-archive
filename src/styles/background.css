@@ -1,4 +1,5 @@
-:root {
+:root,
+[data-theme='light'] {
   --bg-image: url('/images/hogwarts-library-light.png');
 }
 

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import { Providers } from '@/providers';
+import { themeInitScript } from '@/contexts/theme/constants';
 
 import './globals.css';
 
@@ -15,8 +16,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Providers>
           <div className="app-shell">{children}</div>
         </Providers>

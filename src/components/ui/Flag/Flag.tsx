@@ -1,10 +1,61 @@
 'use client';
 
 import Image from 'next/image';
-import { useThemeImages } from '@hooks';
-import type { FlagProps } from './types';
+import type { CSSProperties } from 'react';
+import type { FlagProps, ThemeImages } from './types';
 
 import './Flag.css';
+
+function ThemeImage({
+  sources,
+  alt,
+  width,
+  height,
+  className,
+}: {
+  sources: ThemeImages;
+  alt: string;
+  width: number;
+  height: number;
+  className?: string;
+}) {
+  const style = { height: 'auto' as const };
+
+  if (sources.light === sources.dark) {
+    return (
+      <Image
+        src={sources.light}
+        alt={alt}
+        width={width}
+        height={height}
+        className={className}
+        style={style}
+      />
+    );
+  }
+
+  return (
+    <>
+      <Image
+        src={sources.light}
+        alt={alt}
+        width={width}
+        height={height}
+        className={`theme-layer theme-layer--light ${className ?? ''}`.trim()}
+        style={style}
+      />
+      <Image
+        src={sources.dark}
+        alt=""
+        width={width}
+        height={height}
+        className={`theme-layer theme-layer--dark ${className ?? ''}`.trim()}
+        style={style}
+        aria-hidden="true"
+      />
+    </>
+  );
+}
 
 export function Flag({
   onClick,
@@ -16,44 +67,28 @@ export function Flag({
   alt,
   className = '',
 }: FlagProps) {
-  const topSrc = useThemeImages(topImage);
-  const middleSrc = useThemeImages(middleBackground);
-  const bottomSrc = useThemeImages(bottomImage);
-  const iconSrc = useThemeImages(icon);
+  const middleStyle = {
+    '--flag-middle-light': `url(${middleBackground.light})`,
+    '--flag-middle-dark': `url(${middleBackground.dark})`,
+  } as CSSProperties;
 
   return (
     <div className={`flag ${className}`} onClick={onClick}>
       <div className="flag-top">
-        <Image
-          src={topSrc}
-          alt={alt}
-          width={90}
-          height={24}
-          style={{ width: '100%', height: 'auto' }}
-        />
+        <ThemeImage sources={topImage} alt={alt} width={90} height={24} />
       </div>
-      <div
-        className="flag-middle"
-        style={{ backgroundImage: `url(${middleSrc})` }}
-      >
-        <Image
-          src={iconSrc}
-          className="flag-icon"
+      <div className="flag-middle" style={middleStyle}>
+        <ThemeImage
+          sources={icon}
           alt={alt}
           width={36}
           height={36}
-          style={{ width: '50%', height: 'auto' }}
+          className="flag-icon"
         />
         <span className="flag-text magic-title">{text}</span>
       </div>
       <div className="flag-bottom">
-        <Image
-          src={bottomSrc}
-          alt={alt}
-          width={90}
-          height={24}
-          style={{ width: '100%', height: 'auto' }}
-        />
+        <ThemeImage sources={bottomImage} alt={alt} width={90} height={24} />
       </div>
     </div>
   );

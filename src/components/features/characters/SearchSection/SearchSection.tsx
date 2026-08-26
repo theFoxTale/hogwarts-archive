@@ -3,7 +3,6 @@ import { useTranslations } from 'next-intl';
 import { type ChangeEvent, type KeyboardEvent } from 'react';
 
 import { RoundedFrame } from '@ui';
-import { useTheme } from '@contexts';
 
 import './SearchSection.css';
 const wandIcon = '/images/wand-accio.png';
@@ -23,11 +22,6 @@ export function SearchSection({
   onRefresh,
 }: SearchSectionProps) {
   const lang = useTranslations('search');
-
-  const { theme } = useTheme();
-  const searchButtonStyle = theme === 'light' ? 'variant-gold' : 'variant-dark';
-  const refreshButtonStyle =
-    theme === 'light' ? 'variant-dark' : 'variant-gold';
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
@@ -79,7 +73,7 @@ export function SearchSection({
           )}
         </div>
 
-        <RoundedFrame className={`search-button-frame ${searchButtonStyle}`}>
+        <RoundedFrame className="search-button-frame theme-primary">
           <button className="search-button" onClick={handleSearch}>
             <Image
               src={wandIcon}
@@ -92,7 +86,7 @@ export function SearchSection({
           </button>
         </RoundedFrame>
 
-        <RoundedFrame className={`search-button-frame ${refreshButtonStyle}`}>
+        <RoundedFrame className="search-button-frame theme-secondary">
           <button
             title={lang('refresh')}
             className="refresh-button search-button"

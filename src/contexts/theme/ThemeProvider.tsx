@@ -1,31 +1,27 @@
-import { useState, useEffect, type ReactNode } from 'react';
-import { ThemeContext } from './themeContext';
-import type { Theme } from './types';
+'use client';
 
-const THEME_STORAGE_KEY = 'hogwarts-theme';
+import { useEffect, useSyncExternalStore, type ReactNode } from 'react';
+
+import { ThemeContext } from './themeContext';
+import {
+  applyTheme,
+  getServerThemeSnapshot,
+  getThemeSnapshot,
+  subscribeToTheme,
+} from './themeStore';
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === 'undefined') return 'light';
-
-    const saved = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    if (saved === 'light' || saved === 'dark') return saved;
-
-    const isDarkPreferred = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    ).matches;
-    return isDarkPreferred ? 'dark' : 'light';
-  });
+  const theme = useSyncExternalStore(
+    subscribeToTheme,
+    getThemeSnapshot,
+    getServerThemeSnapshot
+  );
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
   }, [theme]);
 
-  const toggleTheme = () =>
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  const toggleTheme = () => applyTheme(theme === 'light' ? 'dark' : 'light');
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

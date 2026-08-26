@@ -3,7 +3,6 @@
 import type { ReactNode, MouseEventHandler } from 'react';
 
 import { RoundedFrame } from '@ui';
-import { useTheme } from '@contexts';
 
 import './FrameButton.css';
 
@@ -20,12 +19,9 @@ export function FrameButton({
   disabled = false,
   className = '',
 }: FrameButtonProps) {
-  const { theme } = useTheme();
-  const variant = theme === 'light' ? 'variant-gold' : 'variant-dark';
-
   return (
     <RoundedFrame
-      className={`action-button-frame ${variant} ${disabled ? 'disabled' : ''} ${className}`}
+      className={`action-button-frame theme-primary ${disabled ? 'disabled' : ''} ${className}`}
     >
       <button className="action-button" onClick={onClick} disabled={disabled}>
         {children}

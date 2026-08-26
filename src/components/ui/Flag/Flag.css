@@ -20,16 +20,30 @@
   animation: flagGlow 3s ease-in-out infinite;
 }
 
-.flag-top img {
+.flag-top img,
+.flag-bottom img {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.flag img.theme-layer--dark {
+  display: none;
+}
+
+[data-theme='dark'] .flag img.theme-layer--light {
+  display: none;
+}
+
+[data-theme='dark'] .flag img.theme-layer--dark {
+  display: block;
 }
 
 .flag-middle {
   flex: 1;
   width: 100%;
 
+  background-image: var(--flag-middle-light);
   background-repeat: repeat-y;
   background-position: top;
   background-size: 100% 100%;
@@ -40,8 +54,11 @@
   flex-direction: column;
 }
 
+[data-theme='dark'] .flag-middle {
+  background-image: var(--flag-middle-dark);
+}
+
 .flag-icon {
-  display: block;
   width: 50%;
   height: auto;
   filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.5));
@@ -51,10 +68,4 @@
   font-size: 9px;
   line-height: 15px;
   padding: 0 4px;
-}
-
-.flag-bottom img {
-  display: block;
-  width: 100%;
-  height: auto;
 }

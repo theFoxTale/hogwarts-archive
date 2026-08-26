@@ -1,23 +1,10 @@
 :root {
-  /* Цветовая палитра */
-  --bg-primary: #0b1120;
-  --bg-card: rgba(15, 23, 42, 0.72);
-  --bg-glass: rgba(20, 17, 13, 0.5);
-
-  /* Золотые акценты */
+  /* Shared palette */
   --gold-primary: #d4af37;
   --gold-light: #f5d76e;
   --gold-dark: #aa7c1c;
-
-  /* Цвета текста */
-  --text-primary: #85602b;
-  --text-secondary: #cfc7b0;
-  --text-muted: #a7824d;
   --dark-text: #2e251e;
-  --placeholder-color: rgba(241, 231, 204, 0.45);
-  --button-text: #f4d28c;
 
-  /* Рамки и тени */
   --border-gold: rgba(170, 110, 45, 0.65);
   --border-gold-active: rgba(224, 142, 58, 0.85);
   --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.2);
@@ -26,30 +13,57 @@
     inset 0 -1px 1px rgba(0, 0, 0, 0.2);
   --shadow-lg: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
 
-  /* Скругления */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 24px;
 
-  /* Шрифты */
-  --font-serif: 'Cinzel', serif; /* для заголовков */
-  --font-body: 'Lora', 'Georgia', serif; /* для основного текста (новая) */
+  --font-serif: 'Cinzel', serif;
+  --font-body: 'Lora', 'Georgia', serif;
   --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
 
-  /* Анимации */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.4s ease;
 
-  --panels-background: transparent;
-  --search-input-background: transparent;
-}
+  /* Light is the SSR / no-attribute default */
+  --bg-primary: #f7edd8;
+  --bg-card: rgba(253, 232, 195, 0.55);
+  --bg-glass: rgba(255, 252, 246, 0.45);
 
-[data-theme='light'] {
-  --placeholder-color: rgba(90, 55, 30, 0.8);
-
+  --text-primary: #85602b;
   --text-secondary: #2e251e;
+  --text-muted: #a7824d;
+  --placeholder-color: rgba(90, 55, 30, 0.8);
   --button-text: #2e251e;
 
   --panels-background: rgba(253, 232, 195, 0.35);
   --search-input-background: rgba(255, 252, 246, 0.35);
+
+  --text: var(--text-primary);
+  --text-h: var(--dark-text);
+  --bg: transparent;
+  --border: var(--border-gold);
+  --accent: var(--gold-dark);
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #0b1120;
+  --bg-card: rgba(15, 23, 42, 0.72);
+  --bg-glass: rgba(20, 17, 13, 0.5);
+
+  --text-primary: #85602b;
+  --text-secondary: #cfc7b0;
+  --text-muted: #a7824d;
+  --placeholder-color: rgba(241, 231, 204, 0.45);
+  --button-text: #f4d28c;
+
+  --panels-background: transparent;
+  --search-input-background: transparent;
+
+  --text: var(--text-secondary);
+  --text-h: var(--gold-light);
+  --accent: var(--gold-light);
+
+  color-scheme: dark;
 }

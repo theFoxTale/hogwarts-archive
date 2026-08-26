@@ -1,4 +1,16 @@
-:root {
+:root,
+[data-theme='light'] {
+  --magic-subtitle-gradient: linear-gradient(
+    to bottom,
+    #4e2d10 0%,
+    #7e5421 32%,
+    #331d09 100%
+  );
+
+  --magic-title-shadow: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+}
+
+[data-theme='dark'] {
   --magic-subtitle-gradient: linear-gradient(
     to bottom,
     #5b3412 0%,
@@ -9,17 +21,6 @@
   );
 
   --magic-title-shadow: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
-}
-
-[data-theme='light'] {
-  --magic-subtitle-gradient: linear-gradient(
-    to bottom,
-    #4e2d10 0%,
-    #7e5421 32%,
-    #331d09 100%
-  );
-
-  --magic-title-shadow: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
 }
 
 .magic-title {

@@ -1,12 +1,23 @@
 'use client';
 
 import { NextIntlClientProvider } from 'next-intl';
-import { ReactNode, createContext, useContext, useState } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useSyncExternalStore,
+} from 'react';
 import { Provider } from 'react-redux';
 
 import { store } from '@store';
 import { ThemeProvider } from '@contexts';
-import { DEFAULT_LOCALE, DEFAULT_TIMEZONE } from '@/i18n/config';
+import { DEFAULT_TIMEZONE, type AppLocale } from '@/i18n/config';
+import {
+  applyLocale,
+  getLocaleSnapshot,
+  getServerLocaleSnapshot,
+  subscribeToLocale,
+} from '@/i18n/localeStore';
 
 import enMessages from '../../messages/en.json';
 import ruMessages from '../../messages/ru.json';
@@ -17,8 +28,8 @@ const messagesMap = {
 };
 
 interface LocaleContextType {
-  locale: string;
-  setLocale: (locale: string) => void;
+  locale: AppLocale;
+  setLocale: (locale: AppLocale) => void;
 }
 
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
@@ -32,20 +43,13 @@ export const useLocaleContext = () => {
 };
 
 export function Providers({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('hogwarts-locale') || DEFAULT_LOCALE;
-    }
-    return DEFAULT_LOCALE;
-  });
+  const locale = useSyncExternalStore(
+    subscribeToLocale,
+    getLocaleSnapshot,
+    getServerLocaleSnapshot
+  );
 
-  const messages =
-    messagesMap[locale as keyof typeof messagesMap] || enMessages;
-
-  const handleSetLocale = (newLocale: string) => {
-    setLocale(newLocale);
-    localStorage.setItem('hogwarts-locale', newLocale);
-  };
+  const messages = messagesMap[locale] || enMessages;
 
   return (
     <Provider store={store}>
@@ -54,7 +58,7 @@ export function Providers({ children }: { children: ReactNode }) {
         messages={messages}
         timeZone={DEFAULT_TIMEZONE}
       >
-        <LocaleContext.Provider value={{ locale, setLocale: handleSetLocale }}>
+        <LocaleContext.Provider value={{ locale, setLocale: applyLocale }}>
           <ThemeProvider>{children}</ThemeProvider>
         </LocaleContext.Provider>
       </NextIntlClientProvider>

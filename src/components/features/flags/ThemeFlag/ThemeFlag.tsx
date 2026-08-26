@@ -20,7 +20,7 @@ const moonIcon = '/images/triangle-flag/moon-icon.png';
 
 export function ThemeFlag() {
   const lang = useTranslations('app');
-  const { theme, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
 
   return (
     <Flag
@@ -33,7 +33,7 @@ export function ThemeFlag() {
         dark: moonIcon,
       }}
       text={lang('theme')}
-      alt={theme === 'light' ? lang('themeAltLight') : lang('themeAltDark')}
+      alt={lang('themeAlt')}
       className="theme-flag"
     />
   );

@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { vi } from 'vitest';
 
 import { ThemeProvider } from '@contexts';
-import { SEARCH_STRINGS, SearchSection } from '@layout';
+import { SEARCH_STRINGS } from '@layout';
+import { SearchSection } from '@features';
 
 describe('SearchSection', () => {
   const mockOnSearch = vi.fn();

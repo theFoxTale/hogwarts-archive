@@ -3,15 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+import { AppHeader, Pagination } from '@layout';
+import { OrnateFrame } from '@ui';
 import {
-  AppHeader,
+  CharacterDetails,
   Flyout,
-  Pagination,
   ResultsSection,
   SearchSection,
-} from '@layout';
-import { OrnateFrame } from '@ui';
-import { CharacterDetails } from '@features';
+} from '@features';
 
 import { useAppDispatch } from '@store';
 import { clearAll } from '@store/slices';

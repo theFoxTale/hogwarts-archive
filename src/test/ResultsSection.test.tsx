@@ -3,7 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { RESULTS_STRING, ResultsSection } from '@layout';
+import { RESULTS_STRING } from '@layout';
+import { ResultsSection } from '@features';
 
 import { mockCharacters } from './mocks/api';
 import { createTestStore } from './utils/test-utils.tsx';

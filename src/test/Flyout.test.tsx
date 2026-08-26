@@ -6,7 +6,8 @@ import { clearAll, selectedItemsReducer } from '@store/slices';
 import * as csvExport from '@utils';
 
 import { ThemeProvider } from '@contexts';
-import { Flyout, FLYOUT_STRINGS } from '@layout';
+import { Flyout } from '@features';
+import { FLYOUT_STRINGS } from '@layout';
 
 import type { Character } from '@api';
 import { mockCharacters, mockHarryCharacter } from './mocks/api';

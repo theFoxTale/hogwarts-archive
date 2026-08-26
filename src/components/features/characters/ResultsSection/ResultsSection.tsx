@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 
 import type { Character } from '@api';
-import { CharacterCard } from '@features';
+import { CharacterCard } from '../CharacterCard/CharacterCard';
 
 import './ResultsSection.css';
 

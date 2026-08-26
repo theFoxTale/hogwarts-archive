@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 
 import { store } from '@store';
 import { ThemeProvider } from '@contexts';
+import { DEFAULT_LOCALE, DEFAULT_TIMEZONE } from '@/i18n/config';
 
 import enMessages from '../../messages/en.json';
 import ruMessages from '../../messages/ru.json';
@@ -33,9 +34,9 @@ export const useLocaleContext = () => {
 export function Providers({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('hogwarts-locale') || 'en';
+      return localStorage.getItem('hogwarts-locale') || DEFAULT_LOCALE;
     }
-    return 'en';
+    return DEFAULT_LOCALE;
   });
 
   const messages =
@@ -48,7 +49,11 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <Provider store={store}>
-      <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider
+        locale={locale}
+        messages={messages}
+        timeZone={DEFAULT_TIMEZONE}
+      >
         <LocaleContext.Provider value={{ locale, setLocale: handleSetLocale }}>
           <ThemeProvider>{children}</ThemeProvider>
         </LocaleContext.Provider>

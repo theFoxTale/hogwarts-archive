@@ -42,6 +42,20 @@ export const useLocaleContext = () => {
   return context;
 };
 
+export function LocaleProvider({ children }: { children: ReactNode }) {
+  const locale = useSyncExternalStore(
+    subscribeToLocale,
+    getLocaleSnapshot,
+    getServerLocaleSnapshot
+  );
+
+  return (
+    <LocaleContext.Provider value={{ locale, setLocale: applyLocale }}>
+      {children}
+    </LocaleContext.Provider>
+  );
+}
+
 export function Providers({ children }: { children: ReactNode }) {
   const locale = useSyncExternalStore(
     subscribeToLocale,
@@ -58,9 +72,9 @@ export function Providers({ children }: { children: ReactNode }) {
         messages={messages}
         timeZone={DEFAULT_TIMEZONE}
       >
-        <LocaleContext.Provider value={{ locale, setLocale: applyLocale }}>
+        <LocaleProvider>
           <ThemeProvider>{children}</ThemeProvider>
-        </LocaleContext.Provider>
+        </LocaleProvider>
       </NextIntlClientProvider>
     </Provider>
   );

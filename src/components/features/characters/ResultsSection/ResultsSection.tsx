@@ -9,7 +9,6 @@ interface ResultsSectionProps {
   results: Character[];
   isLoading: boolean;
   error: string | null;
-  shouldThrowError?: boolean;
   onSelectCharacter: (id: string) => void;
 }
 

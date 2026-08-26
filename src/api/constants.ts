@@ -1,11 +1,14 @@
 export const API_CONFIG = {
   BASE_URL: 'https://api.potterdb.com/v1/characters',
   ITEMS_PER_PAGE: 3,
-  USE_MOCK_API: process.env.VITE_USE_MOCK_API === 'true',
-  MOCK_DELAY_MS: Number(process.env.VITE_MOCK_DELAY_MS) || 0,
+  get USE_MOCK_API() {
+    return process.env.NEXT_PUBLIC_USE_MOCK_API === 'true';
+  },
+  get MOCK_DELAY_MS() {
+    return Number(process.env.NEXT_PUBLIC_MOCK_DELAY_MS) || 0;
+  },
 };
 
-// Сообщения об ошибках (технические и пользовательские)
 export const API_ERROR_MESSAGES = {
   NOT_FOUND: 'No characters match your search.',
   SERVER: 'Server error has occurred, please try again later.',

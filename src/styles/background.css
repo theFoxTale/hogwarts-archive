@@ -13,9 +13,3 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
-
-/* Чтобы контент был выше слоёв фона */
-#root {
-  position: relative;
-  z-index: 1;
-}

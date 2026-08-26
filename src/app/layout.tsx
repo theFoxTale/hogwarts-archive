@@ -17,7 +17,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="app-shell">{children}</div>
+        </Providers>
       </body>
     </html>
   );

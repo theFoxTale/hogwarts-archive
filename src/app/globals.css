@@ -63,8 +63,11 @@ body {
   }
 }
 
-#root {
+.app-shell {
+  position: relative;
+  z-index: 1;
   width: 1000px;
+  max-width: 100%;
   margin: 0 auto;
   min-height: 100svh;
   display: flex;

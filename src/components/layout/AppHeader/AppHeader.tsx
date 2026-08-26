@@ -19,6 +19,8 @@ export function AppHeader() {
         className="app-header__emblem"
         width={350}
         height={80}
+        priority
+        loading="eager"
       />
       <p className="app-header__title magic-title">{lang('title')}</p>
       <div className="app-header__description">

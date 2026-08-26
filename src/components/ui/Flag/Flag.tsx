@@ -24,7 +24,13 @@ export function Flag({
   return (
     <div className={`flag ${className}`} onClick={onClick}>
       <div className="flag-top">
-        <Image src={topSrc} alt={alt} width={90} height={24} />
+        <Image
+          src={topSrc}
+          alt={alt}
+          width={90}
+          height={24}
+          style={{ width: '100%', height: 'auto' }}
+        />
       </div>
       <div
         className="flag-middle"
@@ -36,11 +42,18 @@ export function Flag({
           alt={alt}
           width={36}
           height={36}
+          style={{ width: '50%', height: 'auto' }}
         />
         <span className="flag-text magic-title">{text}</span>
       </div>
       <div className="flag-bottom">
-        <Image src={bottomSrc} alt={alt} width={90} height={24} />
+        <Image
+          src={bottomSrc}
+          alt={alt}
+          width={90}
+          height={24}
+          style={{ width: '100%', height: 'auto' }}
+        />
       </div>
     </div>
   );

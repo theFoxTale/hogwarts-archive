@@ -13,17 +13,18 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "types": ["vite/client", "vitest/globals"],
+    "types": ["vitest/globals"],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
+      "@/*": ["./src/*"],
       "@ui": ["./src/components/ui/index.ts"],
       "@layout": ["./src/components/layout/index.ts"],
       "@features": ["./src/components/features/index.ts"],
-      "@pages": ["./src/components/pages/index.ts"],
+      "@views": ["./src/components/views/index.ts"],
       "@hooks": ["./src/hooks/index.ts"],
       "@utils": ["./src/utils/index.ts"],
       "@api": ["./src/api/index.ts"],

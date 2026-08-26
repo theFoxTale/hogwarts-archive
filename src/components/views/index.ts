@@ -1,4 +1,4 @@
-/* Pages */
+/* Views */
 export { HomePage } from './HomePage/HomePage';
 
 /* Constants */

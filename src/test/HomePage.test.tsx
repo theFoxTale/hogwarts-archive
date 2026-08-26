@@ -14,7 +14,7 @@ import {
 import { ThemeProvider } from '@contexts';
 import { useSearchCharactersQuery } from '@api';
 
-import { HomePage, LOCAL_STORAGE_KEYS } from '@pages';
+import { HomePage, LOCAL_STORAGE_KEYS } from '@views';
 import {
   RESULTS_STRING,
   SEARCH_STRINGS,

@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useLocaleContext } from '../../../../../app/providers';
+import { useLocaleContext } from '@/providers';
 
 import { Flag } from '@ui';
 

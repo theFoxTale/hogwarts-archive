@@ -1,9 +1,0 @@
-<svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
-    <path d="
-        M 0.5,0
-        A 24,24 0 0 0 12,12 "
-    fill="none"
-    stroke="#654d2d"
-    stroke-linejoin="round"
-    stroke-width="1"/>
-</svg>

@@ -1,5 +1,5 @@
-import { searchCharactersAction } from './actions';
-import { HomePage } from '@pages';
+import { searchCharactersAction } from '@/actions/characters';
+import { HomePage } from '@views';
 
 interface PageProps {
   searchParams: Promise<{ page?: string; characterId?: string; q?: string }>;

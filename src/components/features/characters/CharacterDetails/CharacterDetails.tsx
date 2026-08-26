@@ -8,7 +8,7 @@ import { ANONYMOUS_DETAILS_IMAGE } from './constants';
 
 import './CharacterDetails.css';
 import { useEffect, useState } from 'react';
-import { getCharacterAction } from '../../../../../app/actions';
+import { getCharacterAction } from '@/actions/characters';
 
 interface CharacterDetailsProps {
   characterId: string;

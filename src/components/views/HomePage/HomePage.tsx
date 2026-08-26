@@ -55,8 +55,7 @@ export function HomePage({
     setError(null);
 
     try {
-      const { searchCharactersAction } =
-        await import('../../../../app/actions');
+      const { searchCharactersAction } = await import('@/actions/characters');
 
       const data = await searchCharactersAction(newSearchQuery, newPage);
 

@@ -2,7 +2,7 @@
 
 import { API_CONFIG } from '@api';
 import type { Character, SearchResponse } from '@api';
-import type { CharacterData } from '../src/api/types';
+import type { CharacterData } from '@/api/types';
 
 export async function searchCharactersAction(
   name: string,

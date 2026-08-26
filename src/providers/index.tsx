@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import { store } from '@store';
 import { ThemeProvider } from '@contexts';
 
-import enMessages from '../messages/en.json';
-import ruMessages from '../messages/ru.json';
+import enMessages from '../../messages/en.json';
+import ruMessages from '../../messages/ru.json';
 
 const messagesMap = {
   en: enMessages,

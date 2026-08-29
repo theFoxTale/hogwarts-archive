@@ -1,7 +1,7 @@
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { Flag } from '@ui';
+import { useRouter } from '@/i18n/navigation';
 
 import './AboutFlag.css';
 
@@ -19,7 +19,6 @@ const aboutIcon = '/images/flag/about-icon.png';
 
 export function AboutFlag() {
   const lang = useTranslations('app');
-
   const router = useRouter();
 
   return (

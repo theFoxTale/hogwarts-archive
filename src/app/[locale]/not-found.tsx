@@ -1,21 +1,15 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
 
 import { FrameButton } from '@ui';
+import { Link } from '@/i18n/navigation';
 
 import './not-found.css';
+
 const ornamentIcon = '/images/ornament/character-ends-ornament.png';
 
-export default function NotFound() {
-  const lang = useTranslations('notFound');
-
-  const router = useRouter();
-  const navigateToHomePage = () => {
-    router.push('/');
-  };
+export default async function NotFound() {
+  const lang = await getTranslations('notFound');
 
   return (
     <div className="not-found">
@@ -39,10 +33,12 @@ export default function NotFound() {
         />
       </div>
       <p className="magic-subtitle">{lang('description1')}</p>
-      <p className="magic-subtitle">{lang('description2')}</p>\
-      <FrameButton className="not-found__button" onClick={navigateToHomePage}>
-        {lang('button')}
-      </FrameButton>
+      <p className="magic-subtitle">{lang('description2')}</p>
+      <Link href="/">
+        <FrameButton className="not-found__button">
+          {lang('button')}
+        </FrameButton>
+      </Link>
     </div>
   );
 }

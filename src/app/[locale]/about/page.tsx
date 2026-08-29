@@ -1,11 +1,18 @@
-import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { OrnateFrame, FrameButton } from '@ui';
+import { Link } from '@/i18n/navigation';
 
 import './about.css';
 
-export default async function AboutPage() {
+interface AboutPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function AboutPage({ params }: AboutPageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const lang = await getTranslations('about');
 
   return (

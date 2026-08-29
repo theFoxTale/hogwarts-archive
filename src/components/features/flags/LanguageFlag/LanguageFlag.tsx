@@ -1,9 +1,9 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { useLocaleContext } from '@/providers';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { Flag } from '@ui';
+import { usePathname, useRouter } from '@/i18n/navigation';
 
 import './LanguageFlag.css';
 
@@ -19,12 +19,13 @@ const languageIcon = '/images/rounded-flag/error-icon.png';
 
 export function LanguageFlag() {
   const lang = useTranslations('app');
-
-  const { locale, setLocale } = useLocaleContext();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const toggleLanguage = () => {
-    const newLocale = locale === 'en' ? 'ru' : 'en';
-    setLocale(newLocale);
+    const nextLocale = locale === 'en' ? 'ru' : 'en';
+    router.replace(pathname, { locale: nextLocale });
   };
 
   return (

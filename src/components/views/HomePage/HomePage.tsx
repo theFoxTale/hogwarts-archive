@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 
 import { AppHeader, Pagination } from '@layout';
 import { OrnateFrame } from '@ui';

@@ -7,7 +7,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { ThemeProvider } from '@contexts';
 import { selectedItemsReducer } from '@store/slices';
 import { DEFAULT_TIMEZONE } from '@/i18n/config';
-import { LocaleProvider } from '@/providers';
 
 import enMessages from '../../../messages/en.json';
 
@@ -34,9 +33,7 @@ function AppProviders({
         messages={enMessages}
         timeZone={DEFAULT_TIMEZONE}
       >
-        <LocaleProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </LocaleProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </NextIntlClientProvider>
     </Provider>
   );

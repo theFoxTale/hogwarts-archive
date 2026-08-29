@@ -15,8 +15,9 @@ vi.mock('@/actions/characters', () => ({
 }));
 
 const mockPush = vi.fn();
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: mockPush }),
+vi.mock('@/i18n/navigation', () => ({
+  useRouter: () => ({ push: mockPush, replace: vi.fn() }),
+  usePathname: () => '/',
 }));
 
 const searchAction = vi.mocked(searchCharactersAction);

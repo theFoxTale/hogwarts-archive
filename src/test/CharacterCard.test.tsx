@@ -8,7 +8,6 @@ import { CharacterCard, ANONYMOUS_CARD_IMAGE } from '@features';
 import { ThemeProvider } from '@contexts';
 import { selectedItemsReducer, toggleSelect } from '@store/slices';
 import { DEFAULT_TIMEZONE } from '@/i18n/config';
-import { LocaleProvider } from '@/providers';
 
 import type { Character } from '@api';
 import { mockLunaCharacter } from './mocks/api';
@@ -43,9 +42,7 @@ const renderWithStore = (ui: React.ReactElement, store = createTestStore()) => {
         messages={enMessages}
         timeZone={DEFAULT_TIMEZONE}
       >
-        <LocaleProvider>
-          <ThemeProvider>{ui}</ThemeProvider>
-        </LocaleProvider>
+        <ThemeProvider>{ui}</ThemeProvider>
       </NextIntlClientProvider>
     </Provider>
   );

@@ -7,7 +7,6 @@ import { clearAll, selectedItemsReducer } from '@store/slices';
 import { ThemeProvider } from '@contexts';
 import { Flyout } from '@features';
 import { DEFAULT_TIMEZONE } from '@/i18n/config';
-import { LocaleProvider } from '@/providers';
 
 import type { Character } from '@api';
 import { mockCharacters, mockHarryCharacter } from './mocks/api';
@@ -36,11 +35,9 @@ const renderWithStore = (store: ReturnType<typeof createStoreWithItems>) => {
         messages={enMessages}
         timeZone={DEFAULT_TIMEZONE}
       >
-        <LocaleProvider>
-          <ThemeProvider>
-            <Flyout />
-          </ThemeProvider>
-        </LocaleProvider>
+        <ThemeProvider>
+          <Flyout />
+        </ThemeProvider>
       </NextIntlClientProvider>
     </Provider>
   );

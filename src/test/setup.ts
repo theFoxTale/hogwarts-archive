@@ -5,6 +5,22 @@ import { afterEach, vi } from 'vitest';
 
 import './mocks/localStorage';
 
+vi.mock('@/i18n/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+  }),
+  usePathname: () => '/',
+  Link: ({ href, children }: { href: string; children?: unknown }) =>
+    createElement('a', { href }, children),
+  redirect: vi.fn(),
+  getPathname: ({ href }: { href: string }) => href,
+}));
+
 vi.mock('next/image', () => ({
   default: (props: Record<string, unknown>) => {
     const imgProps = { ...props };

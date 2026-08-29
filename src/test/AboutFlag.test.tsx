@@ -4,8 +4,9 @@ import { renderWithProviders } from './utils/test-utils.tsx';
 import { AboutFlag } from '@features';
 
 const mockPush = vi.fn();
-vi.mock('next/navigation', () => ({
-  useRouter: () => ({ push: mockPush }),
+vi.mock('@/i18n/navigation', () => ({
+  useRouter: () => ({ push: mockPush, replace: vi.fn() }),
+  usePathname: () => '/',
 }));
 
 describe('AboutFlag', () => {

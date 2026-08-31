@@ -25,7 +25,6 @@
       "@layout": ["./src/components/layout/index.ts"],
       "@features": ["./src/components/features/index.ts"],
       "@views": ["./src/components/views/index.ts"],
-      "@hooks": ["./src/hooks/index.ts"],
       "@utils": ["./src/utils/index.ts"],
       "@api": ["./src/api/index.ts"],
       "@store/*": ["./src/store/*"],

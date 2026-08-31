@@ -77,6 +77,12 @@
     "button": "← Return to Archive",
     "ornamentAlt": "Backward ornament"
   },
+  "error": {
+    "title": "A charm went wrong",
+    "description": "This page hit an unexpected jinx. You can try again or return to the archive.",
+    "tryAgain": "Try again",
+    "home": "← Return to Archive"
+  },
   "flyout": {
     "selected": "Selected",
     "unselectAll": "Unselect all",

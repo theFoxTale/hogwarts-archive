@@ -17,10 +17,11 @@
   "search": {
     "header": "Search witches, wizards, and magical beings",
     "placeholder": "Find magical records...",
-    "button": "Accio",
+    "search": "Accio",
+    "searchAlt": "Search data",
     "clear": "Clear search",
-    "refresh": "Clear cache & refresh search results",
-    "refreshAlt": "Clear cache",
+    "refresh": "Refresh search results",
+    "refreshAlt": "Refresh",
     "description": "Magical Archive Record"
   },
   "pagination": {
@@ -66,7 +67,7 @@
     "course": "RS School React",
     "authorTitle": "Author",
     "author": "Annie theFoxTale",
-    "button": "← Go to Archive"
+    "search": "← Go to Archive"
   },
   "notFound": {
     "upperHeader": "Lost? Even the best wizards need a map sometimes...",
@@ -74,7 +75,7 @@
     "subTitle": "Page not found",
     "description1": "The page you are looking for seems to have vanished like a puff of smoke.",
     "description2": "It may have been moved, deleted, or exists somewhere beyond the Restricted Section.",
-    "button": "← Return to Archive",
+    "search": "← Return to Archive",
     "ornamentAlt": "Backward ornament"
   },
   "error": {

@@ -77,12 +77,12 @@ export function SearchSection({
           <button className="search-button" onClick={handleSearch}>
             <Image
               src={wandIcon}
-              alt={lang('refresh')}
+              alt={lang('searchAlt')}
               aria-hidden="true"
               width={20}
               height={20}
             />
-            {lang('button')}
+            {lang('search')}
           </button>
         </RoundedFrame>
 

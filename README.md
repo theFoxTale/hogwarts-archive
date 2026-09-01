@@ -1,124 +1,117 @@
 # Hogwarts Archive
 
-## Технологический стек
+Каталог персонажей вселенной Гарри Поттера: поиск по имени, пагинация, карточка с деталями, множественный выбор и выгрузка CSV. Интерфейс на английском и русском, со светлой и тёмной темой.
 
-- **React** (функциональные компоненты, хуки)
-- **TypeScript**
-- **Redux Toolkit** – управление состоянием выбранных элементов
-- **RTK Query** – кэширование и работа с API
-- **Context API** – тема (light/dark)
-- **React Router DOM** – маршрутизация
-- **Vite** – сборка и разработка
-- **Vitest** – тестирование (unit / интеграционное)
-- **ESLint** – статический анализ кода
-- **Prettier** – автоматическое форматирование
-- **Husky** – pre-commit и pre-push хуки:
-  - `pre-commit`: запуск `lint-staged` (форматирование и линтинг staged-файлов) и проверка типов (`type-check`)
-  - `pre-push`: полная проверка линтинга (`npm run lint`), проверка типов и запуск всех тестов (`npm run test`)
+Проект начинался как задания [RS School React](https://rs.school/react/) (модули 01–06) и дальше живёт как pet-проект на Next.js App Router.
 
-## Команды
+## Стек
 
-| Команда                 | Описание                                                        |
-| ----------------------- | --------------------------------------------------------------- |
-| `npm run dev`           | Запуск дев-сервера Vite                                         |
-| `npm run build`         | Компиляция TypeScript и сборка проекта через Vite               |
-| `npm run preview`       | Локальный предпросмотр собранного приложения                    |
-| `npm run lint`          | Запуск ESLint для всех `.ts` / `.tsx` файлов                    |
-| `npm run format:fix`    | Автоматическое форматирование всего кода через Prettier         |
-| `npm run type-check`    | Проверка типов TypeScript без компиляции                        |
-| `npm run test`          | Запуск тестов (Vitest) в режиме `watch`                         |
-| `npm run test:coverage` | Запуск тестов с генерацией отчёта о покрытии                    |
-| `npm run test:watch`    | Запуск тестов в интерактивном режиме `watch`                    |
-| `npm run prepare`       | Установка Husky (выполняется автоматически после `npm install`) |
+- **Next.js 16** (App Router, Server Components, Server Actions)
+- **React 19** / **TypeScript**
+- **next-intl** — локали `en` и `ru` в URL (`/en`, `/ru/about`)
+- **Redux Toolkit** — только выбранные персонажи (чекбоксы / flyout)
+- **Context API** — тема light/dark (`data-theme` на `<html>`)
+- **Vitest** + Testing Library — unit / интеграционные тесты
+- **ESLint**, **Prettier**, **Husky** + **lint-staged**
 
-## Тестовое API
+PotterDB читается одним слоем: `src/api/characters.ts` → тонкие Server Actions в `src/actions/characters.ts`. RTK Query в приложении нет.
 
-В проекте используется публичное API [PotterDB](https://docs.potterdb.com/) – открытая база данных по вселенной Гарри Поттера.
+## Запуск
 
-### Эндпоинты
+```bash
+npm install
+npm run dev
+```
 
-- **Базовый URL**: `https://api.potterdb.com/v1/characters`
-- **Поиск по имени (фильтр)**: `?filter[name_cont]=<строка>`  
-  _Пример:_ `?filter[name_cont]=Harry` – ищет персонажей, содержащих «Harry» в имени.
-- **Пагинация**: параметры `page[number]` и `page[size]`  
-  _Пример:_ `?page[number]=2&page[size]=3` – вторая страница, 3 элемента на странице.
+Откройте [http://localhost:3000](http://localhost:3000) — прокси next-intl перенаправит на `/en` (или `/ru` по языку браузера / cookie).
 
-### Использование в приложении
+| Команда                 | Описание                              |
+| ----------------------- | ------------------------------------- |
+| `npm run dev`           | Dev-сервер Next.js                    |
+| `npm run build`         | Production-сборка                     |
+| `npm start`             | Запуск собранного приложения          |
+| `npm run lint`          | ESLint                                |
+| `npm run format:fix`    | Prettier по всему репозиторию         |
+| `npm run type-check`    | `tsc --noEmit`                        |
+| `npm test`              | Vitest (watch в TTY)                  |
+| `npm run test:watch`    | Vitest в интерактивном watch          |
+| `npm run test:coverage` | `vitest run` с отчётом покрытия       |
+| `npm run prepare`       | Установка Husky (после `npm install`) |
 
-- При загрузке отправляется запрос с сохранённым поисковым термином (или пустой строкой) и номером страницы (по умолчанию 1).
-- Размер страницы фиксирован: `ITEMS_PER_PAGE = 3`.
-- Ответ содержит массив `data` (персонажи) и мета-информацию о пагинации (`meta.pagination`).
+Хуки:
 
-### Пример запроса
+- **pre-commit** — `lint-staged` (Prettier + ESLint на staged-файлах)
+- **pre-push** — `npm run lint` и `npm run type-check`
+
+## Маршруты
+
+| URL                    | Что это                                 |
+| ---------------------- | --------------------------------------- |
+| `/`                    | редирект на `/en` или `/ru`             |
+| `/en`, `/ru`           | архив: поиск, список, детали, пагинация |
+| `/en/about`            | о приложении                            |
+| `POST /api/export-csv` | CSV выбранных персонажей                |
+
+Поиск и страница живут в query: `?q=Harry&page=2&characterId=<id>`. Первая отрисовка архива идёт на сервере через `searchCharactersAction`.
+
+Переключение языка меняет префикс пути и сохраняет текущую страницу (`/en/about` → `/ru/about`).
+
+## Структура `src/`
+
+```
+src/
+  app/                 # App Router: тонкие route-файлы
+    layout.tsx
+    [locale]/          # страницы с локалью в URL
+    api/export-csv/
+  proxy.ts             # next-intl: locale prefix и редиректы
+  actions/             # 'use server' — обёртки над API
+  api/                 # fetch PotterDB, маппинг, опциональный mock
+  providers/           # Redux + тема
+  components/
+    ui/                # кнопки, рамки, флаг, чекбокс
+    layout/            # шапка, пагинация
+    features/          # поиск, результаты, детали, flyout, флаги
+    views/             # HomePage (клиентский составной экран)
+  store/               # selectedItems
+  contexts/theme/
+  i18n/                # routing, navigation, request config
+  test/
+```
+
+Переводы: `messages/en.json`, `messages/ru.json`. Статика: `public/`. История курса и макеты: `docs/`.
+
+Алиасы: `@/*` → `src/*`, плюс баррели `@ui`, `@layout`, `@features`, `@views`, `@api`, `@store`, `@contexts`.
+
+## API
+
+Публичное [PotterDB](https://docs.potterdb.com/), базовый URL: `https://api.potterdb.com/v1/characters`.
+
+- Поиск: `filter[name_cont]=<строка>`
+- Пагинация: `page[number]`, `page[size]` (в приложении размер страницы — **3**)
+- Карточка: `GET /v1/characters/:id`
+
+Пример:
 
 ```http
 GET https://api.potterdb.com/v1/characters?filter[name_cont]=Harry&page[number]=1&page[size]=3
 ```
 
-## Тестовые ссылки
+- [Список (1-я страница)](https://api.potterdb.com/v1/characters)
+- [Персонаж по ID](https://api.potterdb.com/v1/characters/6ce92f2b-2bca-49e6-a696-ddde6f555066)
 
-- [Запрос всех персонажей (1-я страница)](https://api.potterdb.com/v1/characters)
-- [Запрос конкретного персонажа по ID](https://api.potterdb.com/v1/characters/6ce92f2b-2bca-49e6-a696-ddde6f555066)
+Локальный mock без сети — в `.env` (см. `.env.example`):
 
-## Описание задания
-
-### 01 - React project setup. Class components. Error boundary
-
-- [English](./docs/01%20-%20Class%20Rendering/task-description.md)
-- [Русский](./docs/01%20-%20Class%20Rendering/task-description-ru.md)
-- [Результат выполнения](./docs/01%20-%20Class%20Rendering/results.md)
-
-### 02 - React: Unit Testing
-
-- [English](./docs/02%20-%20Unit%20Tests/tests.md)
-- [Русский](./docs/02%20-%20Unit%20Tests/tests-ru.md)
-- [Результат выполнения](./docs/02%20-%20Unit%20Tests/results.md)
-
-### 03 - React: Routing and Hooks
-
-- [English](./docs/03-%20Hooks%20and%20routing/functional-routing.md)
-- [Русский](./docs/03-%20Hooks%20and%20routing/functional-routing-ru.md)
-- [Результат выполнения](./docs/03-%20Hooks%20and%20routing/results.md)
-
-### 04 - React: State Management and Context API
-
-- [English](./docs/04%20-%20State%20Management%20and%20Context%20API/state-management.md)
-- [Русский](./docs/04%20-%20State%20Management%20and%20Context%20API/state-management-ru.md)
-- [Результат выполнения](./docs/04%20-%20State%20Management%20and%20Context%20API/results.md)
-
-### 05 - React: API Querying (RTK Query / TanStack Query)
-
-- [English](./docs/05%20-%20API%20Querying/queries.md)
-- [Русский](./docs/05%20-%20API%20Querying/queries-ru.md)
-- [Результат выполнения](./docs/05%20-%20API%20Querying/results.md)
-
-### 06 - Next.js. Server Side Rendering
-
-- [English](./docs/06%20-%20Server%20Side%20Rendering/nextjs-ssr-ssg.md)
-- [Русский](./docs/06%20-%20Server%20Side%20Rendering/nextjs-ssr-ssg-ru.md)
-- [Результат выполнения](./docs/06%20-%20Server%20Side%20Rendering/results.md)
-
-## Тестирование
-
-Для запуска тестов и проверки покрытия используйте команды:
-
-```bash
-npm run test          # интерактивный режим
-npm run test:coverage # отчёт о покрытии (откроется в браузере)
+```
+NEXT_PUBLIC_USE_MOCK_API=true
+NEXT_PUBLIC_MOCK_DELAY_MS=0
 ```
 
-## Пороги покрытия (заданы в `vitest.config.ts`)
+## Тесты
 
-- `statements`: **80%**
-- `branches`: **50%**
-- `functions`: **50%**
-- `lines`: **50%**
+```bash
+npm test
+npm run test:coverage
+```
 
-### Текущие показатели (на момент сдачи)
-
-- **Statements:** 98,79%
-- **Branches:** 89.13%
-- **Functions:** 100%
-- **Lines:** 98,7%
-
-![test_coverage](./docs/04%20-%20State%20Management%20and%20Context%20API/test-coverage.png)
+Пороги в `vitest.config.ts`: statements **80%**, branches / functions / lines **50%**.

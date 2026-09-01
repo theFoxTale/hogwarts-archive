@@ -3,8 +3,8 @@ import { describe, it, expect } from 'vitest';
 import {
   mockSearchCharacters,
   mockGetCharacterById,
-} from '../../api/mockService.ts';
-import { mockCharacters } from '../../api/mockData.ts';
+} from '../../api/mockService';
+import { mockCharacters } from '../../api/mockData';
 import { API_CONFIG } from '@api';
 
 describe('mockService', () => {

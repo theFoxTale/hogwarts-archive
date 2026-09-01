@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react';
 import { ResultsSection } from '@features';
 
 import { mockCharacters } from './mocks/api';
-import { renderWithProviders } from './utils/test-utils.tsx';
+import { renderWithProviders } from './utils/test-utils';
 
 const onSelectCharacter = vi.fn();
 

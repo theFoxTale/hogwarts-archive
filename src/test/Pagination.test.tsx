@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { Pagination } from '@layout';
 
-import { renderWithProviders } from './utils/test-utils.tsx';
+import { renderWithProviders } from './utils/test-utils';
 
 describe('Pagination', () => {
   const mockOnPrev = vi.fn();

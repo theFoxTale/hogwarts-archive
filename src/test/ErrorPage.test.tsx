@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 
 import ErrorPage from '../app/[locale]/error';
 
-import { renderWithProviders } from './utils/test-utils.tsx';
+import { renderWithProviders } from './utils/test-utils';
 
 describe('locale error page', () => {
   test('renders fallback copy and calls reset', () => {

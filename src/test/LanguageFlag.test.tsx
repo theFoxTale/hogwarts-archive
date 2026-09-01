@@ -2,7 +2,7 @@ import { fireEvent } from '@testing-library/react';
 
 import { LanguageFlag } from '@features';
 
-import { renderWithProviders } from './utils/test-utils.tsx';
+import { renderWithProviders } from './utils/test-utils';
 
 const mockReplace = vi.fn();
 vi.mock('@/i18n/navigation', () => ({

@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
-import { createElement } from 'react';
+import '@testing-library/jest-dom/vitest';
+import { createElement, type ReactNode } from 'react';
 import { cleanup } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';
 
@@ -15,7 +15,7 @@ vi.mock('@/i18n/navigation', () => ({
     refresh: vi.fn(),
   }),
   usePathname: () => '/',
-  Link: ({ href, children }: { href: string; children?: unknown }) =>
+  Link: ({ href, children }: { href: string; children?: ReactNode }) =>
     createElement('a', { href }, children),
   redirect: vi.fn(),
   getPathname: ({ href }: { href: string }) => href,

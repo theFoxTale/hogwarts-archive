@@ -76,7 +76,7 @@ describe('Flyout', () => {
       ok: true,
       blob: async () => new Blob(['csv']),
       headers: { get: () => 'attachment; filename="beings.csv"' },
-    } as Response);
+    } as unknown as Response);
     vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:test');
     vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
 

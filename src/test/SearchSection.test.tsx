@@ -5,13 +5,13 @@ import { vi } from 'vitest';
 
 import { SearchSection } from '@features';
 
-import { renderWithProviders } from './utils/test-utils.tsx';
+import { renderWithProviders } from './utils/test-utils';
 
 const SEARCH = {
   placeholder: 'Find magical records...',
-  button: 'Accio',
+  search: 'Accio',
   clear: 'Clear search',
-  refresh: 'Clear cache & refresh search results',
+  refresh: 'Refresh search results',
 };
 
 describe('SearchSection', () => {
@@ -38,7 +38,7 @@ describe('SearchSection', () => {
     renderWithProviders(<Wrapper />);
     expect(screen.getByPlaceholderText(SEARCH.placeholder)).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: new RegExp(SEARCH.button) })
+      screen.getByRole('button', { name: new RegExp(SEARCH.search) })
     ).toBeInTheDocument();
     expect(screen.getByTitle(SEARCH.refresh)).toBeInTheDocument();
   });
@@ -62,7 +62,7 @@ describe('SearchSection', () => {
     expect(input).toHaveValue('  Hermione  ');
 
     await userEvent.click(
-      screen.getByRole('button', { name: new RegExp(SEARCH.button) })
+      screen.getByRole('button', { name: new RegExp(SEARCH.search) })
     );
 
     expect(mockOnSearch).toHaveBeenCalledWith('Hermione');
@@ -99,7 +99,7 @@ describe('SearchSection', () => {
     const input = screen.getByPlaceholderText(SEARCH.placeholder);
     await userEvent.type(input, '     ');
     await userEvent.click(
-      screen.getByRole('button', { name: new RegExp(SEARCH.button) })
+      screen.getByRole('button', { name: new RegExp(SEARCH.search) })
     );
     expect(mockOnSearch).toHaveBeenCalledWith('');
   });

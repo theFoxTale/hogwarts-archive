@@ -6,7 +6,7 @@ import { vi } from 'vitest';
 import { HomePage } from '@views';
 import { searchCharactersAction } from '@/actions/characters';
 
-import { renderWithProviders } from './utils/test-utils.tsx';
+import { renderWithProviders } from './utils/test-utils';
 import { mockSearchResponse, mockSearchSecondResponse } from './mocks/api';
 
 vi.mock('@/actions/characters', () => ({
@@ -87,9 +87,7 @@ describe('HomePage', () => {
 
     renderHome({ initialSearchQuery: 'Hermione' });
 
-    await userEvent.click(
-      screen.getByTitle('Clear cache & refresh search results')
-    );
+    await userEvent.click(screen.getByTitle('Refresh search results'));
 
     await waitFor(() => {
       expect(searchAction).toHaveBeenCalledWith('Hermione', 1);
@@ -114,9 +112,7 @@ describe('HomePage', () => {
 
     renderHome();
 
-    await userEvent.click(
-      screen.getByTitle('Clear cache & refresh search results')
-    );
+    await userEvent.click(screen.getByTitle('Refresh search results'));
 
     expect(await screen.findByText('Network error')).toBeInTheDocument();
   });

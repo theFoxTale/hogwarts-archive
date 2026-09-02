@@ -1,3 +1,14 @@
+:root {
+  --magic-accent-gradient: linear-gradient(
+    to bottom,
+    #623b0e 0%,
+    #a66e23 28%,
+    #b68d2e 50%,
+    #c0a048 72%,
+    #84550a 100%
+  );
+}
+
 :root,
 [data-theme='light'] {
   --magic-subtitle-gradient: linear-gradient(
@@ -40,7 +51,7 @@
     #7a4a14 72%,
     #4b2d0b 100%
   );
-
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -61,7 +72,7 @@
   user-select: none;
 
   background: var(--magic-subtitle-gradient);
-
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 

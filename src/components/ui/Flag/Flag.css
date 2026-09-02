@@ -64,8 +64,37 @@
   filter: drop-shadow(0 0 2px rgba(212, 175, 55, 0.5));
 }
 
-.flag-text {
+.flag-text.magic-title {
   font-size: 9px;
   line-height: 15px;
   padding: 0 4px;
+  text-shadow: none;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.55));
+}
+
+[data-theme='light'] .theme-flag .flag-text.magic-title,
+[data-theme='light'] .about-flag .flag-text.magic-title {
+  background: linear-gradient(to bottom, #e4b039 0%, #f8be2d 48%, #fff07b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+[data-theme='dark'] .theme-flag .flag-text.magic-title,
+[data-theme='dark'] .about-flag .flag-text.magic-title {
+  background: linear-gradient(to bottom, #d08a2c 0%, #e4b039 42%, #f0c85a 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.language-flag .flag-text.magic-title {
+  background: linear-gradient(
+    to bottom,
+    #b8860b 0%,
+    #e4b039 28%,
+    #f8be2d 50%,
+    #e6b03a 72%,
+    #a56a0c 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
 }

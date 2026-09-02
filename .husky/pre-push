@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+set -e
 
 echo "🔍 Running full lint before push..."
 npm run lint
@@ -8,9 +9,8 @@ echo "🔍 Running type check..."
 npm run type-check
 echo "✅ Type check passed."
 
-# Временно отключено из-за миграции на Next.js
-# echo "🔍 Running unit tests..."
-# npm run test
-# echo "✅ All tests passed."
+echo "🔍 Running unit tests..."
+npm run test:run
+echo "✅ All tests passed."
 
-echo "🍻 Pre-push checks finished (tests skipped)."
+echo "🍻 Pre-push checks finished."

@@ -1,6 +1,8 @@
 # Hogwarts Archive
 
-Каталог персонажей вселенной Гарри Поттера: поиск по имени, пагинация, карточка с деталями, множественный выбор и выгрузка CSV. Интерфейс на английском и русском, со светлой и тёмной темой.
+**Language:** [English](README.md) | [Русский](README_ru.md)
+
+A Harry Potter character archive: search by name, pagination, a details card, multi-select, and CSV export. The UI is English and Russian, with light and dark themes.
 
 [![GitHub](https://img.shields.io/badge/repo-GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/theFoxTale/hogwarts-archive)
 [![GitVerse](https://img.shields.io/badge/repo-GitVerse-00A651?style=flat&logo=git&logoColor=white)](https://gitverse.ru/theFoxTale/hogwarts-archive)
@@ -8,102 +10,102 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=20232A)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-Проект начинался как задания [RS School React](https://rs.school/react/) (модули 01–06) и дальше живёт как pet-проект на Next.js App Router.
+The project started as [RS School React](https://rs.school/react/) coursework (modules 01–06) and continues as a Next.js App Router pet project.
 
-## Стек
+## Stack
 
 - **Next.js 16** (App Router, Server Components, Server Actions)
 - **React 19** / **TypeScript**
-- **next-intl** — локали `en` и `ru` в URL (`/en`, `/ru/about`)
-- **Redux Toolkit** — только выбранные персонажи (чекбоксы / flyout)
-- **Context API** — тема light/dark (`data-theme` на `<html>`)
-- **Vitest** + Testing Library — unit / интеграционные тесты
+- **next-intl** — `en` and `ru` in the URL (`/en`, `/ru/about`)
+- **Redux Toolkit** — selected characters only (checkboxes / flyout)
+- **Context API** — light/dark theme (`data-theme` on `<html>`)
+- **Vitest** + Testing Library — unit / integration tests
 - **ESLint**, **Prettier**, **Husky** + **lint-staged**
 
-PotterDB читается одним слоем: `src/api/characters.ts` → тонкие Server Actions в `src/actions/characters.ts`. RTK Query в приложении нет.
+PotterDB is read through one layer: `src/api/characters.ts` → thin Server Actions in `src/actions/characters.ts`. There is no RTK Query in the app.
 
-## Запуск
+## Run
 
 ```bash
 npm install
 npm run dev
 ```
 
-Откройте [http://localhost:3000](http://localhost:3000) — прокси next-intl перенаправит на `/en` (или `/ru` по языку браузера / cookie).
+Open [http://localhost:3000](http://localhost:3000) — the next-intl proxy redirects to `/en` (or `/ru` from the browser language / cookie).
 
-| Команда                 | Описание                              |
-| ----------------------- | ------------------------------------- |
-| `npm run dev`           | Dev-сервер Next.js                    |
-| `npm run build`         | Production-сборка                     |
-| `npm start`             | Запуск собранного приложения          |
-| `npm run lint`          | ESLint                                |
-| `npm run format:fix`    | Prettier по всему репозиторию         |
-| `npm run type-check`    | `tsc --noEmit`                        |
-| `npm test`              | Vitest (watch в TTY)                  |
-| `npm run test:watch`    | Vitest в интерактивном watch          |
-| `npm run test:coverage` | `vitest run` с отчётом покрытия       |
-| `npm run prepare`       | Установка Husky (после `npm install`) |
+| Command                 | Description                         |
+| ----------------------- | ----------------------------------- |
+| `npm run dev`           | Next.js dev server                  |
+| `npm run build`         | Production build                    |
+| `npm start`             | Run the production build            |
+| `npm run lint`          | ESLint                              |
+| `npm run format:fix`    | Prettier across the repo            |
+| `npm run type-check`    | `tsc --noEmit`                      |
+| `npm test`              | Vitest (watch in a TTY)             |
+| `npm run test:watch`    | Vitest interactive watch            |
+| `npm run test:coverage` | `vitest run` with a coverage report |
+| `npm run prepare`       | Install Husky (after `npm install`) |
 
-Хуки:
+Hooks:
 
-- **pre-commit** — `lint-staged` (Prettier + ESLint на staged-файлах)
-- **pre-push** — `npm run lint` и `npm run type-check`
+- **pre-commit** — `lint-staged` (Prettier + ESLint on staged files)
+- **pre-push** — `npm run lint` and `npm run type-check`
 
-## Маршруты
+## Routes
 
-| URL                    | Что это                                 |
-| ---------------------- | --------------------------------------- |
-| `/`                    | редирект на `/en` или `/ru`             |
-| `/en`, `/ru`           | архив: поиск, список, детали, пагинация |
-| `/en/about`            | о приложении                            |
-| `POST /api/export-csv` | CSV выбранных персонажей                |
+| URL                    | What it is                                 |
+| ---------------------- | ------------------------------------------ |
+| `/`                    | redirect to `/en` or `/ru`                 |
+| `/en`, `/ru`           | archive: search, list, details, pagination |
+| `/en/about`            | about the app                              |
+| `POST /api/export-csv` | CSV of selected characters                 |
 
-Поиск и страница живут в query: `?q=Harry&page=2&characterId=<id>`. Первая отрисовка архива идёт на сервере через `searchCharactersAction`.
+Search and page live in the query: `?q=Harry&page=2&characterId=<id>`. The first archive render happens on the server via `searchCharactersAction`.
 
-Переключение языка меняет префикс пути и сохраняет текущую страницу (`/en/about` → `/ru/about`).
+Switching language changes the path prefix and keeps the current page (`/en/about` → `/ru/about`).
 
 ```mermaid
 flowchart TD
-  request["Запрос"] --> proxy["src/proxy.ts"]
+  request["Request"] --> proxy["src/proxy.ts"]
   proxy -->|"localePrefix always"| locale["/[locale]"]
-  proxy -->|"/ → /en или /ru"| locale
-  locale --> home["page.tsx архив"]
+  proxy -->|"/ → /en or /ru"| locale
+  locale --> home["page.tsx archive"]
   locale --> about["about/page.tsx"]
   locale --> rest["...rest → notFound"]
   request --> api["POST /api/export-csv"]
-  request --> files["статика / _next — matcher skip"]
+  request --> files["static / _next — matcher skip"]
 ```
 
-Подробнее: [docs/architecture.md](docs/architecture.md).
+More detail: [docs/architecture.md](docs/architecture.md).
 
-## Структура `src/`
+## `src/` layout
 
 ```
 src/
-  app/                 # App Router: тонкие route-файлы
+  app/                 # App Router: thin route files
     layout.tsx
-    [locale]/          # страницы с локалью в URL
+    [locale]/          # pages with locale in the URL
     api/export-csv/
-  proxy.ts             # next-intl: locale prefix и редиректы
-  actions/             # 'use server' — обёртки над API
-  api/                 # fetch PotterDB, маппинг, опциональный mock
-  providers/           # Redux + тема
+  proxy.ts             # next-intl: locale prefix and redirects
+  actions/             # 'use server' — wrappers over the API
+  api/                 # fetch PotterDB, mapping, optional mock
+  providers/           # Redux + theme
   components/
-    ui/                # кнопки, рамки, флаг, чекбокс
-    layout/            # шапка, пагинация
-    features/          # поиск, результаты, детали, flyout, флаги
-    views/             # HomePage (клиентский составной экран)
+    ui/                # buttons, frames, flag, checkbox
+    layout/            # header, pagination
+    features/          # search, results, details, flyout, flags
+    views/             # HomePage (client composite screen)
   store/               # selectedItems
   contexts/theme/
   i18n/                # routing, navigation, request config
   test/
 ```
 
-Как это связано в рантайме:
+How it connects at runtime:
 
 ```mermaid
 flowchart LR
-  subgraph routes [Маршруты]
+  subgraph routes [Routes]
     appLocale["app/locale"]
     appApi["app/api/export-csv"]
   end
@@ -111,7 +113,7 @@ flowchart LR
     homePage["views/HomePage"]
     features["features"]
   end
-  subgraph data [Данные]
+  subgraph data [Data]
     actions["actions"]
     apiChars["api/characters"]
   end
@@ -122,39 +124,39 @@ flowchart LR
   features --> appApi
 ```
 
-Переводы: `messages/en.json`, `messages/ru.json`. Статика: `public/`. История курса и макеты: `docs/`. Архитектура с диаграммами: [docs/architecture.md](docs/architecture.md).
+Translations: `messages/en.json`, `messages/ru.json`. Static files: `public/`. Course history and mockups: `docs/`. Architecture diagrams: [docs/architecture.md](docs/architecture.md).
 
-Алиасы: `@/*` → `src/*`, плюс баррели `@ui`, `@layout`, `@features`, `@views`, `@api`, `@store`, `@contexts`.
+Aliases: `@/*` → `src/*`, plus barrels `@ui`, `@layout`, `@features`, `@views`, `@api`, `@store`, `@contexts`.
 
 ## API
 
-Публичное [PotterDB](https://docs.potterdb.com/), базовый URL: `https://api.potterdb.com/v1/characters`.
+Public [PotterDB](https://docs.potterdb.com/), base URL: `https://api.potterdb.com/v1/characters`.
 
-- Поиск: `filter[name_cont]=<строка>`
-- Пагинация: `page[number]`, `page[size]` (в приложении размер страницы — **3**)
-- Карточка: `GET /v1/characters/:id`
+- Search: `filter[name_cont]=<string>`
+- Pagination: `page[number]`, `page[size]` (page size in the app is **3**)
+- Details: `GET /v1/characters/:id`
 
-Пример:
+Example:
 
 ```http
 GET https://api.potterdb.com/v1/characters?filter[name_cont]=Harry&page[number]=1&page[size]=3
 ```
 
-- [Список (1-я страница)](https://api.potterdb.com/v1/characters)
-- [Персонаж по ID](https://api.potterdb.com/v1/characters/6ce92f2b-2bca-49e6-a696-ddde6f555066)
+- [List (page 1)](https://api.potterdb.com/v1/characters)
+- [Character by ID](https://api.potterdb.com/v1/characters/6ce92f2b-2bca-49e6-a696-ddde6f555066)
 
-Локальный mock без сети — в `.env` (см. `.env.example`):
+Local mock without the network — in `.env` (see `.env.example`):
 
 ```
 NEXT_PUBLIC_USE_MOCK_API=true
 NEXT_PUBLIC_MOCK_DELAY_MS=0
 ```
 
-## Тесты
+## Tests
 
 ```bash
 npm test
 npm run test:coverage
 ```
 
-Пороги в `vitest.config.ts`: statements **80%**, branches / functions / lines **50%**.
+Thresholds in `vitest.config.ts`: statements **80%**, branches / functions / lines **50%**.

@@ -38,10 +38,6 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-// mock для import.meta.env.BASE_URL
-vi.stubEnv('BASE_URL', '/');
-
-// mock для fetch
 globalThis.fetch = vi.fn();
 
 Object.defineProperty(window, 'matchMedia', {

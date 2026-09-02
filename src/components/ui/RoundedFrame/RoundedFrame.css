@@ -327,6 +327,14 @@
   --frame-hover-scale: 1.03;
 }
 
+[data-theme='dark'] .rounded-frame.variant-paper {
+  --frame-bg: linear-gradient(
+    135deg,
+    rgba(58, 40, 21, 0.4),
+    rgba(26, 16, 10, 0.4)
+  );
+}
+
 .rounded-frame.variant-paper::after {
   content: '';
   position: absolute;
@@ -342,8 +350,17 @@
   z-index: 0;
 }
 
+[data-theme='dark'] .rounded-frame.variant-paper::after {
+  background-image: url('/textures/paper-dark.jpg');
+  opacity: 0.1;
+}
+
 .rounded-frame.variant-paper:hover:not(.disabled)::after {
-  opacity: 0.3;
+  opacity: 0.4;
+}
+
+[data-theme='dark'] .rounded-frame.variant-paper:hover:not(.disabled)::after {
+  opacity: 0.4;
 }
 
 /* =========================================

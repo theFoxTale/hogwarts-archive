@@ -66,6 +66,10 @@
   color: var(--dark-text);
 }
 
+[data-theme='dark'] .trait-name {
+  color: var(--text-secondary);
+}
+
 @media (max-width: 480px) {
   .character-card__traits {
     gap: 8px;

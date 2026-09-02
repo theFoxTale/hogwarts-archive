@@ -2,6 +2,12 @@
 
 Каталог персонажей вселенной Гарри Поттера: поиск по имени, пагинация, карточка с деталями, множественный выбор и выгрузка CSV. Интерфейс на английском и русском, со светлой и тёмной темой.
 
+[![GitHub](https://img.shields.io/badge/repo-GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/theFoxTale/hogwarts-archive)
+[![GitVerse](https://img.shields.io/badge/repo-GitVerse-00A651?style=flat&logo=git&logoColor=white)](https://gitverse.ru/theFoxTale/hogwarts-archive)
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=flat&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=20232A)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+
 Проект начинался как задания [RS School React](https://rs.school/react/) (модули 01–06) и дальше живёт как pet-проект на Next.js App Router.
 
 ## Стек
@@ -56,6 +62,20 @@ npm run dev
 
 Переключение языка меняет префикс пути и сохраняет текущую страницу (`/en/about` → `/ru/about`).
 
+```mermaid
+flowchart TD
+  request["Запрос"] --> proxy["src/proxy.ts"]
+  proxy -->|"localePrefix always"| locale["/[locale]"]
+  proxy -->|"/ → /en или /ru"| locale
+  locale --> home["page.tsx архив"]
+  locale --> about["about/page.tsx"]
+  locale --> rest["...rest → notFound"]
+  request --> api["POST /api/export-csv"]
+  request --> files["статика / _next — matcher skip"]
+```
+
+Подробнее: [docs/architecture.md](docs/architecture.md).
+
 ## Структура `src/`
 
 ```
@@ -79,7 +99,30 @@ src/
   test/
 ```
 
-Переводы: `messages/en.json`, `messages/ru.json`. Статика: `public/`. История курса и макеты: `docs/`.
+Как это связано в рантайме:
+
+```mermaid
+flowchart LR
+  subgraph routes [Маршруты]
+    appLocale["app/locale"]
+    appApi["app/api/export-csv"]
+  end
+  subgraph ui [UI]
+    homePage["views/HomePage"]
+    features["features"]
+  end
+  subgraph data [Данные]
+    actions["actions"]
+    apiChars["api/characters"]
+  end
+  appLocale --> homePage
+  homePage --> features
+  homePage --> actions
+  actions --> apiChars
+  features --> appApi
+```
+
+Переводы: `messages/en.json`, `messages/ru.json`. Статика: `public/`. История курса и макеты: `docs/`. Архитектура с диаграммами: [docs/architecture.md](docs/architecture.md).
 
 Алиасы: `@/*` → `src/*`, плюс баррели `@ui`, `@layout`, `@features`, `@views`, `@api`, `@store`, `@contexts`.
 

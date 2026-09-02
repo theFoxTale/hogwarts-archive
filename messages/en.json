@@ -67,7 +67,7 @@
     "course": "RS School React",
     "authorTitle": "Author",
     "author": "Annie theFoxTale",
-    "search": "← Go to Archive"
+    "button": "← Go to Archive"
   },
   "notFound": {
     "upperHeader": "Lost? Even the best wizards need a map sometimes...",
@@ -75,7 +75,7 @@
     "subTitle": "Page not found",
     "description1": "The page you are looking for seems to have vanished like a puff of smoke.",
     "description2": "It may have been moved, deleted, or exists somewhere beyond the Restricted Section.",
-    "search": "← Return to Archive",
+    "button": "← Return to Archive",
     "ornamentAlt": "Backward ornament"
   },
   "error": {

@@ -31,10 +31,25 @@ export function LanguageFlag() {
   return (
     <Flag
       onClick={toggleLanguage}
-      topImage={{ light: flagTopLight, dark: flagTopDark }}
+      topImage={{
+        light: flagTopLight,
+        dark: flagTopDark,
+        width: 418,
+        height: 187,
+      }}
       middleBackground={{ light: flagMiddleLight, dark: flagMiddleDark }}
-      bottomImage={{ light: flagBottomLight, dark: flagBottomDark }}
-      icon={{ light: languageIcon, dark: languageIcon }}
+      bottomImage={{
+        light: flagBottomLight,
+        dark: flagBottomDark,
+        width: 418,
+        height: 203,
+      }}
+      icon={{
+        light: languageIcon,
+        dark: languageIcon,
+        width: 74,
+        height: 88,
+      }}
       text={lang('lang')}
       alt={lang('langAlt')}
       className="language-flag"

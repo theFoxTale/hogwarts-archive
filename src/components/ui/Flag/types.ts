@@ -1,26 +1,24 @@
-export type ThemeImages = {
+export type ThemedSrc = {
   light: string;
   dark: string;
 };
 
-export interface FlagImagesSet {
-  top: ThemeImages;
-  middleBackground: ThemeImages;
-  bottom: ThemeImages;
-  icon: ThemeImages;
-}
+export type SizedThemedSrc = ThemedSrc & {
+  width: number;
+  height: number;
+};
 
 export interface FlagProps {
   /** Обработчик клика по флагу */
   onClick: () => void;
   /** Изображения для верхней части */
-  topImage: ThemeImages;
+  topImage: SizedThemedSrc;
   /** Фоновое изображение для средней части (повторяется) */
-  middleBackground: ThemeImages;
+  middleBackground: ThemedSrc;
   /** Изображения для нижней части */
-  bottomImage: ThemeImages;
+  bottomImage: SizedThemedSrc;
   /** Иконка в центре флага */
-  icon: ThemeImages;
+  icon: SizedThemedSrc;
   /** Текст на флаге */
   text: string;
   /** Alt-текст для изображений */

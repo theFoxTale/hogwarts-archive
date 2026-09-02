@@ -25,12 +25,24 @@ export function ThemeFlag() {
   return (
     <Flag
       onClick={toggleTheme}
-      topImage={{ light: flagTopLight, dark: flagTopDark }}
+      topImage={{
+        light: flagTopLight,
+        dark: flagTopDark,
+        width: 475,
+        height: 251,
+      }}
       middleBackground={{ light: flagMiddleLight, dark: flagMiddleDark }}
-      bottomImage={{ light: flagBottomLight, dark: flagBottomDark }}
+      bottomImage={{
+        light: flagBottomLight,
+        dark: flagBottomDark,
+        width: 475,
+        height: 453,
+      }}
       icon={{
         light: sunIcon,
         dark: moonIcon,
+        width: 94,
+        height: 94,
       }}
       text={lang('theme')}
       alt={lang('themeAlt')}

@@ -24,10 +24,20 @@ export function AboutFlag() {
   return (
     <Flag
       onClick={() => router.push('/about')}
-      topImage={{ light: flagTopLight, dark: flagTopDark }}
+      topImage={{
+        light: flagTopLight,
+        dark: flagTopDark,
+        width: 481,
+        height: 289,
+      }}
       middleBackground={{ light: flagMiddleLight, dark: flagMiddleDark }}
-      bottomImage={{ light: flagBottomLight, dark: flagBottomDark }}
-      icon={{ light: aboutIcon, dark: aboutIcon }}
+      bottomImage={{
+        light: flagBottomLight,
+        dark: flagBottomDark,
+        width: 481,
+        height: 275,
+      }}
+      icon={{ light: aboutIcon, dark: aboutIcon, width: 1063, height: 1027 }}
       text={lang('about')}
       alt={lang('aboutAlt')}
       className="about-flag"

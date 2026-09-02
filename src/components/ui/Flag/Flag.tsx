@@ -2,22 +2,18 @@
 
 import Image from 'next/image';
 import type { CSSProperties } from 'react';
-import type { FlagProps, ThemeImages } from './types';
+import type { SizedThemedSrc, FlagProps } from './types';
 
 import './Flag.css';
 
 function ThemeImage({
   sources,
   alt,
-  width,
-  height,
   className,
   style,
 }: {
-  sources: ThemeImages;
+  sources: SizedThemedSrc;
   alt: string;
-  width: number;
-  height: number;
   className?: string;
   style?: CSSProperties;
 }) {
@@ -28,8 +24,8 @@ function ThemeImage({
       <Image
         src={sources.light}
         alt={alt}
-        width={width}
-        height={height}
+        width={sources.width}
+        height={sources.height}
         className={className}
         style={imageStyle}
       />
@@ -41,16 +37,16 @@ function ThemeImage({
       <Image
         src={sources.light}
         alt={alt}
-        width={width}
-        height={height}
+        width={sources.width}
+        height={sources.height}
         className={`theme-layer theme-layer--light ${className ?? ''}`.trim()}
         style={imageStyle}
       />
       <Image
         src={sources.dark}
         alt=""
-        width={width}
-        height={height}
+        width={sources.width}
+        height={sources.height}
         className={`theme-layer theme-layer--dark ${className ?? ''}`.trim()}
         style={imageStyle}
         aria-hidden="true"
@@ -77,21 +73,19 @@ export function Flag({
   return (
     <div className={`flag ${className}`} onClick={onClick}>
       <div className="flag-top">
-        <ThemeImage sources={topImage} alt={alt} width={90} height={24} />
+        <ThemeImage sources={topImage} alt={alt} />
       </div>
       <div className="flag-middle" style={middleStyle}>
         <ThemeImage
           sources={icon}
           alt={alt}
-          width={36}
-          height={36}
           className="flag-icon"
           style={{ width: '50%' }}
         />
         <span className="flag-text magic-title">{text}</span>
       </div>
       <div className="flag-bottom">
-        <ThemeImage sources={bottomImage} alt={alt} width={90} height={24} />
+        <ThemeImage sources={bottomImage} alt={alt} />
       </div>
     </div>
   );

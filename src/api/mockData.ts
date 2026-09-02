@@ -16,6 +16,7 @@ export const mockCharacters: Character[] = [
     wands: ['Holly, 11", Phoenix feather'],
     jobs: ['Head of Auror Office'],
     alias_names: ['The Boy Who Lived', 'Undesirable No. 1'],
+    wiki: 'https://harrypotter.fandom.com/wiki/Harry_Potter',
   },
   {
     id: '2',
@@ -32,6 +33,7 @@ export const mockCharacters: Character[] = [
     wands: ['Vine wood, 10¾", Dragon heartstring'],
     jobs: ['Minister for Magic'],
     alias_names: [],
+    wiki: 'https://harrypotter.fandom.com/wiki/Hermione_Granger',
   },
   {
     id: '3',
@@ -48,6 +50,7 @@ export const mockCharacters: Character[] = [
     wands: ['Willow, 14", Unicorn hair'],
     jobs: ['Auror'],
     alias_names: [],
+    wiki: 'https://harrypotter.fandom.com/wiki/Ron_Weasley',
   },
   {
     id: '4',
@@ -64,6 +67,7 @@ export const mockCharacters: Character[] = [
     wands: ['Hawthorn, 10", Unicorn hair'],
     jobs: [],
     alias_names: [],
+    wiki: 'https://harrypotter.fandom.com/wiki/Draco_Malfoy',
   },
   {
     id: '5',
@@ -80,6 +84,7 @@ export const mockCharacters: Character[] = [
     wands: [],
     jobs: ['Magizoologist'],
     alias_names: ['Loony Lovegood'],
+    wiki: 'https://harrypotter.fandom.com/wiki/Luna_Lovegood',
   },
   {
     id: '6',
@@ -96,6 +101,7 @@ export const mockCharacters: Character[] = [
     wands: [],
     jobs: ['Potions master', 'Headmaster of Hogwarts'],
     alias_names: ['Half-Blood Prince'],
+    wiki: 'https://harrypotter.fandom.com/wiki/Severus_Snape',
   },
   {
     id: '7',
@@ -112,6 +118,7 @@ export const mockCharacters: Character[] = [
     wands: ['Elder wand'],
     jobs: ['Headmaster of Hogwarts'],
     alias_names: [],
+    wiki: 'https://harrypotter.fandom.com/wiki/Albus_Dumbledore',
   },
   {
     id: '8',
@@ -128,6 +135,7 @@ export const mockCharacters: Character[] = [
     wands: ['Fir, 9½", Dragon heartstring'],
     jobs: ['Head of Gryffindor', 'Transfiguration professor', 'Headmistress'],
     alias_names: [],
+    wiki: 'https://harrypotter.fandom.com/wiki/Minerva_McGonagall',
   },
   {
     id: '9',
@@ -144,6 +152,7 @@ export const mockCharacters: Character[] = [
     wands: ['Oak, 16", Unicorn hair (broken)'],
     jobs: ['Keeper of Keys and Grounds', 'Care of Magical Creatures professor'],
     alias_names: [],
+    wiki: 'https://harrypotter.fandom.com/wiki/Rubeus_Hagrid',
   },
   {
     id: '10',
@@ -160,5 +169,6 @@ export const mockCharacters: Character[] = [
     wands: ['Walnut, 12¾", Dragon heartstring'],
     jobs: [],
     alias_names: [],
+    wiki: 'https://harrypotter.fandom.com/wiki/Bellatrix_Lestrange',
   },
 ];

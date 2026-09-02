@@ -112,14 +112,15 @@ flowchart TD
 
 ## 6. Выбор и CSV
 
-Флажки (чекбоксы) при выборе персонажей записывают данные только в Redux-состояние `selectedItems`, не затрагивая кэш персонажей. При смене поискового запроса или страницы автоматически вызывается `clearAll()`. При открытии нижней панели отправляется `POST`-запрос на `/api/export-csv`. Этот маршрут обращается к PotterDB **напрямую** и **игнорирует** переменную `NEXT_PUBLIC_USE_MOCK_API`.
+Флажки (чекбоксы) при выборе персонажей записывают данные только в Redux-состояние `selectedItems`, не затрагивая кэш персонажей. При смене поискового запроса или страницы автоматически вызывается `clearAll()`. При открытии нижней панели отправляется `POST`-запрос на `/api/export-csv`. Маршрут вызывает `getCharacterById` из [`src/api/characters.ts`](../src/api/characters.ts) — тот же слой, что поиск и детали, включая mock (`NEXT_PUBLIC_USE_MOCK_API`). В CSV есть колонка Wiki (`Character.wiki`).
 
 ```mermaid
 flowchart LR
   card["CharacterCard"] -->|"toggleSelect"| slice["selectedItems"]
   slice --> flyout["Flyout"]
   flyout -->|"POST ids"| csv["api/export-csv"]
-  csv --> potter["PotterDB напрямую"]
+  csv --> apiChars["getCharacterById"]
+  apiChars --> source["PotterDB или mock"]
 ```
 
 ## 7. Ошибки и 404

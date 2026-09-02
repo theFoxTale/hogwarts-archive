@@ -23,6 +23,7 @@ export function mapCharacter(item: CharacterData): Character {
     wands: attrs.wands ?? null,
     jobs: attrs.jobs ?? null,
     alias_names: attrs.alias_names,
+    wiki: attrs.wiki ?? null,
   };
 }
 

@@ -15,6 +15,7 @@ export interface Character {
   wands?: string[] | null;
   jobs?: string[] | null;
   alias_names?: string[];
+  wiki?: string | null;
 }
 
 export interface CharacterData {

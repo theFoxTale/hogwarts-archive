@@ -1,49 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-interface Character {
-  id: string;
-  name: string;
-  house: string | null;
-  species: string | null;
-  gender: string | null;
-  blood_status: string | null;
-  nationality: string | null;
-  born: string | null;
-  died: string | null;
-  patronus: string | null;
-  wands: string[] | null;
-  jobs: string[] | null;
-  wiki: string | null;
-}
+import { getCharacterById, type Character } from '@api';
 
-// Функция для получения одного персонажа по ID
-async function fetchCharacterById(id: string): Promise<Character> {
-  const res = await fetch(`https://api.potterdb.com/v1/characters/${id}`);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch character ${id}`);
-  }
-
-  const json = await res.json();
-  const attrs = json.data.attributes;
-
-  return {
-    id: json.data.id,
-    name: attrs.name || 'Unnamed',
-    house: attrs.house ?? null,
-    species: attrs.species ?? null,
-    gender: attrs.gender ?? null,
-    blood_status: attrs.blood_status ?? null,
-    nationality: attrs.nationality ?? null,
-    born: attrs.born ?? null,
-    died: attrs.died ?? null,
-    patronus: attrs.patronus ?? null,
-    wands: attrs.wands ?? null,
-    jobs: attrs.jobs ?? null,
-    wiki: attrs.wiki ?? null,
-  };
-}
-
-// Экранирование для CSV (разделитель — точка с запятой)
 function escapeCSV(value: string | null | undefined): string {
   if (value == null) return '';
 
@@ -113,9 +71,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const characters = await Promise.all(
-      ids.map((id) => fetchCharacterById(id))
-    );
+    const characters = await Promise.all(ids.map((id) => getCharacterById(id)));
 
     const csv = generateCSV(characters);
 

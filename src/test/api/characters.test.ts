@@ -49,6 +49,7 @@ describe('characters API', () => {
           wands: null,
           jobs: null,
           alias_names: undefined,
+          wiki: null,
         },
       ],
       pages: {
